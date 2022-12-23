@@ -1,0 +1,3567 @@
+-
+ name: "Ubuntu Playbook"
+ hosts: all
+ vars: 
+  - ubuntu1804cis_nftables_table: /etc/nftables.conf
+ become: yes
+ become_user: root
+ tasks:
+    - name: "SCORED | 1.1.1.1 | PATCH | Ensure mounting of cramfs filesystems is disabled"
+      lineinfile:
+          dest: /etc/modprobe.d/CIS.conf
+          regexp: "^(#)?install cramfs(\\s|$)"
+          line: "install cramfs /bin/true"
+          state: present
+          owner: root
+          group: root
+          mode: 0644
+          create: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - cramfs
+          - filesystems
+          - rule_1.1.1.1
+
+    - name: "SCORED | 1.1.1.1 | PATCH | Remove cramfs module"
+      modprobe:
+          name: cramfs
+          state: absent
+      tags:
+          - level1
+          - scored
+          - patch
+          - cramfs
+          - filesystems
+          - rule_1.1.1.1
+
+    - name: "SCORED | 1.1.1.2 | PATCH | Ensure mounting of freevxfs filesystems is disabled"
+      lineinfile:
+          dest: /etc/modprobe.d/CIS.conf
+          regexp: "^(#)?install freevxfs"
+          line: "install freevxfs /bin/true"
+          state: present
+          create: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - freevxfs
+          - filesystems
+          - rule_1.1.1.2
+
+    - name: "SCORED | 1.1.1.2 | PATCH | Remove freevxfs module"
+      modprobe:
+          name: freevxfs
+          state: absent
+      tags:
+          - level1
+          - scored
+          - patch
+          - freevxfs
+          - filesystems
+          - rule_1.1.1.2
+
+    - name: "SCORED | 1.1.1.3 | PATCH | Ensure mounting of jffs2 filesystems is disabled"
+      lineinfile:
+          dest: /etc/modprobe.d/CIS.conf
+          regexp: "^(#)?install jffs2(\\s|$)"
+          line: "install jffs2 /bin/true"
+          state: present
+          create: true
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - jffs2
+          - filesystems
+          - rule_1.1.1.3
+
+    - name: "SCORED | 1.1.1.3 | PATCH | Remove jffs2 module"
+      modprobe:
+          name: jffs2
+          state: absent
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - jffs2
+          - filesystems
+          - rule_1.1.1.3
+
+    - name: "SCORED | 1.1.1.4 | PATCH | Ensure mounting of hfs filesystems is disabled"
+      lineinfile:
+          dest: /etc/modprobe.d/CIS.conf
+          regexp: "^(#)?install hfs(\\s|$)"
+          line: "install hfs /bin/true"
+          state: present
+          create: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - hfs
+          - filesystems
+          - rule_1.1.1.4
+
+    - name: "SCORED | 1.1.1.4 | PATCH | Remove hfs module"
+      modprobe:
+          name: hfs
+          state: absent
+      tags:
+          - level1
+          - scored
+          - patch
+          - hfs
+          - filesystems
+          - rule_1.1.1.4
+
+    - name: "SCORED | 1.1.1.5 | PATCH | Ensure mounting of hfsplus filesystems is disabled"
+      lineinfile:
+          dest: /etc/modprobe.d/CIS.conf
+          regexp: "^(#)?install hfsplus(\\s|$)"
+          line: "install hfsplus /bin/true"
+          state: present
+          create: true
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - hfsplus
+          - filesystems
+          - rule_1.1.1.5
+
+    - name: "SCORED | 1.1.1.5 | PATCH | Remove hfsplus module"
+      modprobe:
+          name: hfsplus
+          state: absent
+      tags:
+          - level1
+          - scored
+          - patch
+          - hfsplus
+          - filesystems
+          - rule_1.1.1.5
+
+    - name: "SCORED | 1.1.1.6 | PATCH | Ensure mounting of squashfs filesystems is disabled"
+      lineinfile:
+          dest: /etc/modprobe.d/CIS.conf
+          regexp: "^(#)?install squashfs(\\s|$)"
+          line: "install squashfs /bin/true"
+          state: present
+          create: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - squashfs
+          - filesystems
+          - rule_1.1.1.6
+
+    - name: "SCORED | 1.1.1.6 | PATCH | Remove squashfs module"
+      modprobe:
+          name: squashfs
+          state: absent
+      tags:
+          - level1
+          - scored
+          - patch
+          - squashfs
+          - filesystems
+          - rule_1.1.1.6
+
+    - name: "SCORED | 1.1.1.7 | PATCH | Ensure mounting of udf filesystems is disabled"
+      lineinfile:
+          dest: /etc/modprobe.d/CIS.conf
+          regexp: "^(#)?install udf(\\s|$)"
+          line: "install udf /bin/true"
+          state: present
+          create: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - udf
+          - filesystems
+          - rule_1.1.1.7
+
+    - name: "SCORED | 1.1.1.7 | PATCH | Remove udf module"
+      modprobe:
+          name: udf
+          state: absent
+      tags:
+          - level1
+          - scored
+          - patch
+          - udf
+          - filesystems
+          - rule_1.1.1.7
+
+    - name: "NOTSCORED | 1.1.1.8 | PATCH | Ensure mounting of FAT filesystems is limited"
+      lineinfile:
+          dest: /etc/modprobe.d/CIS.conf
+          regexp: "^(#)?install vfat(\\s|$)"
+          line: "install vfat /bin/true"
+          state: present
+          create: true
+      tags:
+          - level2
+          - notscored
+          - patch
+          - vfat
+          - filesystems
+          - rule_1.1.1.8
+
+    - name: "NOTSCORED | 1.1.1.8 | PATCH | Remove FAT module"
+      modprobe:
+          name: vfat
+          state: absent
+      tags:
+          - level2
+          - notscored
+          - patch
+          - vfat
+          - filesystems
+          - rule_1.1.1.8
+
+    # - name: "SCORED | 1.1.2 | PATCH | Ensure separate partition exists for /tmp | enable and start/restart tmp.mount"
+    #   systemd:
+    #       name: tmp.mount
+    #       daemon_reload: yes
+    #       enabled: yes
+    #       masked: no
+    #       state: started
+
+    #   tags:
+    #       - level2
+    #       - scored
+    #       - patch
+    #       - rule_1.1.2
+
+    # - name: "SCORED | 1.1.2 | PATCH | Ensure separate partition exists for /tmp | enable and start/restart tmp.mount"
+    #   copy:
+    #       src: /etc/systemd/system/tmp.mount
+    #       dest: /etc/systemd/system/tmp.mount
+    #       owner: root
+    #       group: root
+    #       mode: 0644
+    #       force: true
+    #       remote_src: true
+    #   notify:
+    #       - systemd restart tmp.mount
+
+    #   tags:
+    #       - level2
+    #       - scored
+    #       - patch
+    #       - rule_1.1.2
+
+
+    # - name: "SCORED | 1.1.3 | PATCH | Ensure nodev option set on /tmp partition\n
+    #         SCORED | 1.1.4 | PATCH | Ensure nosuid option set on /tmp partition\n
+    #         | drop custom tmp.mount"
+    #   ini_file:
+    #       path: "{{ item }}"
+    #       section: Mount
+    #       option: Options
+    #       value: "{{ tmp_mount_options[ansible_os_family] }}"
+    #       no_extra_spaces: true
+    #   with_items:
+    #       - "{{ tmp_mount_file[ansible_os_family] }}"
+    #       - /etc/systemd/system/tmp.mount
+    #   notify:
+    #       - systemd restart tmp.mount
+
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - rule_1.1.3
+    #       - rule_1.1.4
+
+    # - name: "SCORED | 1.1.5 | PATCH | Ensure noexec option set on /tmp partition\n
+    #         | drop custom tmp.mount"
+    #   ini_file:
+    #       path: "{{ item }}"
+    #       section: Mount
+    #       option: Options
+    #       value: noexec
+    #       no_extra_spaces: true
+    #   with_items:
+    #       - /etc/systemd/system/tmp.mount
+    #   notify:
+    #       - systemd restart tmp.mount
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - rule_1.1.5
+
+    # - name: "SCORED | 1.1.6 | PATCH | Ensure separate partition exists for /var"
+    #   shell: mount | grep "on /var "
+    #   register: var_mounted
+    #   changed_when: false
+    #   failed_when: false
+    #   tags:
+    #       - level2
+    #       - scored
+    #       - patch
+    #       - rule_1.1.6
+    #       - skip_ansible_lint
+
+    # - name: "SCORED | 1.1.7 | PATCH | Ensure separate partition exists for /var/tmp"
+    #   shell: mount | grep "on /var/tmp "
+    #   register: var_tmp_mounted
+    #   changed_when: false
+    #   failed_when: false
+    #   tags:
+    #       - level2
+    #       - scored
+    #       - patch
+    #       - rule_1.1.7
+    #       - skip_ansible_lint
+
+    # - name:
+    #       "SCORED | 1.1.8  | PATCH | Ensure nodev option set on /var/tmp partition\n
+    #       SCORED | 1.1.9  | PATCH | Ensure nosuid option set on /var/tmp partition\n
+    #       SCORED | 1.1.10 | PATCH | Ensure noexec option set on /var/tmp partition"
+    #   mount:
+    #       name: /var/tmp
+    #       src: tmpfs
+    #       state: mounted
+    #       fstype: "tmpfs"
+    #       opts: "defaults,nodev,nosuid,noexec"
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - rule_1.1.8
+    #       - rule_1.1.9
+    #       - rule_1.1.10
+
+    # - name: "SCORED | 1.1.11 | PATCH | Ensure separate partition exists for /var/log"
+    #   shell: mount | grep "on /var/log "
+    #   register: var_log_mounted
+    #   changed_when: false
+    #   failed_when: false
+    #   tags:
+    #       - level2
+    #       - scored
+    #       - patch
+    #       - rule_1.1.11
+    #       - skip_ansible_lint
+
+    # - name: "SCORED | 1.1.12 | PATCH | Ensure separate partition exists for /var/log/audit"
+    #   shell: mount | grep "on /var/log/audit "
+    #   register: var_log_audit_mounted
+    #   changed_when: false
+    #   failed_when: false
+    #   tags:
+    #       - level2
+    #       - scored
+    #       - patch
+    #       - rule_1.1.12
+    #       - skip_ansible_lint
+
+    # - name: "SCORED | 1.1.13 | PATCH | Ensure separate partition exists for /home"
+    #   shell: mount | grep "on /home "
+    #   register: home_mounted
+    #   changed_when: false
+    #   failed_when: false
+
+    #   tags:
+    #       - level2
+    #       - scored
+    #       - patch
+    #       - rule_1.1.13
+    #       - skip_ansible_lint
+
+    # # - name: "SCORED | 1.1.14 | PATCH | Ensure nodev option set on /home partition"
+    # #   mount:
+    # #       name: "/home"
+    # #       src: "{{ item.device }}"
+    # #       state: mounted
+    # #       fstype: "{{ item.fstype }}"
+    # #       opts: "nodev"
+    # #   when:
+    # #       - ubuntu1804cis_rule_1_1_14
+    # #       - item.mount == "/home"
+    # #   with_items:
+    # #       - "{{ ansible_mounts }}"
+    # #   tags:
+    # #       - scored
+    # #       - level1
+    # #       - patch
+    # #       - rule_1.1.14
+
+    # - name:
+    #       "SCORED | 1.1.15 | PATCH | Ensure nodev option set on /dev/shm partition\n
+    #       SCORED | 1.1.16 | PATCH | Ensure nosuid option set on /dev/shm partition\n
+    #       SCORED | 1.1.17 | PATCH | Ensure noexec option set on /dev/shm partition"
+    #   mount:
+    #       name: /dev/shm
+    #       src: tmpfs
+    #       state: mounted
+    #       fstype: tmpfs
+    #       opts: "defaults,nodev,nosuid,noexec"
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - rule_1.1.15
+    #       - rule_1.1.16
+    #       - rule_1.1.17
+
+    # - name: "NOTSCORED | 1.1.18 | PATCH | Ensure nodev option set on removable media partitions"
+    #   command: /bin/true
+    #   changed_when: false
+    #   tags:
+    #       - level1
+    #       - notscored
+    #       - patch
+    #       - rule_1.1.18
+    #       - notimplemented
+
+    # - name: "NOTSCORED | 1.1.19 | PATCH | Ensure nosuid option set on removable media partitions"
+    #   command: /bin/true
+    #   changed_when: false
+
+    #   tags:
+    #       - level1
+    #       - notscored
+    #       - patch
+    #       - rule_1.1.19
+    #       - notimplemented
+
+    # - name: "NOTSCORED | 1.1.20 | PATCH | Ensure noexec option set on removable media partitions"
+    #   command: /bin/true
+    #   changed_when: false
+    #   tags:
+    #       - level1
+    #       - notscored
+    #       - patch
+    #       - rule_1.1.20
+    #       - notimplemented
+
+    - name: "SCORED | 1.1.21 | PATCH | Ensure sticky bit is set on all world-writable directories"
+      shell: |
+          set -o pipefail;
+          df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d -perm -0002 2>/dev/null | xargs chmod a+t
+      args:
+          executable: /bin/bash
+      changed_when: false
+      failed_when: false
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_1.1.21
+
+    - name: "SCORED | 1.1.22 | PATCH | Disable Automounting"
+      service:
+          name: autofs
+          enabled: false
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_1.1.22
+
+    - name: "SCORED | 1.1.23 | PATCH | Disable USB Storage"
+      lineinfile:
+          dest: /etc/modprobe.d/CIS.conf
+          regexp: "^(#)?install usb-storage(\\s|$)"
+          line: "install usb-storage /bin/true"
+          state: present
+          create: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - udf
+          - filesystems
+          - rule_1.1.23
+
+    - name: "SCORED | 1.1.23 | PATCH | Remove usb-storage module"
+      modprobe:
+          name: usb-storage
+          state: absent
+      tags:
+          - level1
+          - scored
+          - patch
+          - usb
+          - filesystems
+          - rule_1.1.23
+
+    - name: "NOTSCORED | 1.2.1 | PATCH | Ensure package manager repositories are configured"
+      command: /bin/true
+      changed_when: false
+
+      tags:
+          - level1
+          - notscored
+          - patch
+          - rule_1.2.1
+
+    - name: "NOTSCORED | 1.2.2 | PATCH | Ensure GPG keys are configured"
+      command: /bin/true
+      changed_when: false
+  
+      tags:
+          - level1
+          - notscored
+          - patch
+          - rule_1.2.2
+          - notimplemented
+
+    - name: "SCORED | 1.3.1 | PATCH | Ensure sudo is installed"
+      apt:
+          name:
+            - sudo
+          state: present
+          install_recommends: false
+      tags:
+          - level1
+          - scored
+          - sudo
+          - patch
+          - rule_1.3.1
+
+    - name: "SCORED | 1.3.2 | PATCH | Ensure sudo commands use pty"
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: '^Defaults use_pty'
+        line: 'Defaults use_pty'
+        validate: 'visudo -cf %s'
+      tags:
+          - level1
+          - scored
+          - sudo
+          - patch
+          - rule_1.3.2
+
+    - name: "SCORED | 1.3.3 | PATCH | Ensure sudo log file exists"
+      lineinfile:
+        dest: /etc/sudoers
+        state: present
+        regexp: '^Defaults logfile.*'
+        line: 'Defaults logfile="/var/log/sudo.log"'
+        validate: 'visudo -cf %s'
+      tags:
+          - level1
+          - scored
+          - sudo
+          - patch
+          - rule_1.3.3
+
+    - name: "SCORED | 1.4.1 | PATCH | Ensure AIDE is installed (install nullmailer instead of postfix)"
+      apt:
+          name:
+              - nullmailer
+          state: present
+          install_recommends: false
+      tags:
+          - level1
+          - scored
+          - aide
+          - patch
+          - rule_1.4.1
+
+    - name: "SCORED | 1.4.1 | PATCH | Ensure AIDE is installed"
+      apt:
+          name:
+              - aide
+              - aide-common
+          state: present
+          install_recommends: false
+      tags:
+          - level1
+          - scored
+          - aide
+          - patch
+          - rule_1.4.1
+
+    - name: "SCORED | 1.4.1 | PATCH | Stat AIDE DB"
+      stat: path=/var/lib/aide/aide.db
+      register: aide_db
+      tags:
+          - level1
+          - scored
+          - aide
+          - patch
+          - rule_1.4.1
+
+    - name: "SCORED | 1.4.1 | PATCH | Init AIDE | This may take a LONG time"
+      command: /usr/sbin/aideinit
+      args:
+          creates: /var/lib/aide/aide.db
+      when:
+          - not aide_db.stat.exists
+
+      tags:
+          - level1
+          - scored
+          - aide
+          - patch
+          - rule_1.4.1
+
+    # - name: "SCORED | 1.4.2 | PATCH | Ensure filesystem integrity is regularly checked" #if you have specific job you can uncomment this otherwise run the alternative
+    #   cron:
+    #       name: Run AIDE integrity check weekly
+    #       user: "{{ ubuntu1804cis_aide_cron['cron_user'] }}"
+    #       minute: "{{ ubuntu1804cis_aide_cron['aide_minute'] | default('0') }}"
+    #       hour: "{{ ubuntu1804cis_aide_cron['aide_hour'] | default('5') }}"
+    #       day: "{{ ubuntu1804cis_aide_cron['aide_day'] | default('*') }}"
+    #       month: "{{ ubuntu1804cis_aide_cron['aide_month'] | default('*') }}"
+    #       weekday: "{{ ubuntu1804cis_aide_cron['aide_weekday'] | default('*') }}"
+    #       job: "{{ ubuntu1804cis_aide_cron['aide_job'] }}"
+    #   when:
+    #       - ubuntu1804cis_rule_1_4_2
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - aide
+    #       - file_integrity
+    #       - patch
+    #       - rule_1.4.2
+
+    - name: "1.4.2 Create cron entry to run aide filesystem integrity check regularly-periodically scheduled (crontab)' aide check (/etc/cron.* and /etc/crontab)"
+      lineinfile:
+        path: /etc/crontab
+        line: "0 5 * * * centos /usr/sbin/aide --check"
+        state: present  
+    - name: "1.4.2 Create cron entry to run aide filesystem integrity check regularly-periodically scheduled (crontab)' aide check (/etc/cron.* and /etc/crontab)"
+      lineinfile:
+        path: /etc/cron.*
+        line: "0 5 * * * centos /usr/sbin/aide --check"
+        state: present  
+
+    - name: "SCORED | 1.5.1 | PATCH | Ensure permissions on bootloader config are configured for grub.cfg"
+      file:
+          path: "/boot/grub/grub.cfg"
+          owner: root
+          group: root
+          mode: 0400
+ 
+      tags:
+          - level1
+          - scored
+          - grub
+          - patch
+          - rule_1.5.1
+
+    # - name: "SCORED | 1.5.1 | PATCH | Ensure permissions on bootloader config are configured for grub.conf" #grub.conf is not available in testing machine, so if you have uncomment this
+    #   file:
+    #       path: "/boot/grub/grub.conf"
+    #       owner: root
+    #       group: root
+    #       mode: 0400
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - grub
+    #       - patch
+    #       - rule_1.5.1
+
+    - name: "SCORED | 1.5.1 | PATCH | Ensure permissions on bootloader config are configured for menu.lst"
+      file:
+          path: "/boot/grub/menu.lst"
+          owner: root
+          group: root
+          mode: 0400
+      tags:
+          - level1
+          - scored
+          - grub
+          - patch
+          - rule_1.5.1
+
+    # - name: "SCORED | 1.5.2 | PATCH | Ensure bootloader password is set - generate password" #if you have bootloader password in your environment, please uncomment it and insert your bootloader password in the variable
+    #   shell: "set -o pipefail;
+    #         if [ '{{ ubuntu1804cis_bootloader_password }}' == 'random' ];
+    #         then PASSWORD=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c12); else PASSWORD='{{ ubuntu1804cis_bootloader_password }}';
+    #         fi;
+    #         echo -e \"$PASSWORD\n$PASSWORD\" | grub-mkpasswd-pbkdf2 | awk '/grub.pbkdf/{print$NF}'"
+    #   register: grub_pass
+    #   args:
+    #       executable: /bin/bash
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - grub
+    #       - patch
+    #       - rule_1.5.2
+    #       - notimplemented
+
+    # - name: "SCORED | 1.5.2 | PATCH | Ensure bootloader password is set - generate config"
+    #   copy:
+    #       dest: /etc/grub.d/00_password
+    #       content: "cat << EOF\nset superusers=\"root\"\npassword_pbkdf2 root {{ grub_pass.stdout }}\nEOF"
+    #       owner: root
+    #       group: root
+    #       mode: 0755
+    #   notify: generate new grub config
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - grub
+    #       - patch
+    #       - rule_1.5.2
+
+    # - name: "SCORED | 1.5.2 | PATCH | Ensure bootloader password is set - disable password for system boot"
+    #   replace:
+    #       path: /etc/grub.d/10_linux
+    #       regexp: '--class os"'
+    #       replace: '--class os --unrestricted"'
+    #   notify: generate new grub config
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - grub
+    #       - patch
+    #       - rule_1.5.2
+
+    # - name: "SCORED | 1.5.3 | PATCH | Ensure authentication required for single user mode"
+    #   shell: "set -o pipefail;
+    #           if [ '{{ ubuntu1804cis_root_password }}' == 'random' ];
+    #           then PASSWORD=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c24); else PASSWORD='{{ ubuntu1804cis_root_password }}';
+    #           fi;
+    #           echo \"root:$PASSWORD\" | chpasswd"
+    #   args:
+    #       executable: /bin/bash
+    #   when:
+    #       - current_root_password.stdout | length > 0
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - rule_1.5.3
+    #       - notimplemented
+
+    - name: "NOTSCORED | 1.5.4 | PATCH | Ensure interactive boot is not enabled"
+      command: /bin/true
+      changed_when: false
+      tags:
+          - level1
+          - notscored
+          - patch
+          - rule_1.5.4
+          - notimplemented
+
+    - name: "SCORED | 1.6.1 | PATCH | Ensure XD/NX support is enabled"
+      shell: |
+          set -o pipefail;
+          dmesg | grep -E "NX|XD" | grep " active"
+      args:
+          executable: /bin/bash
+      changed_when: false
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_1.6.1
+
+    - name: "SCORED | 1.6.2 | PATCH | Ensure address space layout randomization (ASLR) is enabled"
+      sysctl:
+          name: kernel.randomize_va_space
+          value: "2"
+          state: present
+          reload: true
+          sysctl_set: true
+          ignoreerrors: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - sysctl
+          - rule_1.6.2
+
+    - name: "SCORED | 1.6.3 | PATCH | Ensure prelink is disabled"
+      command: prelink -ua
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_1.6.3
+
+    - name: "SCORED | 1.6.3 | PATCH | Ensure prelink is disabled"
+      apt:
+          name: prelink
+          state: absent
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_1.6.3
+
+    - name: "SCORED | 1.6.4 | PATCH | Ensure core dumps are restricted"
+      sysctl:
+          name: fs.suid_dumpable
+          value: "0"
+          state: present
+          reload: true
+          sysctl_set: true
+          ignoreerrors: true
+
+      tags:
+          - level1
+          - scored
+          - sysctl
+          - patch
+          - rule_1.6.4
+
+    - name: "SCORED | 1.6.4 | PATCH | Ensure systemd-coredump is installed"
+      apt:
+        name: systemd-coredump
+        state: present
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_1.6.4
+
+    - name: "SCORED | 1.6.4 | PATCH | Ensure hard core 0 is set"
+      lineinfile:
+        dest: /etc/security/limits.conf
+        line: '*                hard    core            0'
+        regexp: '(^#)?\*\s+hard\s+core\s+[0-9]+'
+        state: present
+        create: true
+        insertbefore: "# End of file"
+   
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_1.6.4
+
+    - name: "SCORED | 1.7.1.1 | PATCH | Ensure AppArmor is installed"
+      apt:
+          name: '{{ item }}'
+          state: present
+      with_items:
+      - apparmor
+      - apparmor-utils
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_1.7.1.1
+
+    - name: "SCORED | 1.7.1.2 | PATCH | Ensure AppArmor is enabled in the bootloader configuration"
+      block:
+          - name: "SCORED | 1.7.1.2 | PATCH | Ensure AppArmor is enabled in the bootloader configuration"
+            replace:
+                dest: /etc/default/grub
+                regexp: '^(GRUB_CMDLINE_LINUX=(?!.*apparmor)\"[^\"]*)(\".*)'
+                replace: '\1 apparmor=0 security=apparmor\2'
+
+          - name: "SCORED | 1.7.1.2 | PATCH | Ensure AppArmor Security is enabled in the bootloader configuration"
+            replace:
+                dest: /etc/default/grub
+                regexp: '^(GRUB_CMDLINE_LINUX=(?!.*security)\"[^\"]*)(\".*)'
+                replace: '\1 security=apparmor\2'
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_1.7.1.2
+
+    - name: "SCORED | 1.7.1.3 | PATCH | Ensure all AppArmor Profiles are in enforce or complain mode"
+      command: /bin/true
+      changed_when: false
+  
+      tags:
+          - level1
+          - scored
+          - patc3
+          - rule_1.7.1.3
+          - notimplemented
+
+
+    # - name: "SCORED | 1.8.1.1 | PATCH | Ensure message of the day is configured properly" #/etc/motd file doesn't exist in my ubuntu, please uncomment it if you have
+    #   template:
+    #       src: etc/motd.j2
+    #       dest: /etc/motd
+
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - banner
+    #       - rule_1.8.1.1
+
+    # - name: "SCORED | 1.8.1.2 | PATCH | Ensure local login warning banner is configured properly"
+    #   template:
+    #       src: etc/issue.j2
+    #       dest: /etc/issue
+
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - banner
+    #       - rule_1.8.1.2
+
+    # - name: "SCORED | 1.8.1.3 | PATCH | Ensure remote login warning banner is configured properly"
+    #   template:
+    #       src: etc/issue.net.j2
+    #       dest: /etc/issue.net
+
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - banner
+    #       - rule_1.8.1.3
+
+    # - name: "SCORED | 1.8.1.4 | PATCH | Ensure permissions on /etc/motd are configured"
+    #   file:
+    #       dest: /etc/motd
+    #       state: file
+    #       owner: root
+    #       group: root
+    #       mode: 0644
+  
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - perms
+    #       - rule_1.8.1.4
+
+    - name: "SCORED | 1.8.1.5 | PATCH | Ensure permissions on /etc/issue are configured"
+      file:
+          dest: /etc/issue
+          state: file
+          owner: root
+          group: root
+          mode: 0644
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - perms
+          - rule_1.8.1.5
+
+    - name: "SCORED | 1.8.1.6 | PATCH | Ensure permissions on /etc/issue.net are configured"
+      file:
+          dest: /etc/issue.net
+          state: file
+          owner: root
+          group: root
+          mode: 0644
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - perms
+          - rule_1.8.1.6
+
+    - name: "SCORED | 1.8.2 | PATCH | Ensure GDM login banner is configured"
+      lineinfile:
+          dest: "{{ item.file }}"
+          regexp: "{{ item.regexp }}"
+          line: "{{ item.line }}"
+          state: present
+          create: true
+          owner: root
+          group: root
+          mode: 0644
+      with_items:
+          - { file: '/etc/dconf/profile/gdm', regexp: 'user-db', line: 'user-db:user' }
+          - { file: '/etc/dconf/profile/gdm', regexp: 'system-db', line: 'system-db:gdm' }
+          - { file: '/etc/dconf/profile/gdm', regexp: 'file-db', line: 'file-db:/usr/share/gdm/greeter-dconf-defaults' }
+          - { file: '/etc/dconf/db/gdm.d/01-banner-message', regexp: '\[org\/gnome\/login-screen\]', line: '[org/gnome/login-screen]' }
+          - { file: '/etc/dconf/db/gdm.d/01-banner-message', regexp: 'banner-message-enable', line: 'banner-message-enable=true' }
+          - { file: '/etc/dconf/db/gdm.d/01-banner-message', regexp: 'banner-message-text', line: "banner-message-text= 'Hello' " } #can configure banner
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - banner
+          - rule_1.8.2
+
+    - name: "NOTSCORED | 1.9 | PATCH | Ensure updates, patches, and additional security software are installed"
+      apt:
+          upgrade: dist
+
+      tags:
+          - level1
+          - notscored
+          - patch
+          - rule_1.8
+          - skip_ansible_lint
+
+    - name: "SCORED | 2.1.1 | PATCH | Ensure chargen services are not enabled | chargen-dgram,chargen-stream"
+      block:
+          - name: "SCORED | 2.1.1 | PATCH | Ensure chargen services are not enabled | chargen-dgram"
+            stat:
+                path: /etc/xinetd.d/chargen-dgram
+            register: chargen_dgram_service
+
+          - name: "SCORED | 2.1.1 | PATCH | Ensure chargen services are not enabled | chargen-dgram"
+            service:
+                name: chargen-dgram
+                enabled: no
+            notify: restart xinetd
+            when:
+                - chargen_dgram_service.stat.exists
+
+          - name: "SCORED | 2.1.1 | PATCH | Ensure chargen services are not enabled | chargen-stream"
+            stat:
+                path: /etc/xinetd.d/chargen-stream
+            register: chargen_stream_service
+
+          - name: "SCORED | 2.1.1 | PATCH | Ensure chargen services are not enabled | chargen-stream"
+            service:
+                name: chargen-stream
+                enabled: no
+            notify: restart xinetd
+            when:
+                - chargen_stream_service.stat.exists
+      tags:
+          - level1
+          - scored
+          - services
+          - patch
+          - rule_2.1.1
+          - skip_ansible_lint
+
+    - name: "SCORED | 2.1.2 | PATCH | Ensure daytime services are not enabled | daytime-dgram,daytime-stream"
+      block:
+          - name: "SCORED | 2.1.2 | PATCH | Ensure daytime services are not enabled | daytime-dgram"
+            stat:
+                path: /etc/xinetd.d/daytime-dgram
+            register: daytime_dgram_service
+
+          - name: "SCORED | 2.1.2 | PATCH | Ensure daytime services are not enabled | daytime-dgram"
+            service:
+                name: daytime-dgram
+                enabled: no
+            notify: restart xinetd
+            when:
+                - daytime_dgram_service.stat.exists
+
+          - name: "SCORED | 2.1.2 | PATCH | Ensure daytime services are not enabled | daytime-stream"
+            stat:
+                path: /etc/xinetd.d/daytime-stream
+            register: daytime_stream_service
+
+          - name: "SCORED | 2.1.2 | PATCH | Ensure daytime services are not enabled | daytime-stream"
+            service:
+                name: daytime-stream
+                enabled: no
+            notify: restart xinetd
+            when:
+                - daytime_stream_service.stat.exists
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_2.1.2
+          - skip_ansible_lint
+
+    - name: "SCORED | 2.1.3 | PATCH | Ensure discard services are not enabled | discard-dgram,discard-stream"
+      block:
+          - name: "SCORED | 2.1.3 | PATCH | Ensure discard services are not enabled | discard-dgram"
+            stat:
+                path: /etc/xinetd.d/discard-dgram
+            register: discard_dgram_service
+
+          - name: "SCORED | 2.1.3 | PATCH | Ensure discard services are not enabled | discard-dgram"
+            service:
+                name: discard-dgram
+                enabled: no
+            notify: restart xinetd
+            when:
+                - discard_dgram_service.stat.exists
+
+          - name: "SCORED | 2.1.3 | PATCH | Ensure discard services are not enabled | discard-stream"
+            stat:
+                path: /etc/xinetd.d/discard-stream
+            register: discard_stream_service
+
+          - name: "SCORED | 2.1.3 | PATCH | Ensure discard services are not enabled | discard-stream"
+            service:
+                name: discard-stream
+                enabled: no
+            notify: restart xinetd
+            when:
+                - discard_stream_service.stat.exists
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_2.1.3
+          - skip_ansible_lint
+
+    - name: "SCORED | 2.1.4 | PATCH | Ensure echo services are not enabled | echo-dgram,echo-stream"
+      block:
+          - name: "SCORED | 2.1.4 | PATCH | Ensure echo services are not enabled | echo-dgram"
+            stat:
+                path: /etc/xinetd.d/echo-dgram
+            register: echo_dgram_service
+
+          - name: "SCORED | 2.1.4 | PATCH | Ensure echo services are not enabled | echo-dgram"
+            service:
+                name: echo-dgram
+                enabled: no
+            notify: restart xinetd
+            when:
+                - echo_dgram_service.stat.exists
+
+          - name: "SCORED | 2.1.4 | PATCH | Ensure echo services are not enabled | echo-stream"
+            stat:
+                path: /etc/xinetd.d/echo-stream
+            register: echo_stream_service
+
+          - name: "SCORED | 2.1.4 | PATCH | Ensure echo services are not enabled | echo-stream"
+            service:
+                name: echo-stream
+                enabled: no
+            notify: restart xinetd
+            when:
+                - echo_stream_service.stat.exists
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_2.1.4
+          - skip_ansible_lint
+
+    - name: "SCORED | 2.1.5 | PATCH | Ensure time services are not enabled | time-dgram,time-stream"
+      block:
+          - name: "SCORED | 2.1.5 | PATCH | Ensure time services are not enabled | time-dgram"
+            stat:
+                path: /etc/xinetd.d/time-dgram
+            register: time_dgram_service
+
+          - name: "SCORED | 2.1.5 | PATCH | Ensure time services are not enabled | time-dgram"
+            service:
+                name: time-dgram
+                enabled: no
+            when:
+                - time_dgram_service.stat.exists
+
+          - name: "SCORED | 2.1.5 | PATCH | Ensure time services are not enabled | time-stream"
+            stat:
+                path: /etc/xinetd.d/time-stream
+            register: time_stream_service
+
+          - name: "SCORED | 2.1.5 | PATCH | Ensure time services are not enabled | time-stream"
+            service:
+                name: time-stream
+                enabled: no
+            when:
+                - time_stream_service.stat.exists
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_2.1.5
+          - skip_ansible_lint
+
+    - name: "SCORED | 2.1.6 | PATCH | Ensure rsh server is not enabled | rsh, rlogin, rexec"
+      block:
+          - name: "SCORED | 2.1.6 | PATCH | Ensure rsh server is not enabled | rsh"
+            service:
+              name: rsh.socket
+              state: stopped
+              enabled: false
+            ignore_errors: true
+  
+
+          - name: "SCORED | 2.1.6 | PATCH | Ensure rsh server is not enabled | rlogin"
+            service:
+              name: rlogin.socket
+              state: stopped
+              enabled: false
+            ignore_errors: true
+
+
+          - name: "SCORED | 2.1.6 | PATCH | Ensure rsh server is not enabled | rexec"
+            service:
+              name: rexec.socket
+              state: stopped
+              enabled: false
+            ignore_errors: true
+
+      tags:
+        - level1
+        - scored
+        - patch
+        - rule_2.1.6
+
+    - name: "SCORED | 2.1.7 | PATCH | Ensure talk server is not enabled"
+      service:
+        name: ntalk
+        state: stopped
+        enabled: false
+      ignore_errors: true
+      tags:
+        - level1
+        - scored
+        - patch
+        - rule_2.1.7
+
+    - name: "SCORED | 2.1.8 | PATCH | Ensure telnet server is not enabled"
+      service:
+        name: telnetd
+        state: stopped
+        enabled: false
+      ignore_errors: true
+      tags:
+        - level1
+        - scored
+        - patch
+        - rule_2.1.8
+
+    - name: "SCORED | 2.1.9 | PATCH | Ensure tftp server is not enabled"
+      service:
+        name: tftpd-hpa
+        state: stopped
+        enabled: no
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_2.1.9
+
+    - name: "SCORED | 2.1.10 | PATCH | Ensure xinetd is not enabled"
+      service:
+          name: xinetd
+          state: stopped
+          enabled: false
+      ignore_errors: true
+      tags:
+          - level1
+          - patch
+          - scored
+          - rule_2.1.10
+
+    - name: "SCORED | 2.1.11 | PATCH | Ensure openbsd-inetd is not installed"
+      apt:
+        name: openbsd-inetd
+        state: absent
+      ignore_errors: true
+      tags:
+        - level1
+        - patch
+        - scored
+        - rule_2.1.11
+
+    - name: 2.1.1.12 - Ensure ntp is installed if applicable
+      package:
+        name: "{{ item.name }}"
+        state: "{{ item.state }}"
+      with_items:
+        - { name: "ntp", state: "present" }
+      tags:
+        - level-1
+        - section-4
+        - "2.1.1.1"
+        - not-scored
+    
+    - name: 2.1.1.12 - Ensure ntp is installed
+      apt: 
+        name: ntp
+        state: present
+
+    - name: 2.1.1.12 - Ensure chrony is installed if applicable
+      package:
+        name: "{{ item.name }}"
+        state: "{{ item.state }}"
+      with_items:
+        - { name: "chrony", state: "present" }
+      tags:
+        - level-1
+        - section-4
+        - "2.1.1.1"
+        - not-scored
+
+    # 2.1.1.2 Ensure ntp is configured
+
+  
+    # - name: "SCORED | 2.2.1.4 | PATCH | Ensure ntp is configured | modify /etc/ntp.conf"
+    #   template:
+    #       src: ntp.conf.j2
+    #       dest: /etc/ntp.conf
+    #       owner: root
+    #       group: root
+    #       mode: 0644
+    # - name: "SCORED | 2.2.1.4 | PATCH | Ensure ntp is configured | modify /etc/init.d/ntp"
+    #   lineinfile: 
+    #           dest: /etc/init.d/ntp
+    #           regexp: "^RUNASUSER"
+    #           line: "RUNASUSER=ntp"
+
+    
+    # 2.1.1.3 Ensure chrony is configured
+
+    - name: 2.1.1.3 verify a remote chrony server is configured
+      command: >
+        egrep -c '^(server|pool)' /etc/chrony.conf
+      register: line_matched
+      ignore_errors: true
+      tags:
+        - level-1
+        - "2.1.1.3"
+        - scored
+
+    - fail:
+        msg: No server or pool seems to be configured for Chrony. Please fix this as per item 2.1.1.3 of the benchmark, and re-run this play.
+      when: line_matched == "0"
+
+    - name: "SCORED | 2.2.2 | PATCH | Ensure X Window System is not installed"
+      apt:
+          name:
+            - "xorg"
+            - "x11*"
+          state: absent
+      tags:
+          - level1
+          - scored
+          - xwindows
+          - patch
+          - rule_2.2.2
+
+    - name: "SCORED | 2.2.3 | PATCH | Ensure Avahi Server is not enabled"
+      service:
+          name: avahi-daemon
+          state: stopped
+          enabled: false
+      ignore_errors: true
+
+      tags:
+          - level1
+          - scored
+          - avahi
+          - services
+          - patch
+          - rule_2.2.3
+
+    - name: "SCORED | 2.2.4 | PATCH | Ensure CUPS is not enabled"
+      service:
+          name: cups
+          state: stopped
+          enabled: false
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - cups
+          - services
+          - patch
+          - rule_2.2.4
+
+    - name: "SCORED | 2.2.5 | PATCH | Ensure DHCP Server is not enabled"
+      service:
+          name: dhcpd
+          state: stopped
+          enabled: false
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - dhcp
+          - services
+          - patch
+          - rule_2.2.5
+
+    - name: "SCORED | 2.2.6 | PATCH | Ensure LDAP server is not enabled"
+      service:
+          name: slapd
+          state: stopped
+          enabled: false
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - ldap
+          - services
+          - patch
+          - rule_2.2.6
+
+    - name: "SCORED | 2.2.7 | PATCH | Ensure NFS and RPC are not enabled"
+      service:
+          name: nfs
+          state: stopped
+          enabled: false
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - nfs
+          - rpc
+          - services
+          - patch
+          - rule_2.2.7
+
+    - name: "SCORED | 2.2.7 | PATCH | Ensure RPC is not enabled"
+      service:
+          name: rpcbind
+          state: stopped
+          enabled: false
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - nfs
+          - rpc
+          - services
+          - patch
+          - rule_2.2.7
+
+    - name: "SCORED | 2.2.8 | PATCH | Ensure DNS Server is not enabled"
+      service:
+          name: named
+          state: stopped
+          enabled: false
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - dns
+          - services
+          - patch
+          - rule_2.2.8
+
+    - name: "SCORED | 2.2.9 | PATCH | Ensure FTP Server is not enabled"
+      service:
+          name: vsftpd
+          state: stopped
+          enabled: false
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - ftp
+          - services
+          - patch
+          - rule_2.2.9
+
+    - name: "SCORED | 2.2.10 | PATCH | Ensure HTTP server is not enabled"
+      service:
+          name: apache2
+          state: stopped
+          enabled: false
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - http
+          - services
+          - patch
+          - rule_2.2.10
+
+    - name: "SCORED | 2.2.11 | PATCH | Ensure IMAP and POP3 server is not enabled"
+      service:
+          name: dovecot
+          state: stopped
+          enabled: false
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - imap
+          - pop3
+          - services
+          - patch
+          - rule_2.2.11
+
+    - name: "SCORED | 2.2.12 | PATCH | Ensure Samba is not enabled"
+      service:
+          name: smbd
+          state: stopped
+          enabled: false
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - samba
+          - services
+          - patch
+          - rule_2.2.12
+
+    - name: "SCORED | 2.2.13 | PATCH | Ensure HTTP Proxy Server is not enabled"
+      service:
+          name: squid
+          state: stopped
+          enabled: false
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - http_proxy
+          - services
+          - patch
+          - rule_2.2.13
+
+    - name: "SCORED | 2.2.14 | PATCH | Ensure SNMP Server is not enabled"
+      service:
+          name: snmpd
+          state: stopped
+          enabled: false
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - snmp
+          - services
+          - patch
+          - rule_2.2.14
+
+    # - name: "SCORED | 2.2.15 | PATCH | Ensure mail transfer agent is configured for local-only mode" #file path doesn't exist in this environment, uncomment if you have
+    #   lineinfile:
+    #       dest: /etc/postfix/main.cf
+    #       regexp: "^(#)?inet_interfaces"
+    #       line: "inet_interfaces = localhost"
+    
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - rule_2.2.15
+
+    - name: "SCORED | 2.2.16 | PATCH | Ensure rsync service is not enabled "
+      service:
+        name: rsync
+        state: stopped
+        enabled: false
+      ignore_errors: true
+      tags:
+        - level1
+        - scored
+        - rsync
+        - services
+        - patch
+        - rule_2.2.16
+
+    - name: 2.2.16 Ensure rsync service is removed
+      apt:
+        name: rsync
+        state: absent
+        purge: yes
+
+    - name: "SCORED | 2.2.17 | PATCH | Ensure NIS Server is not enabled"
+      service:
+          name: nis
+          state: stopped
+          enabled: false
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - nis
+          - services
+          - patch
+          - rule_2.2.17
+
+    - name: "SCORED | 2.3.1 | PATCH | Ensure NIS Client is not installed"
+      apt:
+          name: yp-tools
+          state: absent
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_2.3.1
+
+    - name: "SCORED | 2.3.2 | PATCH | Ensure rsh client is not installed"
+      apt:
+          name: rsh
+          state: absent
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_2.3.2
+
+    - name: "SCORED | 2.3.3 | PATCH | Ensure talk client is not installed"
+      apt:
+          name: talk
+          state: absent
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_2.3.3
+
+    - name: "SCORED | 2.3.4 | PATCH | Ensure telnet client is not installed"
+      apt:
+          name: telnet
+          state: absent
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_2.3.4
+
+    - name: "SCORED | 2.3.5 | PATCH | Ensure LDAP client is not installed"
+      apt:
+          name: ldap-utils
+          state: absent
+      ignore_errors: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_2.3.5
+
+    - name: "SCORED | 3.1.1 | PATCH | Ensure packet redirect sending is disabled"
+      sysctl:
+          name: '{{ item.name }}'
+          value: '{{ item.value }}'
+          sysctl_set: true
+          state: present
+          reload: true
+          ignoreerrors: true
+      with_items:
+          - { name: net.ipv4.conf.all.send_redirects, value: 0 }
+          - { name: net.ipv4.conf.default.send_redirects, value: 0 }
+    
+      tags:
+          - level1
+          - scored
+          - patch
+          - sysctl
+          - rule_3.1.1
+
+    - name: "SCORED | 3.1.2 | PATCH | Ensure IP forwarding is disabled"
+      block:
+          - name: "SCORED | 3.1.2 | PATCH | Ensure IP forwarding is disabled | ipv4"
+            sysctl:
+                name: net.ipv4.ip_forward
+                value: "0"
+                state: present
+                reload: true
+                ignoreerrors: true
+      
+
+          - name: "SCORED | 3.1.2 | PATCH | Ensure IP forwarding is disabled | ipv6"
+            sysctl:
+                name: net.ipv6.conf.all.forwarding
+                value: "0"
+                state: present
+                reload: true
+                ignoreerrors: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - sysctl
+          - rule_3.1.2
+
+    - name: "SCORED | 3.2.1 | PATCH | Ensure source routed packets are not accepted"
+      block:
+          - name: "SCORED | 3.2.1 | PATCH | Ensure source routed packets are not accepted | ipv4"
+            sysctl:
+                name: '{{ item.name }}'
+                value: '{{ item.value }}'
+                sysctl_set: true
+                state: present
+                reload: true
+                ignoreerrors: true
+            with_items:
+                - { name: net.ipv4.conf.all.accept_source_route, value: 0 }
+                - { name: net.ipv4.conf.default.accept_source_route, value: 0 }
+
+          - name: "SCORED | 3.2.1 | PATCH | Ensure source routed packets are not accepted | ipv6"
+            sysctl:
+                name: '{{ item.name }}'
+                value: '{{ item.value }}'
+                sysctl_set: true
+                state: present
+                reload: true
+                ignoreerrors: true
+            with_items:
+                - { name: net.ipv6.conf.all.accept_source_route, value: 0 }
+                - { name: net.ipv6.conf.default.accept_source_route, value: 0 }
+      tags:
+          - level1
+          - scored
+          - patch
+          - sysctl
+          - rule_3.2.1
+
+    - name: "SCORED | 3.2.2 | PATCH | Ensure ICMP redirects are not accepted | ipv4,ipv6"
+      block:
+          - name: "SCORED | 3.2.2 | PATCH | Ensure ICMP redirects are not accepted | ipv4"
+            sysctl:
+                name: '{{ item.name }}'
+                value: '{{ item.value }}'
+                sysctl_set: true
+                state: present
+                reload: true
+                ignoreerrors: true
+            with_items:
+                - { name: net.ipv4.conf.all.accept_redirects, value: 0 }
+                - { name: net.ipv4.conf.default.accept_redirects, value: 0 }
+
+          - name: "SCORED | 3.2.2 | PATCH | Ensure ICMP redirects are not accepted | ipv6"
+            sysctl:
+                name: '{{ item.name }}'
+                value: '{{ item.value }}'
+                sysctl_set: true
+                state: present
+                reload: true
+                ignoreerrors: true
+            with_items:
+                - { name: net.ipv6.conf.all.accept_redirects, value: 0 }
+                - { name: net.ipv6.conf.default.accept_redirects, value: 0 }
+
+  
+      tags:
+          - level1
+          - scored
+          - patch
+          - sysctl
+          - rule_3.2.2
+
+    - name: "SCORED | 3.2.3 | PATCH | Ensure secure ICMP redirects are not accepted"
+      sysctl:
+          name: '{{ item.name }}'
+          value: '{{ item.value }}'
+          sysctl_set: true
+          state: present
+          reload: true
+          ignoreerrors: true
+      with_items:
+          - { name: net.ipv4.conf.all.secure_redirects, value: 0 }
+          - { name: net.ipv4.conf.default.secure_redirects, value: 0 }
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - sysctl
+          - rule_3.2.3
+
+    - name: "SCORED | 3.2.4 | PATCH | Ensure suspicious packets are logged"
+      sysctl:
+          name: '{{ item.name }}'
+          value: '{{ item.value }}'
+          sysctl_set: true
+          state: present
+          reload: true
+          ignoreerrors: true
+      with_items:
+          - { name: net.ipv4.conf.all.log_martians, value: 1 }
+          - { name: net.ipv4.conf.default.log_martians, value: 1 }
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - sysctl
+          - rule_3.2.4
+
+    - name: "SCORED | 3.2.5 | PATCH | Ensure broadcast ICMP requests are ignored"
+      sysctl:
+          name: net.ipv4.icmp_echo_ignore_broadcasts
+          value: "1"
+          state: present
+          reload: true
+          ignoreerrors: true
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - sysctl
+          - rule_3.2.5
+
+    - name: "SCORED | 3.2.6 | PATCH | Ensure bogus ICMP responses are ignored"
+      sysctl:
+          name: net.ipv4.icmp_ignore_bogus_error_responses
+          value: "1"
+          state: present
+          reload: true
+          ignoreerrors: true
+      tags:
+          - level1
+          - scored
+          - patch
+          - sysctl
+          - rule_3.2.6
+
+    - name: "SCORED | 3.2.7 | PATCH | Ensure Reverse Path Filtering is enabled"
+      sysctl:
+          name: '{{ item.name }}'
+          value: '{{ item.value }}'
+          sysctl_set: true
+          state: present
+          reload: true
+          ignoreerrors: true
+      with_items:
+          - { name: net.ipv4.conf.all.rp_filter, value: 1 }
+          - { name: net.ipv4.conf.default.rp_filter, value: 1 }
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - sysctl
+          - rule_3.2.7
+
+    - name: "SCORED | 3.2.8 | PATCH | Ensure TCP SYN Cookies is enabled"
+      sysctl:
+          name: net.ipv4.tcp_syncookies
+          value: '1'
+          state: present
+          reload: true
+          ignoreerrors: true
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - sysctl
+          - rule_3.2.8
+
+    - name: "SCORED | 3.2.9 | PATCH | Ensure IPv6 router advertisements are not accepted"
+      sysctl:
+          name: '{{ item.name }}'
+          value: '{{ item.value }}'
+          state: present
+          reload: true
+          ignoreerrors: true
+      with_items:
+        - { name: net.ipv6.conf.all.accept_ra, value: 0 }
+        - { name: net.ipv6.conf.default.accept_ra, value: 0 }
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - sysctl
+          - rule_3.2.9
+
+    - name: "NOTSCORED | 3.3.1 | PATCH | Ensure TCP Wrappers is installed"
+      apt:
+          name: tcpd
+          state: present
+          install_recommends: false
+
+      tags:
+          - level1
+          - notscored
+          - patch
+          - rule_3.3.1
+
+    # - name: "NOTSCORED | 3.3.2 | PATCH | Ensure /etc/hosts.allow is configured" #if you have specific list, uncomment these
+    #   template:
+    #       src: hosts.allow.j2
+    #       dest: /etc/hosts.allow
+    #   when:
+    #       - ubuntu1804cis_setup_tcp_wrappers
+    #       - ubuntu1804cis_rule_3_3_2
+    #   tags:
+    #       - level1
+    #       - notscored
+    #       - patch
+    #       - rule_3.3.2
+
+    # - name: "NOTSCORED | 3.3.3 | PATCH | Ensure /etc/hosts.deny is configured"
+    #   lineinfile:
+    #       dest: /etc/hosts.deny
+    #       regexp: "^(#)?ALL"
+    #       line: "ALL: ALL"
+    #   when:
+    #       - ubuntu1804cis_setup_tcp_wrappers
+    #       - ubuntu1804cis_rule_3_3_3
+    #   tags:
+    #       - level1
+    #       - notscored
+    #       - patch
+    #       - rule_3.3.3
+
+    - name: "SCORED | 3.3.4 | PATCH | Ensure permissions on /etc/hosts.allow are configured"
+      file:
+          path: /etc/hosts.allow
+          owner: root
+          group: root
+          mode: 0644
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_3.3.4
+
+    - name: "SCORED | 3.3.5 | PATCH | Ensure permissions on /etc/hosts.deny are configured"
+      file:
+          path: /etc/hosts.deny
+          owner: root
+          group: root
+          mode: 0644
+  
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_3.3.5
+
+    - name: "SCORED | 3.4.1 | PATCH | Ensure DCCP is disabled"
+      lineinfile:
+          dest: /etc/modprobe.d/CIS.conf
+          regexp: "^(#)?install dccp(\\s|$)"
+          line: "install dccp /bin/true"
+          create: true
+
+      tags:
+          - level2
+          - scored
+          - patch
+          - rule_3.4.1
+
+    - name: "SCORED | 3.4.2 | PATCH | Ensure SCTP is disabled"
+      lineinfile:
+          dest: /etc/modprobe.d/CIS.conf
+          regexp: "^(#)?install sctp(\\s|$)"
+          line: "install sctp /bin/true"
+          create: true
+
+      tags:
+          - level2
+          - scored
+          - patch
+          - rule_3.4.2
+
+    - name: "SCORED | 3.4.3 | PATCH | Ensure RDS is disabled"
+      lineinfile:
+          dest: /etc/modprobe.d/CIS.conf
+          regexp: "^(#)?install rds(\\s|$)"
+          line: "install rds /bin/true"
+          create: true
+      tags:
+          - level2
+          - scored
+          - patch
+          - rule_3.4.3
+
+    - name: "SCORED | 3.4.4 | PATCH | Ensure TIPC is disabled"
+      lineinfile:
+          dest: /etc/modprobe.d/CIS.conf
+          regexp: "^(#)?install tipc(\\s|$)"
+          line: "install tipc /bin/true"
+          create: true
+      tags:
+          - level2
+          - scored
+          - patch
+          - rule_3.4.4
+
+    - name: "SCORED | 3.5.1.1 | PATCH | Ensure a Firewall package is installed | firewalld(CUSTOM),ufw,nftables,iptables"
+      block:
+          - name: "SCORED | 3.5.1.1 | PATCH | Ensure a Firewall package is installed | firewalld | CUSTOM"
+            apt:
+                name: iptables
+                state: present
+                install_recommends: false
+
+
+          - name: "SCORED | 3.5.1.1 | PATCH | Ensure a Firewall package is installed | ufw"
+            apt:
+                name: ufw
+                state: present
+                install_recommends: false
+  
+
+          - name: "SCORED | 3.5.1.1 | PATCH | Ensure a Firewall package is installed | nftables"
+            apt:
+                name: nftables
+                state: present
+                install_recommends: false
+    
+
+          - name: "SCORED | 3.5.1.1 | PATCH | Ensure a Firewall package is installed | iptables"
+            apt:
+                name: iptables
+                state: present
+                install_recommends: false
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_3.5.1.1
+
+    - name: "SCORED | 3.5.2.1 | PATCH | Ensure ufw service is enabled"
+      service:
+          name: ufw
+          state: started
+          enabled: true
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_3.5.2.1
+
+    # - name: "SCORED | 3.5.2.2 | PATCH | Ensure default deny firewall policy" #uncomment this if you have specific setting
+    #   ufw:
+    #       rule: "{{ item.rule }}"
+    #       direction: "{{ item.direction }}"
+    #   with_items:
+    #       - { rule: deny, direction: incoming }
+    #       - { rule: deny, direction: outgoing }
+    #       - { rule: deny, direction: routed }
+
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - rule_3.5.2.2
+
+    - name: "SCORED | 3.5.2.3 | PATCH | Ensure loopback traffic is configured"
+      block:
+          - name: "SCORED | 3.5.2.3 | PATCH | Ensure loopback traffic is configured| ingress lo allow any"
+            ufw:
+                rule: allow
+                direction: in
+                interface: lo
+
+          - name: "SCORED | 3.5.2.3 | PATCH | Ensure loopback traffic is configured | ingress deny from lo network ipv4"
+            ufw:
+                rule: deny
+                direction: in
+                from: "127.0.0.0/8"
+
+          - name: "SCORED | 3.5.2.3 | PATCH | Ensure loopback traffic is configured | ingress deny from lo network ipv6"
+            ufw:
+                rule: deny
+                direction: in
+                from: "::1"
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_3.5.2.3
+
+    - name: "NOTSCORED | 3.5.2.4 | PATCH | Ensure outbound and established connections are configured"
+      ufw:
+          rule: allow
+          direction: out
+          interface: all
+
+      tags:
+          - level1
+          - notscored
+          - patch
+          - rule_3.5.2.4
+
+    - name: "NOTSCORED | 3.5.2.5 | PATCH | Ensure firewall rules exist for all open ports"
+      block:
+          - name: "NOTSCORED | 3.5.2.5 | PATCH | Ensure firewall rules exist for all open ports| ssh"
+            ufw:
+                rule: allow
+                proto: tcp
+                port: '22'
+
+          - name: "NOTSCORED | 3.5.2.5 | PATCH | Ensure firewall rules exist for all open ports| dns"
+            ufw:
+                rule: allow
+                proto: "{{ item }}"
+                port: '53'
+            loop:
+                - tcp
+                - udp
+
+      tags:
+          - level1
+          - notscored
+          - patch
+          - rule_3.5.2.5
+
+    - name: "NOTSCORED | 3.5.3.1 | PATCH | Ensure iptables are flushed | ipv4, ipv6"
+      block:
+          - name: "NOTSCORED | 3.5.3.1 | PATCH | Ensure iptables are flushed | ipv4"
+            iptables:
+                flush: yes
+
+          - name: "NOTSCORED | 3.5.3.1 | PATCH | Ensure iptables are flushed | ipv6"
+            iptables:
+                flush: yes
+                ip_version: ipv6
+    
+      tags:
+          - level1
+          - notscored
+          - patch
+          - rule_3.5.3.1
+
+    - name: "SCORED | 3.5.3.2 | PATCH | Ensure a table exists"
+      stat:
+        path: /etc/nftables.conf
+      register: nftables_data
+    
+    - name: "Check nftables.conf exist"
+      debug:
+        msg: "the file exists"
+      when: nftables_data.stat.exists
+    
+    - name: "Check nftables.conf not exist"
+      debug:
+        msg: "the file does not exists"
+      when: not nftables_data.stat.exists
+    
+    - name: "Edit the nftable config if the file exist"
+      lineinfile: 
+        path: /etc/nftables.conf
+        line: include '/etc/nftables/nftables.rules'
+        state: present
+      when: nftables_data.stat.exists
+    
+    - name: "Create nftable.conf and edit configuration"
+      copy:
+        dest: /etc/sysconfig/nftables.conf
+        content: include '/etc/nftables/nftables.rules'
+      when: not nftables_data.stat.exists
+
+    # - name: "SCORED | 3.5.3.3 | PATCH | Ensure base chains exist" #error at the moment
+    #   shell: |
+    #       nft chain inet /etc/nftables.conf {{ item }} { type filter hook {{ item }} priority 0\; }
+    #   args:
+    #       executable: /bin/bash
+    #   loop:
+    #       - input
+    #       - forward
+    #       - output
+    #   changed_when: false
+    #   check_mode: false
+
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - rule_3.5.3.3
+
+    # - name: "SCORED | 3.5.3.4 | PATCH | Ensure loopback traffic is configured"
+    #   block:
+    #       - name: "SCORED | 3.5.3.4 | PATCH | Ensure loopback traffic is configured | ingress lo allow nay"
+    #         shell: |
+    #             nft add rule inet {{ ubuntu1804cis_nftables_table }} input iif lo accept
+    #         args:
+    #             executable: /bin/bash
+    #         changed_when: false
+    #         check_mode: false
+
+    #       - name: "SCORED | 3.5.3.4 | PATCH | Ensure loopback traffic is configured | ingress deny from lo network ipv4"
+    #         shell: |
+    #             nft add rule inet {{ ubuntu1804cis_nftables_table }} input ip saddr 127.0.0.0/8 counter drop
+    #         args:
+    #             executable: /bin/bash
+    #         changed_when: false
+    #         check_mode: false
+
+    #       - name: "SCORED | 3.5.3.4 | PATCH | Ensure loopback traffic is configured | ingress deny from lo network ipv6"
+    #         shell: |
+    #             nft add rule inet {{ ubuntu1804cis_nftables_table }} input ip6 saddr ::1 counter drop
+    #         args:
+    #             executable: /bin/bash
+    #         changed_when: false
+    #         check_mode: false
+    
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - rule_3.5.3.4
+
+    # - name: "NOTSCORED | 3.5.3.5 | PATCH | Ensure outbound and established connections are configured" #error at the moment
+    #   shell: |
+    #       nft add rule inet {{ ubuntu1804cis_nftables_table }} input ip protocol {{ item }} ct state established accept
+    #       nft add rule inet {{ ubuntu1804cis_nftables_table }} output ip protocol {{ item }} ct state new,related,established accept
+    #   args:
+    #       executable: /bin/bash
+    #   loop:
+    #       - tcp
+    #       - udp
+    #       - icmp
+    #   changed_when: false
+    #   check_mode: false
+
+    #   tags:
+    #       - level1
+    #       - notscored
+    #       - patch
+    #       - rule_3.5.3.5
+
+    # - name: "SCORED | 3.5.3.6 | PATCH | Ensure base chains exist"
+    #   shell: |
+    #       nft chain inet {{ ubuntu1804cis_nftables_table }} {{ item }} { policy drop \; }
+    #   args:
+    #       executable: /bin/bash
+    #   loop:
+    #       - input
+    #       - forward
+    #       - output
+    #   changed_when: false
+    #   check_mode: false
+
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - rule_3.5.3.6
+
+    - name: "SCORED | 3.5.3.7 | PATCH | Ensure nftables service is enabled"
+      service:
+          name: nftables
+          state: started
+          enabled: true
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_3.5.3.7
+
+    # - name: "SCORED | 3.5.3.8 | PATCH | Ensure nftables rules are permanent" #error
+    #   shell:
+    #       nft list table inet {{ ubuntu1804cis_nftables_table }} > /etc/nftables.conf
+
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - rule_3.5.3.8
+
+    # - name: "SCORED | 3.5.4.1.1 | PATCH | Ensure default deny firewall policy" #Review this setting
+    #   iptables:
+    #       chain: "{{ item }}"
+    #       policy: DROP
+    #   loop:
+    #       - INPUT
+    #       - OUTPUT
+    #       - FORWARD
+
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - rule_3.5.4.1.1
+
+    - name: "SCORED | 3.5.4.1.2 | PATCH | Ensure loopback traffic is configured"
+      block:
+          - name: "SCORED | 3.5.4.1.2 | PATCH | Ensure loopback traffic is configured| ingress lo allow any"
+            iptables:
+                chain: INPUT
+                jump: ACCEPT
+                in_interface: lo
+
+          - name: "SCORED | 3.5.4.1.2 | PATCH | Ensure loopback traffic is configured| egress lo allow any"
+            iptables:
+                chain: INPUT
+                jump: ACCEPT
+                in_interface: lo
+
+          - name: "SCORED | 3.5.4.1.2 | PATCH | Ensure loopback traffic is configured| ingress deny from lo network"
+            iptables:
+                chain: INPUT
+                jump: DROP
+                source: 127.0.0.0/8
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_3.5.4.1.2
+
+    - name: "NOTSCORED | 3.5.4.1.3 | PATCH | Ensure outbound and established connections are configured"
+      block:
+          - name: "NOTSCORED | 3.5.4.1.3 | PATCH | Ensure outbound and established connections are configured | input "
+            iptables:
+                chain: INPUT
+                jump: ACCEPT
+                ctstate: NEW,ESTABLISHED
+                protocol: "{{ item }}"
+            loop:
+                - tcp
+                - udp
+                - icmp
+
+          - name: "NOTSCORED | 3.5.4.1.3 | PATCH | Ensure outbound and established connections are configured | output"
+            iptables:
+                chain: OUTPUT
+                jump: ACCEPT
+                ctstate: NEW,ESTABLISHED
+                protocol: "{{ item }}"
+            loop:
+                - tcp
+                - udp
+                - icmp
+      tags:
+          - level1
+          - notscored
+          - patch
+          - rule_3.5.4.1.3
+
+    - name: "SCORED | 3.5.4.1.4 | PATCH | Ensure firewall rules exist for all open ports"
+      block:
+          - name: "SCORED | 3.5.4.1.4 | PATCH | Ensure firewall rules exist for all open ports| ssh"
+            iptables:
+                chain: INPUT
+                jump: ACCEPT
+                ctstate: NEW
+                protocol: tcp
+                destination_port: 22
+
+          - name: "SCORED | 3.5.4.1.4 | PATCH | Ensure firewall rules exist for all open ports| dns"
+            iptables:
+                chain: INPUT
+                jump: ACCEPT
+                ctstate: NEW
+                protocol: "{{ item }}"
+                destination_port: 53
+            loop:
+                - tcp
+                - udp
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_3.5.4.1.4
+
+    - name: "SCORED | 3.5.4.2.1 | PATCH | Ensure IPv6 default deny firewall policy"
+      iptables:
+          chain: "{{ item }}"
+          policy: DROP
+          ip_version: ipv6
+      loop:
+          - INPUT
+          - OUTPUT
+          - FORWARD
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_3.5.4.2.1
+
+    - name: "SCORED | 3.5.4.2.2 | PATCH | Ensure IPv6 loopback traffic is configured"
+      block:
+          - name: "SCORED | 3.5.4.2.2 | PATCH | Ensure IPv6 loopback traffic is configured| ingress lo allow any"
+            iptables:
+                chain: INPUT
+                jump: ACCEPT
+                in_interface: lo
+                ip_version: ipv6
+
+          - name: "SCORED | 3.5.4.2.2 | PATCH | Ensure IPv6 loopback traffic is configured| egress lo allow any"
+            iptables:
+                chain: INPUT
+                jump: ACCEPT
+                in_interface: lo
+                ip_version: ipv6
+
+          - name: "SCORED | 3.5.4.2.2 | PATCH | Ensure IPv6 loopback traffic is configured| ingress deny from lo network"
+            iptables:
+                chain: INPUT
+                jump: DROP
+                source: "::1"
+                ip_version: ipv6
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_3.5.4.2.2
+
+    - name: "NOTSCORED | 3.5.4.2.3 | PATCH | Ensure IPv6 outbound and established connections are configured"
+      block:
+          - name: "NOTSCORED | 3.5.4.2.3 | PATCH | Ensure IPv6 outbound and established connections are configured | input "
+            iptables:
+                chain: INPUT
+                jump: ACCEPT
+                ctstate: NEW,ESTABLISHED
+                protocol: "{{ item }}"
+                ip_version: ipv6
+            loop:
+                - tcp
+                - udp
+                - icmp
+
+          - name: "NOTSCORED | 3.5.4.2.3 | PATCH | Ensure IPv6 outbound and established connections are configured | output"
+            iptables:
+                chain: OUTPUT
+                jump: ACCEPT
+                ctstate: NEW,ESTABLISHED
+                protocol: "{{ item }}"
+                ip_version: ipv6
+            loop:
+                - tcp
+                - udp
+                - icmp
+
+      tags:
+          - level1
+          - notscored
+          - patch
+          - rule_3.5.4.2.3
+
+    - name: "NOTSCORED | 3.5.4.2.4 | PATCH | Ensure IPv6 firewall rules exist for all open ports"
+      block:
+          - name: "NOTSCORED | 3.5.4.2.4 | PATCH | Ensure IPv6 firewall rules exist for all open ports| ssh"
+            iptables:
+                chain: INPUT
+                jump: ACCEPT
+                ctstate: NEW
+                protocol: tcp
+                destination_port: 22
+                ip_version: ipv6
+
+          - name: "NOTSCORED | 3.5.4.2.4 | PATCH | Ensure IPv6 firewall rules exist for all open ports| dns"
+            iptables:
+                chain: INPUT
+                jump: ACCEPT
+                ctstate: NEW
+                protocol: "{{ item }}"
+                destination_port: 53
+                ip_version: ipv6
+            loop:
+                - tcp
+                - udp
+
+      tags:
+          - level1
+          - notscored
+          - patch
+          - rule_3.5.4.2.4
+
+    - name: "SCORED | 3.5.4.3.1 | PATCH | Ensure firewalld is installed and started | CUSTOM"
+      apt:
+          name: firewalld
+          state: present
+          install_recommends: false
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_3.5.4.3.1
+
+    - name: "SCORED | 3.5.4.3.2 | PATCH | Ensure firewalld is installed and started | CUSTOM"
+      service:
+          name: firewalld
+          state: started
+          enabled: true
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_3.5.4.3.2
+
+    - name: "SCORED | 3.5.4.3.3 | PATCH | Ensure default deny firewall policy | CUSTOM"
+      lineinfile:
+          dest: /etc/firewalld/firewalld.conf
+          regexp: "^DefaultZone"
+          line: "DefaultZone=drop"
+
+      tags:
+          - level1
+          - scored
+          - patch
+          - rule_3.5.4.3.3
+
+    # - name: "SCORED | 3.5.4.3.4 | PATCH | Ensure default deny firewall policy | CUSTOM"
+    #   firewalld:
+    #       state: enabled
+    #       zone: drop
+    #       permanent: true
+
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - rule_3.5.4.3.4
+
+    # - name: "SCORED | 3.5.4.3.5 | PATCH | Ensure firewall rules exist for all open ports | CUSTOM"
+    #   firewalld:
+    #       service: firewalld
+    #       state: enabled
+    #       zone: drop
+    #       permanent: true
+    #       immediate: true
+
+    #   notify: restart firewalld
+    #   with_items: "{{ ubuntu1804cis_firewall_services }}"
+    #   tags:
+    #       - level1
+    #       - scored
+    #       - patch
+    #       - rule_3.5.4.3.5
+
+    - name: "NOTSCORED | 3.7 | Disable IPv6"
+      replace:
+          dest: /etc/default/grub
+          regexp: '^(GRUB_CMDLINE_LINUX=(?!.*ipv6.disable)\"[^\"]*)(\".*)'
+          replace: '\1 ipv6.disable=1\2'
+      ignore_errors: true
+
+      tags:
+          - level2
+          - notscored
+          - patch
+          - rule_3.7 
+
+    - name: "SCORED | 4.1.1.1 | PATCH | Ensure auditd is installed"
+      apt:
+            name: audispd-plugins
+            state: present
+            install_recommends: false
+      tags:
+            - level2
+            - scored
+            - patch
+            - auditd
+            - rule_4.1.1.1
+
+    - name: "SCORED | 4.1.1.2 | PATCH | Ensure auditd service is enabled"
+      service:
+            name: auditd
+            state: started
+            enabled: true
+      tags:
+            - level2
+            - scored
+            - patch
+            - auditd
+            - rule_4.1.1.2
+   
+    - name: "SCORED | 4.1.1.3 | PATCH | Ensure auditing for processes that start prior to auditd is enabled"
+      replace:
+            dest: /etc/default/grub
+            regexp: '^(GRUB_CMDLINE_LINUX=(?!.*audit)\"[^\"]*)(\".*)'
+            replace: '\1 audit=1\2'
+      tags:
+            - level2
+            - scored
+            - patch
+            - auditd
+            - rule_4.1.1.3
+
+    - name: "SCORED | 4.1.1.4 | PATCH | Ensure audit_backlog_limit is sufficient"
+      replace:
+            dest: /etc/default/grub
+            regexp: '^(GRUB_CMDLINE_LINUX=(?!.*audit_backlog_limit)\"[^\"]*)(\".*)'
+            replace: '\1 audit_backlog_limit= 8192\2'
+      ignore_errors: true
+      tags:
+            - level2
+            - scored
+            - patch
+            - auditd
+            - rule_4.1.1.4
+
+    - name: 4.2.3 permission' set for all logfiles in '/var/log' directory
+      command: "find /var/log -type f -exec chmod g-wx,o-rwx {} +"
+
+    - name: "SCORED | 5.1.1 | PATCH | Ensure cron daemon is enabled"
+      service:
+            name: chrony
+            enabled: true
+      
+      tags:
+            - level1
+            - scored
+            - patch
+            - cron
+            - rule_5.1.1
+
+    - name: "SCORED | 5.1.2 | PATCH | Ensure permissions on /etc/crontab are configured"
+      file:
+            dest: /etc/crontab
+            owner: root
+            group: root
+            mode: 0600
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - cron
+            - rule_5.1.2
+
+    - name: "SCORED | 5.1.3 | PATCH | Ensure permissions on /etc/cron.hourly are configured"
+      file:
+            dest: /etc/cron.hourly
+            state: directory
+            owner: root
+            group: root
+            mode: 0700
+      
+      tags:
+            - level1
+            - scored
+            - patch
+            - cron
+            - rule_5.1.3
+
+    - name: "SCORED | 5.1.4 | PATCH | Ensure permissions on /etc/cron.daily are configured"
+      file:
+            dest: /etc/cron.daily
+            state: directory
+            owner: root
+            group: root
+            mode: 0700
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - cron
+            - rule_5.1.4
+
+    - name: "SCORED | 5.1.5 | PATCH | Ensure permissions on /etc/cron.weekly are configured"
+      file:
+            dest: /etc/cron.weekly
+            state: directory
+            owner: root
+            group: root
+            mode: 0700
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - cron
+            - rule_5.1.5
+
+    - name: "SCORED | 5.1.6 | PATCH | Ensure permissions on /etc/cron.monthly are configured"
+      file:
+            dest: /etc/cron.monthly
+            state: directory
+            owner: root
+            group: root
+            mode: 0700
+    
+      tags:
+            - level1
+            - scored
+            - patch
+            - cron
+            - rule_5.1.6
+
+    - name: "SCORED | 5.1.7 | PATCH | Ensure permissions on /etc/cron.d are configured"
+      file:
+            dest: /etc/cron.d
+            state: directory
+            owner: root
+            group: root
+            mode: 0700
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - cron
+            - rule_5.1.7
+
+      # - name: "SCORED | 5.1.8 | PATCH | Ensure at/cron is restricted to authorized users" #configure according to your business needs
+      #   block:
+      #       - name: "SCORED | 5.1.8 | PATCH | Ensure at is restricted to authorized users"
+      #         file:
+      #             dest: /etc/at.deny
+      #             state: absent
+
+      #       - name: "SCORED | 5.1.8 | PATCH | Ensure at is restricted to authorized users"
+      #         template:
+      #             src: at.allow.j2
+      #             dest: /etc/at.allow
+      #             owner: root
+      #             group: root
+      #             mode: 0600
+
+      #       - name: "SCORED | 5.1.8 | PATCH | Ensure cron is restricted to authorized users"
+      #         file:
+      #             dest: /etc/cron.deny
+      #             state: absent
+
+      #       - name: "SCORED | 5.1.8 | PATCH | Ensure cron is restricted to authorized users"
+      #         template:
+      #           src: cron.allow.j2
+      #           dest: /etc/cron.allow
+      #           owner: root
+      #           group: root
+      #           mode: 0600
+
+      #   tags:
+      #       - level1
+      #       - scored
+      #       - patch
+      #       - cron
+      #       - rule_5.1.8
+
+    - name: "SCORED | 5.2.1 | PATCH | Ensure permissions on /etc/ssh/sshd_config are configured"
+      file:
+            dest: /etc/ssh/sshd_config
+            state: file
+            owner: root
+            group: root
+            mode: 0600
+      
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.1
+
+    - name: "SCORED | 5.2.2 | PATCH | 5.2.2 Ensure permissions on SSH private host key files are configured"
+      block:
+          - name: 5.2.2 Ensure permissions on SSH private host key files are configured
+            command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chown root:root {} \;
+            tags:
+              - level-1
+              - section-5
+              - "5.2.2"
+              - scored
+
+          - name: 5.2.2 Ensure permissions on SSH private host key files are configured
+            command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chmod 600 {} \;
+            tags:
+              - level-1
+              - section-5
+              - "5.2.2"
+              - scored
+    
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.2
+
+    - name: "SCORED | 5.2.3 | PATCH | 5.2.3 Ensure permissions on SSH public host key files are configured"
+      block:
+          - name: 5.2.3 Ensure permissions on SSH public host key files are configured
+            command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key.pub' -exec chmod 644 {} \;
+            tags:
+              - level-1
+              - section-5
+              - "5.2.3"
+              - scored
+
+          - name: 5.2.3 Ensure permissions on SSH public host key files are configured
+            command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key.pub' -exec chown root:root {} \;
+            tags:
+              - level-1
+              - section-5
+              - "5.2.3"
+              - scored
+
+          - name: "SCORED | 5.2.4 | PATCH | Ensure SSH Protocol is not set to 1"
+            lineinfile:
+                state: present
+                dest: /etc/ssh/sshd_config
+                regexp: '^Protocol'
+                line: 'Protocol 2'
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.4
+
+    - name: "SCORED | 5.2.5 | PATCH | Ensure SSH LogLevel is set to INFO"
+      lineinfile:
+            state: present
+            dest: /etc/ssh/sshd_config
+            regexp: '^LogLevel'
+            line: 'LogLevel INFO'
+      
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.5
+
+    - name: "SCORED | 5.2.6 | PATCH | Ensure SSH X11 forwarding is disabled"
+      lineinfile:
+            state: present
+            dest: /etc/ssh/sshd_config
+            regexp: '^X11Forwarding'
+            line: 'X11Forwarding no'
+      
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.6
+
+    - name: "SCORED | 5.2.7 | PATCH | Ensure SSH MaxAuthTries is set to 4 or less"
+      lineinfile:
+            state: present
+            dest: /etc/ssh/sshd_config
+            regexp: '^(#)?MaxAuthTries \d'
+            line: 'MaxAuthTries 4'
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.7
+
+      # - name: "SCORED | 5.2.8 | PATCH | Ensure SSH IgnoreRhosts is enabled" #configure according to your needs
+      #   lineinfile:
+      #       state: present
+      #       dest: /etc/ssh/sshd_config
+      #       regexp: '^IgnoreRhosts'
+      #       line: 'IgnoreRhosts yes'
+
+        # tags:
+        #     - level1
+        #     - scored
+        #     - patch
+        #     - sshd
+        #     - rule_5.2.8
+
+      # - name: "SCORED | 5.2.9 | PATCH | Ensure SSH HostbasedAuthentication is disabled" #Configure according to your business needs
+      #   lineinfile:
+      #       state: present
+      #       dest: /etc/ssh/sshd_config
+      #       regexp: '^HostbasedAuthentication'
+      #       line: 'HostbasedAuthentication no'
+      
+      #   tags:
+      #       - level1
+      #       - scored
+      #       - patch
+      #       - sshd
+      #       - rule_5.2.9
+
+    - name: "SCORED | 5.2.10 | PATCH | Ensure SSH root login is disabled"
+      lineinfile:
+            state: present
+            dest: /etc/ssh/sshd_config
+            regexp: '^PermitRootLogin'
+            line: 'PermitRootLogin no'
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.10
+
+    - name: "SCORED | 5.2.11 | PATCH | Ensure SSH PermitEmptyPasswords is disabled"
+      lineinfile:
+            state: present
+            dest: /etc/ssh/sshd_config
+            regexp: '^PermitEmptyPasswords'
+            line: 'PermitEmptyPasswords no'
+    
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.11
+
+    - name: "SCORED | 5.2.12 | PATCH | Ensure SSH PermitUserEnvironment is disabled"
+      lineinfile:
+            state: present
+            dest: /etc/ssh/sshd_config
+            regexp: '^PermitUserEnvironment'
+            line: 'PermitUserEnvironment no'
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.12
+
+    - name: "SCORED | 5.2.13 | PATCH | Ensure only strong Ciphers are used"
+      lineinfile:
+            state: present
+            dest: /etc/ssh/sshd_config
+            regexp: '^Ciphers'
+            line: "Ciphers aes128-ctr,aes192-ctr,aes256-ctr"
+    
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.13
+
+    - name: "SCORED | 5.2.14 | PATCH | Ensure only approved MAC algorithms are used"
+      lineinfile:
+            state: present
+            dest: /etc/ssh/sshd_config
+            regexp: '^MACs'
+            line: "MACs hmac-sha2-512-etm@openssh.com hmac-sha2-256-etm@openssh.com umac-128-etm@openssh.com hmac-sha2-512 hmac-sha2-256 umac-128@openssh.com"
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.14
+
+    - name: "SCORED | 5.2.15 | PATCH | Ensure only strong Key Exchange algorithms are used"
+      lineinfile:
+            state: present
+            dest: /etc/ssh/sshd_config
+            regexp: '^KexAlgorithms'
+            line: "KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256"
+      
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.15
+
+    - name: "SCORED | 5.2.16 | PATCH | Ensure SSH Idle Timeout Interval is configured"
+      block:
+            - name: "SCORED | 5.2.16 | PATCH | Ensure SSH Idle Timeout Interval is configured"
+              lineinfile:
+                  state: present
+                  dest: /etc/ssh/sshd_config
+                  regexp: '^ClientAliveInterval'
+                  line: "ClientAliveInterval 300"
+
+            - name: "SCORED | 5.2.16 | PATCH | Ensure SSH ClientAliveCountMax set to <= 3"
+              lineinfile:
+                  state: present
+                  dest: /etc/ssh/sshd_config
+                  regexp: '^ClientAliveCountMax'
+                  line: "ClientAliveCountMax 3"
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.16
+
+    - name: "SCORED | 5.2.17 | PATCH | Ensure SSH LoginGraceTime is set to one minute or less"
+      lineinfile:
+            state: present
+            dest: /etc/ssh/sshd_config
+            regexp: '^LoginGraceTime'
+            line: "LoginGraceTime 60"
+      
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.17
+
+      # - name: "SCORED | 5.2.18 | PATCH | Ensure SSH access is limited" #configure this according to your business needs
+      #   block:
+      #       - name: "SCORED | 5.2.18 | PATCH | Ensure SSH access is limited | allowusers"
+      #         lineinfile:
+      #             state: present
+      #             dest: /etc/ssh/sshd_config
+      #             regexp: '^AllowUsers'
+      #             line: "AllowUsers {{ ubuntu1804cis_sshd['allowusers'] }}"
+
+      #       - name: "SCORED | 5.2.18 | PATCH | Ensure SSH access is limited | allowgroups"
+      #         lineinfile:
+      #             state: present
+      #             dest: /etc/ssh/sshd_config
+      #             regexp: '^AllowGroups'
+      #             line: "AllowGroups {{ ubuntu1804cis_sshd['allowgroups'] }}"
+      
+
+      #       - name: "SCORED | 5.2.18 | PATCH | Ensure SSH access is limited | denyusers"
+      #         lineinfile:
+      #             state: present
+      #             dest: /etc/ssh/sshd_config
+      #             regexp: '^DenyUsers'
+      #             line: "DenyUsers {{ ubuntu1804cis_sshd['denyusers'] }}"
+
+
+      #       - name: "SCORED | 5.2.18 | PATCH | Ensure SSH access is limited | denygroups"
+      #         lineinfile:
+      #             state: present
+      #             dest: /etc/ssh/sshd_config
+      #             regexp: '^DenyGroups'
+      #             line: "DenyGroups {{ ubuntu1804cis_sshd['denygroups'] }}"
+    
+    
+        # tags:
+        #     - level1
+        #     - scored
+        #     - patch
+        #     - sshd
+        #     - rule_5.2.18
+
+    - name: "SCORED | 5.2.19 | PATCH | Ensure SSH warning banner is configured"
+      lineinfile:
+            state: present
+            dest: /etc/ssh/sshd_config
+            regexp: '^Banner'
+            line: 'Banner /etc/issue.net'
+      
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.19
+
+    - name: "SCORED | 5.2.20 | PATCH | Ensure SSH PAM is enabled"
+      lineinfile:
+            state: present
+            dest: /etc/ssh/sshd_config
+            regexp: '^UsePAM'
+            line: 'UsePAM yes'
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.20
+
+    - name: "SCORED | 5.2.21 | PATCH | Ensure SSH AllowTcpForwarding is disabled"
+      lineinfile:
+            state: present
+            dest: /etc/ssh/sshd_config
+            regexp: '^AllowTcpForwarding'
+            line: 'AllowTcpForwarding no'
+      
+      tags:
+            - level2
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.21
+
+    - name: "SCORED | 5.2.22 | PATCH | Ensure SSH MaxStartups is configured"
+      lineinfile:
+            state: present
+            dest: /etc/ssh/sshd_config
+            regexp: '^MaxStartups'
+            line: 'MaxStartups 10:30:60'
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.22
+
+    - name: "SCORED | 5.2.23 | PATCH | Ensure SSH MaxSessions is set to 4 or less "
+      lineinfile:
+            state: present
+            dest: /etc/ssh/sshd_config
+            regexp: '^MaxSessions'
+            line: 'MaxSessions 4'
+
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - sshd
+            - rule_5.2.23
+
+    - name: "SCORED | 5.3.1 | PATCH | Ensure password creation requirements are configured"
+      block:
+            - name: "SCORED | 5.3.1 | PATCH | Ensure lipam-pwquality is installed"
+              apt:
+                  name: libpam-pwquality
+                  state: present
+                  install_recommends: false
+
+            - name: 5.3.1 - Ensure password creation requirements are configured
+              lineinfile:
+                dest: "/etc/security/pwquality.conf"
+                regexp: "{{ item.regexp }}"
+                line: "{{ item.line }}"
+                state: present
+                create: yes
+              with_items:
+                - { regexp: "^#?minlen=", line: "minlen = 15"}
+                - { regexp: "^#?dcredit=", line: "dcredit = -1" }
+                - { regexp: "^#?ucredit=", line: "ucredit = -1" }
+                - { regexp: "^#?ocredit=", line: "ocredit = -1" }
+                - { regexp: "^#?lcredit=", line: "lcredit = -1" }
+                - { regexp: "^#?minclass=", line: "minclass = 4"}
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_5.3.1
+
+    - name: "SCORED | 5.3.2 | PATCH | Ensure lockout for failed password attempts is configured"
+      lineinfile:
+            dest: /etc/pam.d/common-auth
+            line: 'auth required pam_tally2.so onerr=fail audit silent deny=5 unlock_time=900'
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_5.3.2
+
+    - name: "SCORED | 5.3.3 | PATCH | Ensure password reuse is limited"
+      lineinfile:
+            dest: /etc/pam.d/common-password
+            line: "password required pam_pwhistory.so remember=5"
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_5.3.3
+
+    - name: "SCORED | 5.3.4 | PATCH | Ensure password hashing algorithm is SHA-512"
+      command: authconfig --passalgo=sha512 --update
+      changed_when: false
+      failed_when: false
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_5.3.4
+
+    - name: "SCORED | 5.4.1.1 | PATCH | Ensure password expiration is 365 days or less"
+      lineinfile:
+            state: present
+            dest: /etc/login.defs
+            regexp: '^PASS_MAX_DAYS'
+            line: "PASS_MAX_DAYS 365"
+    
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_5.4.1.1
+
+    - name: "SCORED | 5.4.1.2 | PATCH | Ensure minimum days between password changes is configured"
+      lineinfile:
+            state: present
+            dest: /etc/login.defs
+            regexp: '^PASS_MIN_DAYS'
+            line: "PASS_MIN_DAYS 7"
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_5.4.1.2
+
+    - name: "SCORED | 5.4.1.3 | PATCH | Ensure password expiration warning days is 7 or more"
+      lineinfile:
+            state: present
+            dest: /etc/login.defs
+            regexp: '^PASS_WARN_AGE'
+            line: "PASS_WARN_AGE 7"
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_5.4.1.3
+
+    - name: "SCORED | 5.4.1.4 | PATCH | Ensure inactive password lock is 30 days or less"
+      lineinfile:
+          state: present
+          dest: /etc/default/useradd
+          regexp: '^INACTIVE'
+          line: "INACTIVE=30"
+    
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_5.4.1.4
+
+
+    - name: "SCORED | 5.4.2 | PATCH | Ensure system accounts are secured"
+      shell: |
+          for user in `awk -F: '($3 < 1000) {print $1 }' /etc/passwd`; do
+          if [ $user != "root" ]; then
+            usermod -L $user
+            if [ $user != "sync" ] && [ $user != "shutdown" ] && [ $user != "halt" ];
+            then
+              usermod -s /usr/sbin/nologin $user
+            fi
+          fi
+          done
+      args:
+          executable: /bin/bash
+      changed_when: false
+      tags:
+            - level1
+            - patch
+            - rule_5.4.2
+            - scored
+
+    - name: "SCORED | 5.4.3 | PATCH | Ensure default group for the root account is GID 0"
+      command: usermod -g 0 root
+      changed_when: false
+      failed_when: false
+
+      tags:
+            - level1
+            - patch
+            - rule_5.4.3
+            - scored
+
+    - name: "SCORED | 5.4.4 | PATCH | Ensure default user umask is 027 or more restrictive"
+      block:
+          - name: "SCORED | 5.4.4 | PATCH | Ensure default user umask is 027 or more restrictive - /etc/bash.bashrc"
+            lineinfile:
+              state: present
+              dest: /etc/bash.bashrc
+              create: true
+              regexp: '^umask '
+              line: 'umask 027'
+
+          - name: "SCORED | 5.4.4 | PATCH | Ensure default user umask is 027 or more restrictive - /etc/profile"
+            lineinfile:
+              state: present
+              dest: /etc/profile
+              create: true
+              regexp: '^umask '
+              line: 'umask 027'
+
+          - name: "SCORED | 5.4.4 | PATCH | Ensure default user umask is 027 or more restrictive - /etc/profile.d/99-umask.sh"
+            lineinfile:
+              state: present
+              dest: /etc/profile.d/99-umask.sh
+              create: true
+              regexp: '^umask '
+              line: 'umask 027'
+
+      tags:
+            - level1
+            - patch
+            - rule_5.4.4
+            - scored
+
+    - name: "SCORED | 5.4.5 | PATCH | Ensure default user shell timeout is 900 seconds or less"
+      block:
+          - name: "SCORED | 5.4.5 | PATCH | Ensure default user shell timeout is 900 seconds or less - /etc/bash.bashrc"
+            lineinfile:
+              state: present
+              dest: /etc/bash.bashrc
+              create: true
+              regexp: '^TMOUT='
+              line: "TMOUT=600"
+
+          - name: "SCORED | 5.4.5 | PATCH | Ensure default user shell timeout is 900 seconds or less - /etc/profile"
+            lineinfile:
+              state: present
+              dest: /etc/profile
+              create: true
+              regexp: '^TMOUT='
+              line: "TMOUT=600"
+
+          - name: "SCORED | 5.4.5 | PATCH | Ensure default user shell timeout is 900 seconds or less - /etc/profile.d/99-tmout.sh"
+            lineinfile:
+              state: present
+              dest: /etc/profile.d/99-tmout.sh
+              create: true
+              regexp: '^TMOUT='
+              line: "TMOUT=600"
+
+      tags:
+          - level1
+          - patch
+          - rule_5.4.5
+          - scored
+
+
+    - name: "SCORED | 5.6 | PATCH | Ensure access to the su command is restricted"
+      lineinfile:
+            state: present
+            dest: /etc/pam.d/su
+            regexp: '^(#)?auth\s+required\s+pam_wheel\.so'
+            line: "auth           required        pam_wheel.so use_uid"
+
+      tags:
+            - level1
+            - patch
+            - rule_5.6
+            - scored
+
+    - name: "SCORED | 5.6 | PATCH | Ensure access to the su command is restricted - sudo group contains root"
+      user:
+            name: root
+            groups: sudo
+      ignore_errors: true
+      
+      tags:
+            - level1
+            - patch
+            - rule_5.6
+            - scored
+      
+    - name: "5.7 PAM wheel setting in /etc/pam.d/su"
+      lineinfile:
+          path: /etc/pam.d/su
+          line: "auth required pam_wheel.so use_uid"
+          state: present
+      
+    - name: 5.7 'wheel' group statement in the '/etc/group' file (Restrict Access to the su Command)
+      lineinfile:
+          path: /etc/group
+          line: "wheel:x:10:root"
+          state: present
+
+    - name: "NOTSCORED | 6.1.1 | PATCH | Audit system file permissions"
+      command: /bin/true
+      changed_when: false
+      tags:
+            - level2
+            - notscored
+            - patch
+            - rule_6.1.1
+            - notimplemented
+
+    - name: "SCORED | 6.1.2 | PATCH | Ensure permissions on /etc/passwd are configured"
+      file:
+            dest: /etc/passwd
+            owner: root
+            group: root
+            mode: 0644
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_6.1.2
+
+    - name: "SCORED | 6.1.3 | PATCH | Ensure permissions on /etc/gshadow- are configured"
+      file:
+            dest: /etc/gshadow-
+            owner: root
+            group: shadow
+            mode: 0640
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_6.1.3
+
+
+    - name: "SCORED | 6.1.4 | PATCH | Ensure permissions on /etc/shadow are configured"
+      file:
+            dest: /etc/shadow
+            owner: root
+            group: shadow
+            mode: 0640
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_6.1.4
+
+    - name: "SCORED | 6.1.5 | PATCH | Ensure permissions on /etc/group are configured"
+      file:
+            dest: /etc/group
+            owner: root
+            group: root
+            mode: 0644
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_6.1.5
+
+    - name: "SCORED | 6.1.6 | PATCH | Ensure permissions on /etc/passwd- are configured"
+      file:
+            dest: /etc/passwd-
+            owner: root
+            group: root
+            mode: 0600
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_6.1.6
+
+    - name: "SCORED | 6.1.7 | PATCH | Ensure permissions on /etc/shadow- are configured"
+      file:
+            dest: /etc/shadow-
+            owner: root
+            group: shadow
+            mode: 0600
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_6.1.7
+
+    - name: "SCORED | 6.1.8 | PATCH | Ensure permissions on /etc/group- are configured"
+      file:
+            dest: /etc/group-
+            owner: root
+            group: root
+            mode: 0644
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_6.1.8
+
+    - name: "SCORED | 6.1.9 | PATCH | Ensure permissions on /etc/gshadow are configured"
+      file:
+            dest: /etc/gshadow
+            owner: root
+            group: shadow
+            mode: 0640
+
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_6.1.9
+
+    
+
+    - name: 6.2.1 - Identify any accounts without passwords
+      shell: "cat /etc/shadow | awk -F: '($2 == \"\" ) { print $1 }'"
+      register: accounts_6_2_1
+      check_mode: no
+      changed_when: False
+      tags:
+          - level-1
+          - section-6
+          - "6.2.1"
+          - scored
+
+    - name: "SCORED | 6.2.2 | PATCH | Ensure no legacy '+' entries exist in /etc/passwd"
+      lineinfile:
+            regexp: '^\+'
+            state: absent
+            path: /etc/passwd
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_6.2.2
+
+    - name: "SCORED | 6.2.3 | PATCH | Ensure no legacy '+' entries exist in /etc/shadow"
+      lineinfile:
+            regexp: '^\+'
+            state: absent
+            path: /etc/shadow
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_6.2.3
+
+    - name: "SCORED | 6.2.4 | PATCH | Ensure no legacy '+' entries exist in /etc/group"
+      lineinfile:
+            regexp: '^\+'
+            state: absent
+            path: /etc/group
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_6.2.4
+
+    - name: 6.2.5 - Ensure root is the only UID 0 account
+      shell: "cat /etc/passwd | awk -F: '($3 == 0) { print $1 }'"
+      check_mode: no
+      changed_when: False
+      register: cat_6_2_5
+      tags:
+          - level-1
+          - section-6
+          - "6.2.5"
+          - scored
+
+    - name: "SCORED | 6.2.6 | PATCH | Ensure root PATH Integrity"
+      block:
+
+            - name: "SCORED | 6.2.6 | PATCH | Ensure root PATH Integrity (collect paths)"
+              shell: |
+                set -o pipefail;
+                sudopath=($(grep secure_path /etc/sudoers | cut -f2 -d= |cut -f2 -d\"))
+                IFS=:
+                for i in ${sudopath[*]}
+                do
+                  if [ -d "$i" ]
+                    then newsudopath+=($i)
+                  fi
+                done
+                echo "${newsudopath[*]}"
+              args:
+                  executable: /bin/bash
+              register: fixsudo
+              changed_when: false
+              check_mode: false
+              tags:
+                  - level1
+                  - scored
+                  - patch
+                  - rule_6.2.6
+
+            - name: "SCORED | 6.2.6 | PATCH | Ensure root PATH Integrity (fix paths)"
+              lineinfile:
+                  dest: /etc/sudoers
+                  regexp: "(.*secure_path=).*"
+                  line: '\1"{{ fixsudo.stdout_lines[0] }}"'
+                  backrefs: true
+              when:
+                  - fixsudo.stdout_lines[0]
+              tags:
+                  - level1
+                  - scored
+                  - patch
+                  - rule_6.2.6
+
+    - name: "SCORED | 6.2.7 | PATCH | Ensure all users' home directories exist"
+      shell: |
+            cat /etc/passwd | egrep -v '^(root|halt|sync|shutdown)' | awk -F: '($7 != "/sbin/nologin" && $7 != "/bin/false") { print $1 " " $6 }' | while read user dir; do
+            if [ ! -d "$dir" ]; then
+              echo "The home directory ($dir) of user $user does not exist."
+            fi
+            done
+      args:
+            executable: /bin/bash
+
+    - name: "SCORED | 6.2.8 | PATCH | Ensure users' home directories permissions are 750 or more restrictive"
+      shell: |
+            for dir in {{ homes_with_perms.stdout }}; 
+            do
+              chmod g-w,o-rwx $dir;
+            done
+      tags:
+            - level1
+            - scored
+            - patch
+            - rule_6.2.8
+
