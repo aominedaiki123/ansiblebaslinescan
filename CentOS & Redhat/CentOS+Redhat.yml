@@ -1,0 +1,5036 @@
+-
+  name: 'CIS control for redhat and centos'
+  hosts: all
+  become: true
+  become_user: root
+  #this is the library of variables that are used in this script
+  vars:
+    cis_modprobe_conf_filename: /etc/modprobe.d/CIS.conf
+    cis_aide_database_filename: /var/lib/aide/aide.db.gz
+    cis_aide_src_database_filename: /var/lib/aide/aide.db.new.gz
+    cis_grub_bootloader_filename: /etc/default/grub
+    cis_sysconfig_init_filename: /etc/sysconfig/init
+    cis_security_limits_filename: /etc/security/limits.conf
+    cis_grub_configuration_filename: /boot/grub2/grub.cfg
+    cis_local_login_warning_banner: /etc/issue
+    cis_remote_login_warning_banner: /etc/issue.net
+    cis_sshd_config_filename: /etc/ssh/sshd_config
+    cis_audit_auditd_filename: /etc/audit/auditd.conf
+    cis_audit_rules_filename: /etc/audit/rules.d/audit.rules
+    cis_sshd_banner: /etc/issue.net
+    cis_sshd_client_alive_count_max: 3
+    cis_sshd_login_grace_time: 60
+    cis_sshd_client_alive_interval: 300
+    cis_pwquality_dcredit: -1
+    cis_pwquality_lcredit: -1
+    cis_pwquality_minlen: 10
+    cis_pwquality_ocredit: -1
+    cis_pwquality_ucredit: -1
+    cis_aide_cron_user: centos
+    cis_aide_cron_job: /usr/sbin/aide --check
+    cis_aide_cron_minute: 0
+    cis_aide_cron_hour: 5
+
+    
+    cis_sshd_kex_algorithms: curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512,ecdh-sha2-nistp521,ecdh-sha2-nistp384,ecdh-sha2-nistp256,diffie-hellman-group-exchange-sha256
+    cis_sshd_macs: hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256
+  tasks:
+  - name: 1.1.1.1 - Creation of modprobe CIS file
+    file:
+      path: "{{ cis_modprobe_conf_filename }}"
+      state: touch
+    register: modprobe_1_1_1_1
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.1"
+      - scored
+
+  - name: 1.1.1.1 - Ensure mounting of cramfs filesystems is disabled
+    copy:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      content: "install cramfs /bin/true\n"
+    when: modprobe_1_1_1_1.stat.exists is not defined or not modprobe_1_1_1_1.stat.exists
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.1"
+      - scored
+
+  - name: 1.1.1.1 - Ensure mounting of cramfs filesystems is disabled
+    lineinfile:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      regexp: "^install cramfs"
+      line: "install cramfs /bin/true"
+    when: modprobe_1_1_1_1.stat.exists is defined and modprobe_1_1_1_1.stat.exists
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.1"
+      - scored
+
+  - name: 1.1.1.2 - Check if CIS modprobe configuration file exists
+    stat:
+      path: "{{ cis_modprobe_conf_filename }}"
+    register: modprobe_1_1_1_2
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.2"
+      - scored
+
+  - name: 1.1.1.2 - Ensure mounting of freevxfs filesystems is disabled
+    copy:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      content: "install freevxfs /bin/true\n"
+    when: modprobe_1_1_1_2.stat.exists is not defined or not modprobe_1_1_1_2.stat.exists
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.2"
+      - scored
+
+  - name: 1.1.1.2 - Ensure mounting of freevxfs filesystems is disabled
+    lineinfile:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      regexp: "^install freevxfs"
+      line: "install freevxfs /bin/true"
+    when: modprobe_1_1_1_2.stat.exists is defined and modprobe_1_1_1_2.stat.exists
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.2"
+      - scored
+  
+  - name: 1.1.1.3 - Check if CIS modprobe configuration file exists
+    stat:
+      path: "{{ cis_modprobe_conf_filename }}"
+    register: modprobe_1_1_1_3
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.3"
+      - scored
+
+  - name: 1.1.1.3 - Ensure mounting of jffs2 filesystems is disabled
+    copy:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      content: "install jffs2 /bin/true\n"
+    when: modprobe_1_1_1_3.stat.exists is not defined or not modprobe_1_1_1_3.stat.exists
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.3"
+      - scored
+
+  - name: 1.1.1.3 - Ensure mounting of jffs2 filesystems is disabled
+    lineinfile:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      regexp: "^install jffs2"
+      line: "install jffs2 /bin/true"
+    when: modprobe_1_1_1_3.stat.exists is defined and modprobe_1_1_1_3.stat.exists
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.3"
+      - scored
+
+  - name: 1.1.1.4 - Check if CIS modprobe configuration file exists
+    stat:
+      path: "{{ cis_modprobe_conf_filename }}"
+    register: modprobe_1_1_1_4
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.4"
+      - scored
+
+  - name: 1.1.1.4 - Ensure mounting of hfs filesystems is disabled
+    copy:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      content: "install hfs /bin/true\n"
+    when: modprobe_1_1_1_4.stat.exists is not defined or not modprobe_1_1_1_4.stat.exists
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.4"
+      - scored
+
+  - name: 1.1.1.4 - Ensure mounting of hfs filesystems is disabled
+    lineinfile:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      regexp: "^install hfs\\s+"
+      line: "install hfs /bin/true"
+    when: modprobe_1_1_1_4.stat.exists is defined and modprobe_1_1_1_4.stat.exists
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.4"
+      - scored
+
+  - name: 1.1.1.5 - Check if CIS modprobe configuration file exists
+    stat:
+      path: "{{ cis_modprobe_conf_filename }}"
+    register: modprobe_1_1_1_5
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.5"
+      - scored
+
+  - name: 1.1.1.5 - Ensure mounting of hfsplus filesystems is disabled
+    copy:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      content: "install hfsplus /bin/true\n"
+    when: modprobe_1_1_1_5.stat.exists is not defined or not modprobe_1_1_1_5.stat.exists
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.5"
+      - scored
+
+  - name: 1.1.1.5 - Ensure mounting of hfsplus filesystems is disabled
+    lineinfile:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      regexp: "^install hfsplus"
+      line: "install hfsplus /bin/true"
+    when: modprobe_1_1_1_5.stat.exists is defined and modprobe_1_1_1_5.stat.exists
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.5"
+      - scored
+
+  - name: 1.1.1.6 - Check if CIS modprobe configuration file exists
+    stat:
+      path: "{{ cis_modprobe_conf_filename }}"
+    register: modprobe_1_1_1_6
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.6"
+      - scored
+
+  - name: 1.1.1.6 - Ensure mounting of squashfs filesystems is disabled
+    copy:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      content: "install squashfs /bin/true\n"
+    when: modprobe_1_1_1_6.stat.exists is not defined or not modprobe_1_1_1_6.stat.exists
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.6"
+      - scored
+
+  - name: 1.1.1.6 - Ensure mounting of squashfs filesystems is disabled
+    lineinfile:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      regexp: "^install squashfs"
+      line: "install squashfs /bin/true"
+    when: modprobe_1_1_1_6.stat.exists is defined and modprobe_1_1_1_6.stat.exists
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.6"
+      - scored
+
+  - name: 1.1.1.7 - Check if CIS modprobe configuration file exists
+    stat:
+      path: "{{ cis_modprobe_conf_filename }}"
+    register: modprobe_1_1_1_7
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.7"
+      - scored
+
+  - name: 1.1.1.7 - Ensure mounting of udf filesystems is disabled
+    copy:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      content: "install udf /bin/true\n"
+    when: modprobe_1_1_1_7.stat.exists is not defined or not modprobe_1_1_1_7.stat.exists
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.7"
+      - scored
+
+  - name: 1.1.1.7 - Ensure mounting of udf filesystems is disabled
+    lineinfile:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      regexp: "^install udf"
+      line: "install udf /bin/true"
+    when: modprobe_1_1_1_7.stat.exists is defined and modprobe_1_1_1_7.stat.exists
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.7"
+      - scored
+
+  - name: 1.1.1.8 - Check if CIS modprobe configuration file exists
+    stat:
+      path: "{{ cis_modprobe_conf_filename }}"
+    register: modprobe_1_1_1_8
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.8"
+      - scored
+
+  - name: 1.1.1.8 - Ensure mounting of vfat filesystems is disabled
+    copy:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      content: "install vfat /bin/true\n"
+    when: modprobe_1_1_1_8.stat.exists is not defined or not modprobe_1_1_1_8.stat.exists
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.8"
+      - scored
+
+  - name: 1.1.1.8 - Ensure mounting of vfat filesystems is disabled
+    lineinfile:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      regexp: "^install vfat"
+      line: "install vfat /bin/true"
+    when: modprobe_1_1_1_8.stat.exists is defined and modprobe_1_1_1_8.stat.exists
+    tags:
+      - level-1
+      - section-1
+      - "1.1.1.8"
+      - scored
+
+  - name: ensure tmp is configure
+    lineinfile:
+      path: /etc/fstab
+      line: tmpfs /tmp tmpfs defaults,rw,nosuid,nodev,noexec,relatime 0 0
+      state: present
+    command: mount -o remount,noexec,nodev,nosuid /tmp
+ 
+  - name: '1.1.2,1.1.3,1.1.4,1.1.5 Ensure tmp is configure'
+    block:
+      - name: 'ensure tmp is configured'
+        lineinfile: 
+          path: /etc/fstab
+          line: tmpfs /tmp tmpfs defaults,rw,nosuid,nodev,noexec,relatime 0 0
+          state: present
+      
+      - name: ensure tmp is configured
+        command: mount -o remount,noexec,nodev,nosuid /tmp
+      
+      - name: reload
+        command: systemctl daemon-reload
+    
+  - name: '1.1.6 /dev/shm is configured'
+    block:
+      - name: /dev/shm is configured
+        lineinfile:
+          path: /etc/fstab
+          line: tmpfs /dev/shm tmpfs defaults,noexec,nodev,nosuid,seclabel 0 0
+          state: present
+      
+      - name: ensure /dev/shm is configured
+        command: mount -o remount,noexec,nodev,nosuid /dev/shm
+      
+      - name: reload
+        command: systemctl daemon-reload
+
+# # 1.1.11 Ensure separate partition exists for /var/log (Scored)
+
+#   - name: 1.1.11 Ensure separate partition exists for /var/log (Scored)
+#     mount:
+#       name: "{{ item.mountpoint }}"
+#       state: present
+#       fstype: "{{item.fstype}}"
+#       src: "{{item.device}}"
+#     with_items:
+#       - { mountpoint: "{{cis_partition_mnt_var_log}}", device: "{{cis_partition_dev_var_log}}", fstype: "{{cis_partition_fs_var_log}}" }
+#     tags:
+#         - level-1
+#         - section-1
+#         - "1.1.11"
+#         - scored
+
+#   # 1.1.12 Ensure separate partition exists for /var/log/audit (Scored)
+
+#   - name: 1.1.12 Ensure separate partition exists for /var/log/audit (Scored)
+#     mount:
+#       name: "{{ item.mountpoint }}"
+#       state: present
+#       fstype: "{{item.fstype}}"
+#       src: "{{item.device}}"
+#     with_items:
+#       - { mountpoint: "{{cis_partition_mnt_var_log_audit}}", device: "{{cis_partition_dev_var_log_audit}}", fstype: "{{cis_partition_fs_var_log_audit}}" }
+#     tags:
+#         - level-1
+#         - section-1
+#         - "1.1.11"
+#         - scored
+
+#   # 1.1.13 Ensure separate partition exists for /home (Scored)
+
+#   - name: 1.1.13 Ensure separate partition exists for /home (Scored)
+#     mount:
+#       name: "{{ item.mountpoint }}"
+#       state: present
+#       fstype: "{{item.fstype}}"
+#       src: "{{item.device}}"
+#     with_items:
+#       - { mountpoint: "{{cis_partition_mnt_home}}", device: "{{cis_partition_dev_home}}", fstype: "{{cis_partition_fs_home}}" }
+#     tags:
+#         - level-1
+#         - section-1
+#         - "1.1.11"
+#         - scored
+
+#   # 1.1.14 Ensure nodev option set on /home partition
+
+#   - name: 1.1.14 - Ensure nodev option set on /home partition
+#     mount:
+#       name: "{{ item.mountpoint }}"
+#       state: mounted
+#       fstype: "{{ item.fstype }}"
+#       src: "{{ item.device }}"
+#       opts: "{{ item.opts.split(',') | union(['nodev']) | join(',') }}"
+#     when: item.mountpoint == '/home'
+#     with_items: "{{ fs_mounts }}"
+#     tags:
+#       - level-1
+#       - section-1
+#       - "1.1.14"
+#       - scored
+
+# # 1.1.15 Ensure nodev option set on /dev/shm partition
+
+#   - name: 1.1.15 - Ensure nodev option set on /dev/shm partition
+#     mount:
+#       name: "{{ item.mountpoint }}"
+#       state: mounted
+#       fstype: "{{ item.fstype }}"
+#       src: "{{ item.device }}"
+#       opts: "{{ item.opts.split(',') | union(['nodev']) | join(',') }}"
+#     when: item.mountpoint == '/dev/shm'
+#     with_items: "{{ fs_mounts }}"
+#     tags:
+#       - level-1
+#       - section-1
+#       - "1.1.15"
+#       - scored
+
+#   # 1.1.16 Ensure nosuid option set on /dev/shm partition
+
+#   - name: 1.1.16 - Ensure nosuid option set on /dev/shm partition
+#     mount:
+#       name: "{{ item.mountpoint }}"
+#       state: mounted
+#       fstype: "{{ item.fstype }}"
+#       src: "{{ item.device }}"
+#       opts: "{{ item.opts.split(',') | union(['nosuid']) | join(',') }}"
+#     when: item.mountpoint == '/dev/shm'
+#     with_items: "{{ fs_mounts }}"
+#     tags:
+#       - level-1
+#       - section-1
+#       - "1.1.16"
+#       - scored
+
+#   # 1.1.17 Ensure noexec option set on /dev/shm partition
+
+#   - name: 1.1.17 - Ensure noexec option set on /dev/shm partition
+#     mount:
+#       name: "{{ item.mountpoint }}"
+#       state: mounted
+#       fstype: "{{ item.fstype }}"
+#       src: "{{ item.device }}"
+#       opts: "{{ item.opts.split(',') | union(['noexec']) | join(',') }}"
+#     when: item.mountpoint == '/dev/shm'
+#     with_items: "{{ fs_mounts }}"
+#     tags:
+#       - level-1
+#       - section-1
+#       - "1.1.17"
+#       - scored
+
+# 1.1.18 Ensure sticky bit is set on all world-writable directories
+
+  - name: 1.1.18 - Ensure sticky bit is set on all world-writable directories
+    shell: "df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d -perm -0002 2>/dev/null | xargs chmod a+t"
+    tags:
+      - level-1
+      - section-1
+      - "1.1.18"
+      - scored
+
+# 1.1.19 - Disable Automounting
+
+  - name: 1.1.19 - Disable autofs
+    service:
+      name: autofs
+      enabled: false
+      state: stopped
+    ignore_errors: true
+    register: autofs_result
+    failed_when: "autofs_result.failed and 'no service or tool found for: autofs' not in autofs_result.msg"
+    tags:
+      - level-1
+      - "1.1.19"
+      - scored
+
+  - name: '1.1.24.a USB Kernel modprob File Creation'
+    file:
+      path: /etc/modprobe.d/usb-storage.conf
+      state: touch
+
+  - name: '1.1.24c: USB kernel'
+    copy:
+      dest: /etc/modprobe.d/usb-storage.conf
+      content: "install usb-storage /bin/true"
+
+    
+  - name: 1.2.1 - Verify that repositories are configured correctly
+    command: yum repolist
+    tags:
+      - level-1
+      - "1.2.1"
+      - scored
+
+  - name: 1.2.2 - Ensure GPG keys are configured
+    shell: rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'
+    tags:
+      - level-1
+      - "1.2.2"
+      - scored
+  
+  - name: 1.2.3 - Get all repos on remote host
+    find:
+      paths: "/etc/yum.repos.d"
+      pattern: "*.repo"
+    register: yum_repos
+    tags:
+      - level-1
+      - "1.2.3"
+      - scored
+
+  - name: 1.2.3 - Verify that gpgcheck is enabled in /etc/yum.conf
+    lineinfile:
+      regexp: "^gpgcheck"
+      line: "gpgcheck=1"
+      dest: "/etc/yum.conf"
+    tags:
+      - level-1
+      - "1.2.3"
+      - scored
+
+  - name: 1.2.3 - Verify that gpgcheck is enabled for all repositories in /etc/yum.repos.d
+    replace:
+      regexp: "^gpgcheck=0"
+      replace: "gpgcheck=1"
+      dest: "{{ item.path }}"
+    with_items: "{{ yum_repos.files }}"
+    tags:
+      - level-1
+      - "1.2.3"
+      - scored
+
+  #1.3.1 Ensure AIDE is installed 
+  - name: 1.3.1.- Ensure AIDE is installed
+    yum:
+      name: aide
+      state: present
+    tags:
+      - level-1
+      - section-1
+      - "1.3.1"
+      - scored
+
+  - name: 1.3.1 - Check if AIDE database exists
+    stat:
+      path: "{{ cis_aide_database_filename }}"
+    register: aide_1_3_1
+    tags:
+      - level-1
+      - section-1
+      - "1.3.1"
+      - scored
+
+# We expect that 'aide --init' has been run and the generated database has been moved
+  - name: 1.3.1 - Ensure AIDE database exists
+    command: "{{ item }}"
+    when: aide_1_3_1.stat.exists is not defined or not aide_1_3_1.stat.exists
+    with_items:
+      - "aide --init"
+      - "mv {{ cis_aide_src_database_filename }} {{ cis_aide_database_filename }}"
+    tags:
+      - level-1
+      - section-1
+      - "1.3.1"
+      - scored
+
+  - name: 1.3.2 - Ensure cron is installed
+    yum:
+      name: cronie
+      state: present
+    tags:
+      - level-1
+      - section-1
+      - "1.3.2"
+      - scored
+
+  # - name: 1.3.2 - Create cron entry to run aide filesystem integrity check regularly #crontab should be configured according to the business needs and change the username
+  #   cron:
+  #     name: "CIS 1.3.2 - Run aide filesystem integrity check"
+  #     user: "{{ cis_aide_cron_user }}"
+  #     job: "{{ cis_aide_cron_job }}"
+  #     minute: "{{ cis_aide_cron_minute }}"
+  #     hour: "{{ cis_aide_cron_hour }}"
+  #     weekday: "{{ cis_aide_cron_dow }}"
+  #     day: "{{ cis_aide_cron_dom }}"
+  #     month: "{{ cis_aide_cron_month }}"
+  #     state: present
+  #   tags:
+  #     - level-1
+  #     - section-1
+  #     - "1.3.2"
+  #     - scored
+
+  #check the alternative example for the commented section
+  - name: "1.3.2 Create cron entry to run aide filesystem integrity check regularly-periodically scheduled (crontab)' aide check (/etc/cron.* and /etc/crontab)"
+    lineinfile:
+      path: /etc/crontab
+      line: "0 5 * * * centos /usr/sbin/aide --check"
+      state: present  
+
+    
+  # 1.4.1 Ensure permissions on bootloader config are configured
+
+  - name: 1.4.1 - Check if grub bootloader file exists
+    stat:
+      path: "{{ cis_grub_bootloader_filename }}"
+    register: grub_1_4_1
+    tags:
+      - level-1
+      - "1.4.1"
+      - scored
+
+  - name: 1.4.1 - Set permissions on grub configuration
+    file:
+      path: "{{ cis_grub_bootloader_filename }}"
+      owner: root
+      group: root
+      mode:  "og-rwx"
+      state: file
+    when: grub_1_4_1.stat.exists
+    tags:
+      - level-1
+      - "1.4.1"
+      - scored
+
+# 1.4.2 - Ensure authentication is required for single user mode
+
+  - name: 1.4.2 - Check if sysconfig init file exists
+    stat:
+      path: "{{ cis_sysconfig_init_filename }}"
+    register: sysconfig_init_1_4_2
+    tags:
+      - level-1
+      - "1.4.2"
+      - scored
+
+  - name: 1.4.2 - Ensure authentication is required for single-user mode
+    copy:
+      dest: "{{ cis_sysconfig_init_filename }}"
+      content: "SINGLE=/sbin/sulogin\n"
+    when: sysconfig_init_1_4_2.stat.exists is not defined or not sysconfig_init_1_4_2.stat.exists
+    tags:
+      - level-1
+      - "1.4.2"
+      - scored
+
+  - name: 1.4.2 - Ensure authentication is required for single-user mode
+    lineinfile:
+      dest: "{{ cis_sysconfig_init_filename }}"
+      regexp: "^SINGLE="
+      line: "SINGLE=/sbin/sulogin"
+    when: sysconfig_init_1_4_2.stat.exists is defined and sysconfig_init_1_4_2.stat.exists
+    tags:
+      - level-1
+      - "1.4.2"
+      - scored
+
+  - name: 1.4.2 - Check if rescue.service and emergency.service both use /sbin/sulogin for ExecStart
+    command: >
+      grep -xq 'ExecStart=-/bin/sh -c "/usr/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
+      /usr/lib/systemd/system/rescue.service
+      /usr/lib/systemd/system/emergency.service
+    register: line_matched
+    tags:
+      - level-1
+      - "1.4.2"
+      - scored
+
+  - name: 1.4.2 - Ensure rescue.service and emergency.service both use /sbin/sulogin for ExecStart
+    lineinfile:
+      dest: "/usr/lib/systemd/system/{{ item }}.service"
+      regexp: "^ExecStart="
+      line: 'ExecStart=-/bin/sh -c "/usr/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"'
+    when: line_matched.rc != 0
+    with_items:
+      - rescue
+      - emergency
+    tags:
+      - level-1
+      - "1.4.2"
+      - scored
+
+  - name: '1.4.2 Change Permission of /boot/grub2/grub.cfg'
+    file:
+      path: /boot/grub2/grub.cfg
+      state: file
+      owner: root
+      group: root
+      mode: "600"
+
+# 1.4.3 - Ensure interactive boot is not enabled
+
+  - name: 1.4.3 - Check if sysconfig init file exists
+    stat:
+      path: "{{ cis_sysconfig_init_filename }}"
+    register: sysconfig_init_1_4_3
+    tags:
+      - level-1
+      - "1.4.3"
+      - scored
+
+  - name: 1.4.3 - Ensure interactive boot is not enabled
+    copy:
+      dest: "{{ cis_sysconfig_init_filename }}"
+      content: "PROMPT=no\n"
+    when: sysconfig_init_1_4_3.stat.exists is not defined or not sysconfig_init_1_4_3.stat.exists
+    tags:
+      - level-1
+      - "1.4.3"
+      - scored
+
+  - name: 1.4.3 - Ensure interactive boot is not enabled
+    lineinfile:
+      dest: "{{ cis_sysconfig_init_filename }}"
+      regexp: "^PROMPT="
+      line: "PROMPT=no"
+    when: sysconfig_init_1_4_3.stat.exists is defined and sysconfig_init_1_4_3.stat.exists
+    tags:
+      - level-1
+      - "1.4.3"
+      - scored
+
+# 1.5.1 Ensure core dumps are restricted
+
+  - name: 1.5.1 - Check if security limits file exists
+    stat:
+      path: "{{ cis_security_limits_filename }}"
+    register: security_limits_1_5_1
+    tags:
+      - level-1
+      - "1.5.1"
+      - scored
+
+  - name: 1.5.1 - Ensure core dumps are restricted
+    copy:
+      dest: "{{ cis_security_limits_filename }}"
+      content: "* hard core 0\n"
+    when: security_limits_1_5_1.stat.exists is not defined or not security_limits_1_5_1.stat.exists
+    tags:
+      - level-1
+      - "1.5.1"
+      - scored
+
+  - name: 1.5.1 - Ensure core dumps are restricted
+    pam_limits:
+      dest: "{{ cis_security_limits_filename }}"
+      limit_item: "core"
+      limit_type: "hard"
+      domain: "*"
+      value: "0"
+    when: security_limits_1_5_1.stat.exists is defined and security_limits_1_5_1.stat.exists
+    tags:
+      - level-1
+      - "1.5.1"
+      - scored
+
+  - name: 1.5.1 - Prevent suid programs from dumping core
+    sysctl:
+      ignoreerrors: yes
+      name: fs.suid_dumpable
+      value: "0"
+      state: present
+    tags:
+      - level-1
+      - "1.5.1"
+      - scored
+
+  - name: '1.5.1 Change Setting in /etc/systemd/coredump.conf'
+    lineinfile:
+      path: /etc/systemd/coredump.conf
+      regexp: "#Storage"
+      line: "Storage=none"
+      state: present
+  
+  - name: '1.5.1 Change Setting in /etc/systemd/coredump.conf'
+    lineinfile:
+      path: /etc/systemd/coredump.conf
+      regexp: "#ProcessSizeMax"
+      line: "ProcessSizeMax=0"
+      state: present
+
+  # 1.5.2 Ensure XD/NX support is enabled
+
+  - name: 1.5.2 - Check if XD/NX support is enabled
+    shell: "dmesg | grep NX"
+    register: dmesg_1_5_2
+    check_mode: no
+    changed_when: False
+    ignore_errors: true
+    tags:
+      - level-1
+      - "1.5.2"
+      - not-scored
+
+  - name: 1.5.2 - Ensure XD/NX support is enabled
+    fail:
+      msg: "Ensure XD/NX support is enabled."
+    when:
+      - "'NX (Execute Disable) protection: active' not in dmesg_1_5_2.stdout"
+      - fail_on_manual_remediation_actions
+    tags:
+      - level-1
+      - "1.5.2"
+      - not-scored
+
+  - name: 1.5.2 - Ensure XD/NX support is enabled
+    debug:
+      msg: "*** ACTION REQUIRED *** Ensure XD/NX support is enabled."
+    when:
+      - "'NX (Execute Disable) protection: active' not in dmesg_1_5_2.stdout"
+      - not fail_on_manual_remediation_actions
+    tags:
+      - level-1
+      - "1.5.2"
+      - not-scored
+  
+  # 1.5.3 Ensure address space layout randomization (ASLR) is enabled
+
+  - name: 1.5.3 - Ensure address space layout randomization is enabled
+    sysctl:
+      ignoreerrors: yes
+      name: kernel.randomize_va_space
+      value: "2"
+      state: present
+    tags:
+      - level-1
+      - "1.5.3"
+      - scored
+
+# 1.5.4 Ensure prelink is disabled
+
+  - name: 1.5.4 - Check if prelink binary exists
+    command: which prelink
+    ignore_errors: true
+    register: which_1_5_4
+    tags:
+      - level-1
+      - "1.5.4"
+      - scored
+
+  - name: 1.5.4 - Restore prelinked binaries
+    command: prelink -ua
+    when: which_1_5_4.rc is defined and which_1_5_4.rc == 0
+    tags:
+      - level-1
+      - "1.5.4"
+      - scored
+
+  - name: 1.5.4 - Ensure prelink is disabled
+    yum:
+      name: prelink
+      state: absent
+    tags:
+      - level-1
+      - "1.5.4"
+      - scored
+
+ # 1.6.1.1 Ensure SELinux is not disabled in bootloader configuration (Scored)
+
+  - name: 1.6 - Install the SE Linux requirements - libselinux-python
+    yum:
+      name: libselinux-python
+      state: installed
+
+  - name: 1.6 - Install the SE Linux requirements - policycoreutils-python
+    yum:
+      name: policycoreutils-python
+      state: installed
+
+  - name: 1.6.1.1 Ensure SELinux is enabled in bootloader configuration if it was previously disabled (Scored)
+    replace:
+      dest: "{{ cis_grub_configuration_filename }}"
+      regexp: '^(GRUB_CMDLINE_LINUX_DEFAULT=.*)\"$'
+      replace: '\1 {{ item }}=1"'
+    with_items:
+      - selinux
+      - enforcing
+    notify: Reconfigure GRUB
+    tags:
+      - level-1
+      - "1.6.1.1"
+      - scored 
+
+# 1.6.1.2. Ensure the SELinux state is enforcing (Scored)
+
+  - name: 1.6.1.2 Ensure the SELinux state is enforcing (Scored)
+    selinux:
+      policy: targeted
+      state: enforcing
+    tags:
+        - level-1
+        - section-1
+        - "1.6.1.2"
+        - scored
+
+# 1.6.1.3 Ensure SELinux policy is configured (Scored)
+
+  - name: 1.6.1.3 Ensure SELinux policy is configured (Scored)
+    selinux:
+      policy: targeted
+      state: enforcing
+    tags:
+        - level-1
+        - section-1
+        - "1.6.1.3"
+        - scored
+
+# 1.6.1.4 Ensure SETroubleshoot is not installed (Scored)
+
+  - name: 1.6.1.4 Ensure SETroubleshoot is not installed (Scored)
+    yum:
+      name: setroubleshoot
+      state: removed
+    tags:
+        - level-1
+        - section-1
+        - "1.6.1.4"
+        - scored
+
+# 1.6.1.5 Ensure SETroubleshoot is not installed (Scored)
+
+  - name: 1.6.1.5 Ensure SETroubleshoot is not installed (Scored)
+    yum:
+      name: mcstrans
+      state: removed
+    tags:
+        - level-1
+        - section-1
+        - "1.6.1.5"
+        - scored        
+
+# 1.6.1.6 Ensure no unconfined daemons exist (Scored)
+
+  # - name: 1.6.1.6 Ensure no unconfined daemons exist (Scored)
+  #   script: "{{ role_path }}/files/audit_1.6.1.6.sh"
+  #   check_mode: no
+  #   changed_when: False
+  #   register: audit_1_6_1_6
+  #   tags:
+  #     - level-1
+  #     - section-6
+  #     - "1.6.1.6"
+  #     - scored
+
+  # - name: 1.6.1.6 Ensure no unconfined daemons exist (Scored)
+  #   fail:
+  #     msg: "{{ audit_1_6_1_6.stdout_lines }}"
+  #   when:
+  #     - audit_1_6_1_6.stdout_lines is defined and audit_1_6_1_6.stdout_lines|length > 0
+  #     - fail_on_manual_remediation_actions
+  #   tags:
+  #     - level-1
+  #     - section-6
+  #     - "1.6.1.6"
+  #     - scored
+
+  # - name: 1.6.1.6 Ensure no unconfined daemons exist (Scored)
+  #   debug:
+  #     msg: "*** ACTION REQUIRED *** {{ audit_1_6_1_6.stdout }}"
+  #   when:
+  #     - audit_1_6_1_6.stdout_lines is defined and audit_1_6_1_6.stdout_lines|length > 0
+  #     - not fail_on_manual_remediation_actions
+  #   tags:
+  #     - level-1
+  #     - section-6
+  #     - "1.6.1.6"
+  #     - scored
+
+  # 1.7.1.1 Ensure Message of the day is configured properly
+  # - name: 1.7.1.1 - Ensure message of the day doesn't print sensitive information
+  #   file:
+  #     path: "/etc/update-motd.d/{{ configs }}"
+  #     state: absent
+  #     with_configs:   #may varies according to the distros
+  #       - 30-banner
+  #       - 50-amazon-linux-extras-news
+  #       - 70-available-updates
+  #   tags:
+  #     - level-1
+  #     - 1.7.1.1
+  #     - scored
+
+  - name: 1.7.1.1 - Ensure message of the day is configured properly
+    copy:
+      dest: "/etc/motd"
+      content: "{{ cis_local_login_warning_banner }}"
+    tags:
+      - level-1
+      - 1.7.1.1
+      - scored
+
+
+# 1.7.1.2 Ensure local login warning banner is configured properly
+
+  - name: 1.7.1.2 - Ensure local login warning banner is configured properly
+    copy:
+      content: "{{ cis_local_login_warning_banner }}"
+      dest: "/etc/issue"
+    tags:
+      - level-1
+      - 1.7.1.2
+      - not-scored
+
+# 1.7.1.3 Ensure remote login warning banner is configured properly
+
+  - name: 1.7.1.3 - Ensure remote login warning banner is configured properly
+    copy:
+      content: "{{ cis_remote_login_warning_banner }}"
+      dest: "/etc/issue.net"
+    tags:
+      - level-1
+      - 1.7.1.3
+      - not-scored
+
+# 1.7.1.4 Ensure permissions on /etc/motd are configured
+
+  - name: 1.7.1.4 - Ensure permissions on /etc/motd are configured
+    file:
+      path: "/etc/motd"
+      owner: root
+      group: root
+      mode: 0644
+      follow: yes
+    tags:
+      - level-1
+      - 1.7.1.4
+      - not-scored
+
+# 1.7.1.5 Ensure permissions on /etc/issue are configured
+
+  - name: 1.7.1.5 - Ensure permissions on /etc/issue are configured
+    file:
+      path: "/etc/issue"
+      owner: root
+      group: root
+      mode: 0644
+    tags:
+      - level-1
+      - 1.7.1.5
+      - scored
+
+# 1.7.1.6 Ensure permissions on /etc/issue.net are configured
+
+  - name: 1.7.1.6 - Ensure permissions on /etc/issue.net are configured
+    file:
+      path: "/etc/issue.net"
+      owner: root
+      group: root
+      mode: 0644
+    tags:
+      - level-1
+      - 1.7.1.6
+      - not-scored
+
+# 1.8 Ensure updates, patches, and additional security software are installed
+
+  # - name: 1.8 - Ensure updates, patches, and additional security software are installed
+  #   yum:
+  #     name: "*"
+  #     state: latest
+  #   tags:
+  #     - level-1
+  #     - "1.8"
+  #     - not-scored
+  #   when:
+  #     - upgrade
+
+  # 2.1.1.1 Ensure time synchronisation is in use
+
+  - name: 2.1.1.1 - Ensure ntp is installed if applicable
+    package:
+      name: "{{ item.name }}"
+      state: "{{ item.state }}"
+    with_items:
+      - { name: "ntp", state: "present" }
+    tags:
+      - level-1
+      - section-4
+      - "2.1.1.1"
+      - not-scored
+
+  - name: 2.1.1.1 - Ensure chrony is installed if applicable
+    package:
+      name: "{{ item.name }}"
+      state: "{{ item.state }}"
+    with_items:
+      - { name: "chrony", state: "present" }
+    tags:
+      - level-1
+      - section-4
+      - "2.1.1.1"
+      - not-scored
+
+  # 2.1.1.2 Ensure ntp is configured
+
+  - name: 2.1.1.2 Set Options -u ntp:ntp in /etc/sysconfig/ntpd
+    replace:
+      path: /etc/sysconfig/ntpd
+      regexp: '^OPTIONS=.*$'
+      replace: 'OPTIONS="-u ntp:ntp"'
+    tags:
+      - level-1
+      - "2.1.1.2"
+      - scored
+
+  - name: 2.1.1.2 Set Restrict -6
+    lineinfile:
+      path: /etc/ntp.conf
+      insertbefore: 'restrict default nomodify notrap nopeer noquery'
+      line: 'restrict -6 default kod nomodify notrap nopeer noquery'
+    tags:
+      - level-1
+      - "2.1.1.2"
+      - scored
+
+  - name: 2.1.1.2 Set Restrict -4
+    lineinfile:
+      path: /etc/ntp.conf
+      insertbefore: 'restrict -6 default kod nomodify notrap nopeer noquery'
+      line: 'restrict -4 default kod nomodify notrap nopeer noquery'
+    tags:
+      - level-1
+      - "2.1.1.2"
+      - scored
+  
+  - name: 2.1.1.2 'pool' setting in '/etc/chrony.conf'
+    lineinfile:
+      path: /etc/chrony.conf
+      line: "pool pool.ntp.org iburst maxresources 3"
+      state: present
+  
+  # 2.1.1.3 Ensure chrony is configured
+
+  - name: 2.1.1.3 verify a remote chrony server is configured
+    command: >
+      egrep -c '^(server|pool)' /etc/chrony.conf
+    register: line_matched
+    ignore_errors: true
+    tags:
+      - level-1
+      - "2.1.1.3"
+      - scored
+
+  - fail:
+      msg: No server or pool seems to be configured for Chrony. Please fix this as per item 2.1.1.3 of the benchmark, and re-run this play.
+    when: line_matched == "0"
+  
+  - name: 2.1.1.3 pool setting in /etc/ntp.conf #if you have ntp remote server uncomment this and add remote server
+    lineinfile:
+      path: /etc/ntp.conf
+      line: pool time1.google.com #used google ntp server in the moment, you can use your own if you have
+      state: present
+  
+
+# 2.1.2 Ensure X Window System is not installed
+
+  - name: 2.1.2 - Ensure X Window System is not installed
+    yum:
+      name: "xorg-x11*"
+      state: absent
+    tags:
+      - level-1
+      - "2.1.2"
+      - scored
+
+# 2.1.3 Ensure Avahi Server is not enabled
+
+  - name: 2.1.3 - Ensure Avahi Server is not enabled
+    service:
+      name: "avahi-daemon"
+      enabled: false
+      state: stopped
+    ignore_errors: true
+    tags:
+      - level-1
+      - "2.1.3"
+      - scored
+
+# 2.1.4 Ensure CUPS is not enabled
+
+  - name: 2.1.4 - Ensure CUPS is not enabled
+    service:
+      name: "cups"
+      enabled: false
+      state: stopped
+    ignore_errors: true
+    tags:
+      - level-1
+      - "2.1.4"
+      - scored
+
+# 2.1.5 Ensure DHCP Server is not enabled
+
+  - name: 2.1.5 - Ensure DHCP Server is not enabled
+    service:
+      name: "dhcpd"
+      enabled: false
+      state: stopped
+    ignore_errors: true
+    tags:
+      - level-1
+      - "2.1.5"
+      - scored   
+
+# 2.1.6 Ensure LDAP server is not enabled
+
+  - name: 2.1.6 - Ensure LDAP server is not enabled
+    service:
+      name: "slapd"
+      enabled: false
+      state: stopped
+    ignore_errors: true
+    tags:
+      - level-1
+      - "2.1.6"
+      - scored
+
+# 2.1.7 Ensure NFS and RPC are not enabled
+
+  - name: 2.1.7 - Ensure NFS and RPC are not enabled
+    service:
+      name: "{{ item }}"
+      enabled: false
+      state: stopped
+    with_items:
+      - nfs
+      - nfs-server
+      - rpcbind
+    ignore_errors: true
+    tags:
+      - level-1
+      - "2.1.7"
+      - scored
+
+ # 2.1.8 Ensure DNS Server is not enabled
+
+  - name: 2.1.8 - Ensure DNS Server is not enabled
+    service:
+      name: "named"
+      enabled: false
+      state: stopped
+    ignore_errors: true
+    tags:
+      - level-1
+      - "2.1.8"
+      - scored
+
+# 2.1.9 Ensure FTP Server is not enabled
+
+  - name: 2.1.9 - Ensure FTP Server is not enabled
+    service:
+      name: "vsftpd"
+      enabled: false
+      state: stopped
+    ignore_errors: true
+    tags:
+      - level-1
+      - "2.1.9"
+      - scored
+
+  # 2.1.10 Ensure HTTP server is not enabled
+
+  - name: 2.1.10 - Ensure HTTP server is not enabled
+    service:
+      name: "{{ item }}"
+      enabled: false
+      state: stopped
+    with_items:
+      - httpd
+      - apache
+      - apache2
+      - nginx
+      - lighttpd
+    ignore_errors: true
+    tags:
+      - level-1
+      - "2.1.10"
+      - scored
+
+  # 2.1.11 Ensure IMAP and POP3 server is not enabled
+
+  - name: 2.1.11 - Ensure IMAP and POP3 server is not enabled
+    service:
+      name: "{{ item }}"
+      enabled: false
+      state: stopped
+    with_items:
+      - dovecot
+      - cyrus-imapd
+    ignore_errors: true
+    tags:
+      - level-1
+      - "2.1.11"
+      - scored
+
+  # 2.1.12 Ensure Samba is not enabled
+
+  - name: 2.1.12 - Ensure Samba is not enabled
+    service:
+      name: "smb"
+      enabled: false
+      state: stopped
+    ignore_errors: true
+    tags:
+      - level-1
+      - "2.1.12"
+      - scored
+
+# 2.1.13 Ensure HTTP Proxy Server is not enabled
+
+  - name: 2.1.13 - Ensure HTTP Proxy Server is not enabled
+    service:
+      name: "squid"
+      enabled: false
+      state: stopped
+    ignore_errors: true
+    tags:
+      - level-1
+      - "2.1.13"
+      - scored
+
+  # 2.1.14 Ensure SNMP Server is not enabled
+
+  - name: 2.1.14 - Ensure SNMP Server is not enabled
+    service:
+      name: "snmpd"
+      enabled: false
+      state: stopped
+    ignore_errors: true
+    tags:
+      - level-1
+      - "2.1.14"
+      - scored
+  
+  # 2.1.15 Ensure mail transfer agent is configured for local-only mode
+
+  - name: 2.1.15 - Check if mail transfer agent is configured for local-only mode
+    shell: "netstat -an | grep LIST | grep ':25[[:space:]]'"
+    register: mta_2_2_15
+    ignore_errors: true
+    tags:
+      - level-1
+      - "2.1.15"
+      - scored
+
+  - name: 2.1.15 - Ensure mail transfer agent is configured for local-only mode
+    fail:
+      msg: "Detected mail transfer agent listening on non-loopback address."
+    when:
+      - mta_2_2_15.stdout_lines is defined and (mta_2_2_15.stdout_lines|count > 1 or '127.0.0.1:25' not in mta_2_2_15.stdout)
+    ignore_errors: true
+    tags:
+      - level-1
+      - "2.1.15"
+      - scored
+
+  - name: 2.1.15 - Ensure mail transfer agent is configured for local-only mode
+    debug:
+      msg: "*** ACTION REQUIRED *** Detected mail transfer agent listening on non-loopback address."
+    when:
+      - mta_2_2_15.stdout_lines is defined and (mta_2_2_15.stdout_lines|count > 1 or '127.0.0.1:25' not in mta_2_2_15.stdout)
+    tags:
+      - level-1
+      - "2.1.15"
+      - scored
+
+# 2.1.16 Ensure NIS Server is not enabled
+
+  - name: 2.1.16 - Ensure NIS Server is not enabled
+    service:
+      name: "ypserv"
+      enabled: false
+      state: stopped
+    ignore_errors: true
+    tags:
+      - level-1
+      - "2.1.16"
+      - scored
+
+# 2.1.17 Ensure rsh server is not enabled
+
+  - name: 2.1.17 - Ensure rsh server is not enabled
+    service:
+      name: "{{ item }}"
+      enabled: false
+      state: stopped
+    with_items:
+      - rexec.socket
+      - rlogin.socket
+      - rsh.socket
+    ignore_errors: true
+    tags:
+      - level-1
+      - section-2
+      - "2.1.17"
+      - scored
+
+# 2.1.18 Ensure telnet server is not enabled
+
+  - name: 2.1.18 - Ensure telnet server is not enabled
+    service:
+      name: "telnet"
+      enabled: false
+      state: stopped
+    ignore_errors: true
+    tags:
+      - level-1
+      - section-2
+      - "2.1.18"
+      - scored
+
+# 2.1.19 Ensure tftp server is not enabled
+
+  - name: 2.1.19 - Ensure tftp server is not enabled
+    service:
+      name: "tftp.socket"
+      enabled: false
+      state: stopped
+    ignore_errors: true
+    tags:
+      - level-1
+      - section-2
+      - "2.1.19"
+      - scored
+
+# 2.1.20 Ensure rsync server is not enabled
+
+  - name: 2.1.20 - Ensure rsync server is not enabled
+    service:
+      name: "rsyncd"
+      enabled: false
+      state: stopped
+    ignore_errors: true
+    tags:
+      - level-1
+      - section-2
+      - "2.1.20"
+      - scored
+
+# 2.1.21 Ensure talk server is not enabled
+
+  - name: 2.1.21 - Ensure talk server is not enabled
+    service:
+      name: "ntalk"
+      enabled: false
+      state: stopped
+    ignore_errors: true
+    tags:
+      - level-1
+      - section-2
+      - "2.1.21"
+      - scored
+
+# 2.2.1 Ensure NIS Client is not installed
+
+  - name: 2.2.1 - Ensure NIS Client is not installed
+    yum:
+      name: "ypbind"
+      state: absent
+    tags:
+      - level-1
+      - section-2
+      - "2.2.1"
+      - scored
+
+  - name: "SCORED | 2.2.1.3 | PATCH | Ensure chrony is configured | modify /etc/sysconfig/chronyd"
+    lineinfile:
+      dest: /etc/sysconfig/chronyd
+      regexp: "^(#)?OPTIONS"
+      line: "OPTIONS=\"-u chrony\""
+      state: present
+      create: yes
+
+# 2.2.2 Ensure rsh client is not installed
+
+  - name: 2.2.2 - Ensure rsh client is not installed
+    yum:
+      name: "rsh"
+      state: absent
+    tags:
+      - level-1
+      - section-2
+      - "2.2.2"
+      - scored
+
+# 2.2.3 Ensure talk client is not installed
+
+  - name: 2.2.3 - Ensure talk client is not installed
+    yum:
+      name: "talk"
+      state: absent
+    tags:
+      - level-1
+      - "2.2.3"
+      - scored
+
+# 2.2.4 Ensure telnet client is not installed
+
+  - name: 2.2.4 - Ensure telnet client is not installed
+    yum:
+      name: "telnet"
+      state: absent
+    tags:
+      - level-1
+      - section-2
+      - "2.2.4"
+      - scored
+
+# 2.1.4 Ensure CUPS is not enabled
+
+  - name: 2.1.4 - Ensure CUPS is not enabled
+    service:
+      name: "cups"
+      enabled: false
+      state: stopped
+    ignore_errors: true
+    tags:
+      - level-1
+      - "2.1.4"
+      - scored
+
+# 2.2.5 Ensure LDAP client is not installed
+
+  - name: 2.2.5 - Ensure LDAP client is not installed
+    yum:
+      name: "openldap-clients"
+      state: absent
+    tags:
+      - level-1
+      - section-2
+      - "2.2.5"
+      - scored
+
+# 3.1.1 Ensure IP forwarding is disabled
+
+  - name: 3.1.1 - Ensure IPv4 forwarding is disabled
+    sysctl:
+      name: net.ipv4.ip_forward
+      value: "0"
+      state: present
+    tags:
+      - level-1
+      - section-3
+      - "3.1.1"
+      - scored
+
+  - name: 3.1.1 - Ensure IPv6 forwarding is disabled
+    sysctl:
+      name: net.ipv6.conf.all.forwarding
+      value: "0"
+      state: present
+    tags:
+      - level-1
+      - section-3
+      - "3.1.1"
+      - scored
+
+  - name: 3.1.1 - Ensure IP forwarding is disabled in active kernel parameters
+    command: "{{ item }}"
+    with_items:
+      - "sysctl -w net.ipv4.ip_forward=0"
+      - "sysctl -w net.ipv4.route.flush=1"
+      - "sysctl -w net.ipv6.conf.all.forwarding=0"
+      - "sysctl -w net.ipv6.route.flush=1"
+    tags:
+      - level-1
+      - section-3
+      - "3.1.1"
+      - scored
+
+# 3.1.2 Ensure packet redirect sending is disabled
+
+  - name: 3.1.2 - Ensure packet redirect sending is disabled
+    sysctl:
+      ignoreerrors: true
+      name: "{{ item }}"
+      value: "0"
+      state: present
+    with_items:
+      - "net.ipv4.conf.all.send_redirects"
+      - "net.ipv4.conf.default.send_redirects"
+    tags:
+      - level-1
+      - section-3
+      - "3.1.2"
+      - scored
+
+  - name: 3.1.2 - Ensure packet redirect sending is disabled in active kernel parameters
+    command: "{{ item }}"
+    with_items:
+      - "sysctl -w net.ipv4.conf.all.send_redirects=0"
+      - "sysctl -w net.ipv4.conf.default.send_redirects=0"
+      - "sysctl -w net.ipv4.route.flush=1"
+    tags:
+      - level-1
+      - section-3
+      - "3.1.2"
+      - scored
+
+# 3.2.1 Ensure source routed packets are not accepted
+
+  - name: 3.2.1 - Ensure source routed packets are not accepted
+    sysctl:
+      ignoreerrors: yes
+      name: "{{ item }}"
+      value: "0"
+      state: present
+    with_items:
+      - "net.ipv4.conf.all.accept_source_route"
+      - "net.ipv4.conf.default.accept_source_route"
+      - "net.ipv6.conf.all.accept_source_route"
+      - "net.ipv6.conf.default.accept_source_route"
+    tags:
+      - level-1
+      - section-3
+      - "3.2.1"
+      - scored
+
+  - name: 3.2.1 - Ensure source routed packets are not accepted in active kernel parameters
+    command: "{{ item }}"
+    with_items:
+      - "sysctl -w net.ipv4.conf.all.accept_source_route=0"
+      - "sysctl -w net.ipv4.conf.default.accept_source_route=0"
+      - "sysctl -w net.ipv6.conf.all.accept_source_route=0"
+      - "sysctl -w net.ipv6.conf.default.accept_source_route=0"
+      - "sysctl -w net.ipv4.route.flush=1"
+      - "sysctl -w net.ipv6.route.flush=1"
+    tags:
+      - level-1
+      - section-3
+      - "3.2.1"
+      - scored
+
+# 3.2.2 Ensure ICMP redirects are not accepted
+
+  - name: 3.2.2 - Ensure ICMP redirects are not accepted
+    sysctl:
+      ignoreerrors: yes
+      name: "{{ item }}"
+      value: "0"
+      state: present
+    with_items:
+      - "net.ipv4.conf.all.accept_redirects"
+      - "net.ipv4.conf.default.accept_redirects"
+      - "net.ipv6.conf.all.accept_redirects"
+      - "net.ipv6.conf.default.accept_redirects"
+    tags:
+      - level-1
+      - section-3
+      - "3.2.2"
+      - scored
+
+  - name: 3.2.2 - Ensure ICMP redirects are not accepted by active kernel parameters
+    command: "{{ item }}"
+    with_items:
+      - "sysctl -w net.ipv4.conf.all.accept_redirects=0"
+      - "sysctl -w net.ipv4.conf.default.accept_redirects=0"
+      - "sysctl -w net.ipv4.route.flush=1"
+      - "sysctl -w net.ipv6.conf.all.accept_redirects=0"
+      - "sysctl -w net.ipv6.conf.default.accept_redirects=0"
+      - "sysctl -w net.ipv6.route.flush=1"
+    tags:
+      - level-1
+      - section-3
+      - "3.2.2"
+      - scored
+
+# 3.2.3 Ensure secure ICMP redirects are not accepted
+
+  - name: 3.2.3 - Ensure secure ICMP redirects are not accepted
+    sysctl:
+      ignoreerrors: yes
+      name: "{{ item }}"
+      value: "0"
+      state: present
+    with_items:
+      - "net.ipv4.conf.all.secure_redirects"
+      - "net.ipv4.conf.default.secure_redirects"
+    tags:
+      - level-1
+      - section-3
+      - "3.2.3"
+      - scored
+
+  - name: 3.2.3 - Ensure secure ICMP redirects are not accepted by active kernel parameters
+    command: "{{ item }}"
+    with_items:
+      - "sysctl -w net.ipv4.conf.all.secure_redirects=0"
+      - "sysctl -w net.ipv4.conf.default.secure_redirects=0"
+      - "sysctl -w net.ipv4.route.flush=1"
+      - "sysctl -w net.ipv4.ip_forward=0"
+    tags:
+      - level-1
+      - section-3
+      - "3.2.3"
+      - scored
+
+# 3.2.4 Ensure suspicious packets are logged
+
+  - name: 3.2.4 - Ensure suspicious packets are logged
+    sysctl:
+      ignoreerrors: yes
+      name: "{{ item }}"
+      value: "1"
+      state: present
+    with_items:
+      - "net.ipv4.conf.all.log_martians"
+      - "net.ipv4.conf.default.log_martians"
+    tags:
+      - level-1
+      - section-3
+      - "3.2.4"
+      - scored
+
+  - name: 3.2.4 - Ensure suspicious packets are logged by active kernel parameters
+    command: "{{ item }}"
+    with_items:
+      - "sysctl -w net.ipv4.conf.all.log_martians=1"
+      - "sysctl -w net.ipv4.conf.default.log_martians=1"
+      - "sysctl -w net.ipv4.route.flush=1"
+    tags:
+      - level-1
+      - section-3
+      - "3.2.4"
+      - scored
+
+# 3.2.5 Ensure broadcast ICMP requests are ignored
+
+  - name: 3.2.5 - Ensure broadcast ICMP requests are ignored
+    sysctl:
+      ignoreerrors: yes
+      name: "net.ipv4.icmp_echo_ignore_broadcasts"
+      value: "1"
+      state: present
+    tags:
+      - level-1
+      - section-3
+      - "3.2.5"
+      - scored
+
+  - name: 3.2.5 - Ensure broadcast ICMP requests are ignored by active kernel parameters
+    command: "{{ item }}"
+    with_items:
+      - "sysctl -w net.ipv4.icmp_echo_ignore_broadcasts=1"
+      - "sysctl -w net.ipv4.route.flush=1"
+    tags:
+      - level-1
+      - section-3
+      - "3.2.5"
+      - scored
+
+# 3.2.6 Ensure bogus ICMP responses are ignored
+
+  - name: 3.2.6 - Ensure bogus ICMP responses are ignored
+    sysctl:
+      ignoreerrors: yes
+      name: "net.ipv4.icmp_ignore_bogus_error_responses"
+      value: "1"
+      state: present
+    tags:
+      - level-1
+      - section-3
+      - "3.2.6"
+      - scored
+
+  - name: 3.2.6 - Ensure bogus ICMP responses are ignored by active kernel parameters
+    command: "{{ item }}"
+    with_items:
+      - "sysctl -w net.ipv4.icmp_ignore_bogus_error_responses=1"
+      - "sysctl -w net.ipv4.route.flush=1"
+    tags:
+      - level-1
+      - section-3
+      - "3.2.6"
+      - scored
+
+# 3.2.7 Ensure Reverse Path Filtering is enabled
+
+  - name: 3.2.7 - Ensure Reverse Path Filtering is enabled
+    sysctl:
+      ignoreerrors: yes
+      name: "{{ item }}"
+      value: "1"
+      state: present
+    with_items:
+      - "net.ipv4.conf.all.rp_filter"
+      - "net.ipv4.conf.default.rp_filter"
+    tags:
+      - level-1
+      - section-3
+      - "3.2.7"
+      - scored
+
+  - name: 3.2.7 - Ensure Reverse Path Filtering is enabled by active kernel parameters
+    command: "{{ item }}"
+    with_items:
+      - "sysctl -w net.ipv4.conf.all.rp_filter=1"
+      - "sysctl -w net.ipv4.conf.default.rp_filter=1"
+      - "sysctl -w net.ipv4.route.flush=1"
+    tags:
+      - level-1
+      - section-3
+      - "3.2.7"
+      - scored
+
+# 3.2.8 Ensure TCP SYN Cookies is enabled
+
+  - name: 3.2.8 - Ensure TCP SYN Cookies is enabled
+    sysctl:
+      ignoreerrors: yes
+      name: "net.ipv4.tcp_syncookies"
+      value: "1"
+      state: present
+    tags:
+      - level-1
+      - section-3
+      - "3.2.8"
+      - scored
+
+  - name: 3.2.8 - Ensure TCP SYN Cookies is enabled by active kernel parameters
+    command: "{{ item }}"
+    with_items:
+      - "sysctl -w net.ipv4.tcp_syncookies=1"
+      - "sysctl -w net.ipv4.route.flush=1"
+    tags:
+      - level-1
+      - section-3
+      - "3.2.8"
+      - scored
+
+# 3.2.9 Ensure IPv6 router advertisements are not accepted
+
+  - name: 3.2.9 - Ensure IPv6 router advertisements are not accepted
+    sysctl:
+      ignoreerrors: yes
+      name: "{{ item }}"
+      value: "0"
+      state: present
+    with_items:
+      - "net.ipv6.conf.all.accept_ra"
+      - "net.ipv6.conf.default.accept_ra"
+    ignore_errors: true
+    tags:
+      - level-1
+      - section-3
+      - "3.2.9"
+      - scored
+
+  - name: 3.2.9 - Ensure IPv6 router advertisements are not accepted by active kernel parameters
+    command: "{{ item }}"
+    with_items:
+      - "sysctl -w net.ipv6.conf.all.accept_ra=0"
+      - "sysctl -w net.ipv6.conf.default.accept_ra=0"
+      - "sysctl -w net.ipv6.route.flush=1"
+    ignore_errors: true
+    tags:
+      - level-1
+      - section-3
+      - "3.2.9"
+      - scored
+
+# 3.3.1 Ensure TCP Wrappers is installed
+
+  - name: 3.3.1 - Ensure TCP Wrappers is installed
+    yum:
+      name: "tcp_wrappers"
+      state: latest
+    tags:
+      - level-1
+      - section-3
+      - "3.3.1"
+      - scored
+
+# 3.3.2 Ensure /etc/hosts.allow is configured (Var cis_hosts_allowed_ip_range needs to be defined by the org)
+
+  # - name: 3.3.2 - Check if /etc/hosts.allow configuration file exists
+  #   stat:
+  #     path: "/etc/hosts.allow"
+  #   register: hosts_allow_3_3_2
+  #   tags:
+  #     - level-1
+  #     - section-3
+  #     - "3.3.2"
+  #     - scored
+
+  # - name: 3.3.2 - Ensure /etc/hosts.allow is configured
+  #   copy:
+  #     path: "/etc/hosts.allow"
+  #     content: "ALL: {{ cis_hosts_allowed_ip_range }}\n" 
+  #   when: hosts_allow_3_3_2.stat.exists is not defined or not hosts_allow_3_3_2.stat.exists
+  #   tags:
+  #     - level-1
+  #     - section-3
+  #     - "3.3.2"
+  #     - scored
+
+  # - name: 3.3.2 - Ensure /etc/hosts.allow is configured
+  #   lineinfile:
+  #     dest: "/etc/hosts.allow"
+  #     regexp: "^ALL:"
+  #     line: "ALL: {{ cis_hosts_allowed_ip_range }}"
+  #   when: hosts_allow_3_3_2.stat.exists is defined and hosts_allow_3_3_2.stat.exists
+  #   tags:
+  #     - level-1
+  #     - section-3
+  #     - "3.3.2"
+  #     - scored
+
+# # 3.3.3 Ensure /etc/hosts.deny is configured
+
+#   - name: 3.3.3 - Check if /etc/hosts.deny configuration file exists
+#     stat:
+#       path: "/etc/hosts.deny"
+#     register: hosts_deny_3_3_3
+#     tags:
+#       - level-1
+#       - section-3
+#       - "3.3.3"
+#       - scored
+
+#   - name: 3.3.3 - Ensure /etc/hosts.deny is configured
+#     copy:
+#       path: "/etc/hosts.deny"
+#       content: "ALL: ALL\n"
+#     when: hosts_deny_3_3_3.stat.exists is not defined or not hosts_deny_3_3_3.stat.exists
+#     tags:
+#       - level-1
+#       - section-3
+#       - "3.3.3"
+#       - scored
+
+#   - name: 3.3.3 - Ensure /etc/hosts.deny is configured
+#     lineinfile:
+#       dest: "/etc/hosts.deny"
+#       regexp: "^ALL:"
+#       line: "ALL: ALL"
+#     when: hosts_deny_3_3_3.stat.exists is defined and hosts_deny_3_3_3.stat.exists
+#     tags:
+#       - level-1
+#       - section-3
+#       - "3.3.3"
+#       - scored
+
+# # 3.3.4 Ensure permissions on /etc/hosts.allow are configured
+
+#   - name: 3.3.4 - Ensure permissions on /etc/hosts.allow are configured
+#     file:
+#       path: "/etc/hosts.allow"
+#       owner: root
+#       group: root
+#       mode: 0644
+#     tags:
+#       - level-1
+#       - section-3
+#       - "3.3.4"
+#       - scored
+
+# # 3.3.5 Ensure permissions on /etc/hosts.deny are configured
+
+#   - name: 3.3.5 - Ensure permissions on /etc/hosts.deny are configured
+#     file:
+#       path: "/etc/hosts.deny"
+#       owner: root
+#       group: root
+#       mode: 0644
+#     tags:
+#       - level-1
+#       - section-3
+#       - "3.3.5"
+#       - scored
+
+# 3.4.1 - Ensure DCCP is disabled
+
+  - name: 3.4.1 - Check if CIS modprobe configuration file exists
+    stat:
+      path: "{{ cis_modprobe_conf_filename }}"
+    register: modprobe_3_5_1
+    tags:
+      - level-1
+      - section-3
+      - "3.4.1"
+      - not-scored
+
+  - name: 3.4.1 - Ensure DCCP is disabled
+    copy:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      content: "install dccp /bin/true\n"
+    when: modprobe_3_5_1.stat.exists is not defined or not modprobe_3_5_1.stat.exists
+    tags:
+      - level-1
+      - section-3
+      - "3.4.1"
+      - not-scored
+
+  - name: 3.4.1 - Ensure DCCP is disabled
+    lineinfile:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      regexp: "^install dccp\\s+"
+      line: "install dccp /bin/true"
+    when: modprobe_3_5_1.stat.exists is defined and modprobe_3_5_1.stat.exists
+    tags:
+      - level-1
+      - section-3
+      - "3.4.1"
+      - not-scored
+
+# 3.4.2 - Ensure SCTP is disabled
+
+  - name: 3.4.2 - Check if CIS modprobe configuration file exists
+    stat:
+      path: "{{ cis_modprobe_conf_filename }}"
+    register: modprobe_3_5_2
+    tags:
+      - level-1
+      - section-3
+      - "3.4.2"
+      - not-scored
+
+  - name: 3.4.2 - Ensure SCTP is disabled
+    copy:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      content: "install sctp /bin/true\n"
+    when: modprobe_3_5_2.stat.exists is not defined or not modprobe_3_5_2.stat.exists
+    tags:
+      - level-1
+      - section-3
+      - "3.4.2"
+      - not-scored
+
+  - name: 3.4.2 - Ensure SCTP is disabled
+    lineinfile:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      regexp: "^install sctp\\s+"
+      line: "install sctp /bin/true"
+    when: modprobe_3_5_2.stat.exists is defined and modprobe_3_5_2.stat.exists
+    tags:
+      - level-1
+      - section-3
+      - "3.4.2"
+      - not-scored
+
+# 3.4.3 - Ensure RDS is disabled
+
+  - name: 3.4.3 - Check if CIS modprobe configuration file exists
+    stat:
+      path: "{{ cis_modprobe_conf_filename }}"
+    register: modprobe_3_5_3
+    tags:
+      - level-1
+      - section-3
+      - "3.4.3"
+      - not-scored
+
+  - name: 3.4.3 - Ensure RDS is disabled
+    copy:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      content: "install rds /bin/true\n"
+    when: modprobe_3_5_3.stat.exists is not defined or not modprobe_3_5_3.stat.exists
+    tags:
+      - level-1
+      - section-3
+      - "3.4.3"
+      - not-scored
+
+  - name: 3.4.3 - Ensure RDS is disabled
+    lineinfile:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      regexp: "^install rds\\s+"
+      line: "install rds /bin/true"
+    when: modprobe_3_5_3.stat.exists is defined and modprobe_3_5_3.stat.exists
+    tags:
+      - level-1
+      - section-3
+      - "3.4.3"
+      - not-scored
+
+# 3.4.4 - Ensure TIPC is disabled
+
+  - name: 3.4.4 - Check if CIS modprobe configuration file exists
+    stat:
+      path: "{{ cis_modprobe_conf_filename }}"
+    register: modprobe_3_5_4
+    tags:
+      - level-1
+      - section-3
+      - "3.4.4"
+      - not-scored
+
+  - name: 3.4.4 - Ensure TIPC is disabled
+    copy:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      content: "install tipc /bin/true\n"
+    when: modprobe_3_5_4.stat.exists is not defined or not modprobe_3_5_4.stat.exists
+    tags:
+      - level-1
+      - section-3
+      - "3.4.4"
+      - not-scored
+
+  - name: 3.4.4 - Ensure TIPC is disabled
+    lineinfile:
+      dest: "{{ cis_modprobe_conf_filename }}"
+      regexp: "^install tipc\\s+"
+      line: "install tipc /bin/true"
+    when: modprobe_3_5_4.stat.exists is defined and modprobe_3_5_4.stat.exists
+    tags:
+      - level-1
+      - section-3
+      - "3.4.4"
+      - not-scored
+
+# 3.5.1.1 Ensure default deny firewall policy (Exception: denys me from aws console)
+  - name: "SCORED | 3.5.1.1| PATCH | Ensure firewalld is installed and started | CUSTOM"
+    yum:
+      name: firewalld
+      state: present
+
+  - name: "SCORED | 3.6 | PATCH | Ensure firewalld is installed and started | CUSTOM"
+    service:
+      name: firewalld
+      state: started
+      enabled: yes
+
+  # - name: 3.5.1.1 - Ensure default deny firewall policy (drop me from testing)
+  #   iptables:
+  #     chain: "{{item}}"
+  #     policy: DROP
+  #   with_items:
+  #     - INPUT
+  #     - FORWARD
+  #     - OUTPUT
+  #   tags:
+  #     - level-1
+  #     - section-3
+  #     - "3.5.1.1"
+  #     - scored
+
+  # - name: 3.5.1.1 - Ensure default deny firewall policy
+  #   command: iptables -P "{{item}}""
+  #   with_items:
+  #     - INPUT DROP
+  #     - OUTPUT DROP
+  #     - FORWARD DROP
+
+
+# # 3.5.1.2 Ensure loopback traffic is configured
+
+  - name: 3.5.1.2 - Ensure loopback traffic is configured(-i lo)
+    iptables:
+      chain: INPUT
+      in_interface: "lo"
+      jump: ACCEPT
+      action: append
+      state: present
+    tags:
+      - level-1
+      - section-3
+      - "3.5.1.2"
+      - scored
+
+  - name: 3.5.1.2 - Ensure loopback traffic is configured(-o lo)
+    iptables:
+      chain: OUTPUT
+      out_interface: "lo"
+      jump: ACCEPT
+      action: append
+      state: present
+    tags:
+      - level-1
+      - section-3
+      - "3.5.1.2"
+      - scored
+
+  - name: 3.5.1.2 - Ensure loopback traffic is configured(-i 127.0.0.1/8)
+    iptables:
+      chain: INPUT
+      source: 127.0.0.0/8
+      jump: DROP
+      action: append
+      state: present
+    tags:
+      - level-1
+      - section-3
+      - "3.5.1.2"
+      - scored
+
+# 3.5.1.3 Ensure outbound and established connections are configured
+
+  - name: 3.5.1.3 - Ensure outbound and established connections are configured
+    iptables:
+      chain: OUTPUT
+      protocol: tcp
+      match: state
+      ctstate: ESTABLISHED,NEW
+      jump: ACCEPT
+      action: append
+      state: present
+    tags:
+      - level-1
+      - section-3
+      - "3.5.1.3"
+      - not-scored
+
+  - name: 3.5.1.3 - Ensure outbound and established connections are configured
+    iptables:
+      chain: OUTPUT
+      protocol: udp
+      match: state
+      ctstate: ESTABLISHED,NEW
+      jump: ACCEPT
+      action: append
+      state: present
+    tags:
+      - level-1
+      - section-3
+      - "3.5.1.3"
+      - not-scored
+
+  - name: 3.5.1.3 - Ensure outbound and established connections are configured
+    iptables:
+      chain: OUTPUT
+      protocol: icmp
+      match: state
+      ctstate: ESTABLISHED,NEW
+      jump: ACCEPT
+      action: append
+      state: present
+    tags:
+      - level-1
+      - section-3
+      - "3.5.1.3"
+      - not-scored
+
+  - name: 3.5.1.3 - Ensure outbound and established connections are configured
+    iptables:
+      chain: INPUT
+      protocol: tcp
+      match: state
+      ctstate: ESTABLISHED
+      jump: ACCEPT
+      action: append
+      state: present
+    tags:
+      - level-1
+      - section-3
+      - "3.5.1.3"
+      - not-scored
+
+  - name: 3.5.1.3 - Ensure outbound and established connections are configured
+    iptables:
+      chain: INPUT
+      protocol: udp
+      match: state
+      ctstate: ESTABLISHED
+      jump: ACCEPT
+    tags:
+      - level-1
+      - section-3
+      - "3.5.1.3"
+      - not-scored
+
+  - name: 3.5.1.3 - Ensure outbound and established connections are configured
+    iptables:
+      chain: INPUT
+      protocol: icmp
+      match: state
+      ctstate: ESTABLISHED
+      jump: ACCEPT
+    tags:
+      - level-1
+      - section-3
+      - "3.5.1.3"
+      - not-scored
+
+# 3.5.1.4 Ensure firewall rules exist for all open ports
+
+  - name: 3.5.1.4 - Ensure firewall rules exist for accepting SSH connections
+    iptables:
+      chain: INPUT
+      protocol: tcp
+      destination_port: "22"
+      ctstate: NEW
+      syn: match
+      jump: ACCEPT
+      comment: Accept new SSH connections.
+    tags:
+      - level-1
+      - section-3
+      - "3.5.1.4"
+      - not-scored
+
+# 3.5.2.1 Ensure IPv6 default deny firewall policy (exception)
+
+  - name: 3.5.2.1 - Ensure IPv6 default deny firewall policy
+    iptables:
+      chain: "{{item}}"
+      policy: DROP
+      ip_version: ipv6
+    with_items:
+      - INPUT
+      - FORWARD
+      - OUTPUT
+    tags:
+      - level-1
+      - section-3
+      - "3.5.2.1"
+      - scored
+
+# 3.5.2.2 Ensure IPv6 loopback traffic is configured
+
+  - name: 3.5.2.2 - Ensure IPv6 loopback traffic is configured(-i lo)
+    iptables:
+      chain: INPUT
+      in_interface: "lo"
+      jump: ACCEPT
+      ip_version: ipv6
+    tags:
+      - level-1
+      - section-3
+      - "3.5.2.2"
+      - scored
+
+  - name: 3.5.2.2 - Ensure IPv6 loopback traffic is configured(-o lo)
+    iptables:
+      chain: OUTPUT
+      out_interface: "lo"
+      jump: ACCEPT
+      ip_version: ipv6
+    tags:
+      - level-1
+      - section-3
+      - "3.5.2.2"
+      - scored
+
+  - name: 3.5.2.2 - Ensure IPv6 loopback traffic is configured(-i 127.0.0.1/8)
+    iptables:
+      chain: INPUT
+      source: ::1/128
+      jump: DROP
+      ip_version: ipv6
+    tags:
+      - level-1
+      - section-3
+      - "3.5.2.2"
+      - scored
+
+# 3.5.2.3 Ensure IPv6 outbound and established connections are configured
+
+  - name: 3.5.2.3 - Ensure IPv6 outbound and established connections are configured
+    iptables:
+      chain: OUTPUT
+      protocol: tcp
+      match: state
+      ctstate: ESTABLISHED,NEW
+      jump: ACCEPT
+      ip_version: ipv6
+    tags:
+      - level-1
+      - section-3
+      - "3.5.2.3"
+      - not-scored
+
+  - name: 3.5.2.3 - Ensure IPv6 outbound and established connections are configured
+    iptables:
+      chain: OUTPUT
+      protocol: udp
+      match: state
+      ctstate: ESTABLISHED,NEW
+      jump: ACCEPT
+      ip_version: ipv6
+    tags:
+      - level-1
+      - section-3
+      - "3.5.2.3"
+      - not-scored
+
+  - name: 3.5.2.3 - Ensure IPv6 outbound and established connections are configured
+    iptables:
+      chain: OUTPUT
+      protocol: icmp
+      match: state
+      ctstate: ESTABLISHED,NEW
+      jump: ACCEPT
+      ip_version: ipv6
+    tags:
+      - level-1
+      - section-3
+      - "3.5.2.3"
+      - not-scored
+
+  - name: 3.5.2.3 - Ensure IPv6 outbound and established connections are configured
+    iptables:
+      chain: INPUT
+      protocol: tcp
+      match: state
+      ctstate: ESTABLISHED
+      jump: ACCEPT
+      ip_version: ipv6
+    tags:
+      - level-1
+      - section-3
+      - "3.5.2.3"
+      - not-scored
+
+  - name: 3.5.2.3 - Ensure IPv6 outbound and established connections are configured
+    iptables:
+      chain: INPUT
+      protocol: udp
+      match: state
+      ctstate: ESTABLISHED
+      jump: ACCEPT
+      ip_version: ipv6
+    tags:
+      - level-1
+      - section-3
+      - "3.5.2.3"
+      - not-scored
+
+  - name: 3.5.2.3 - Ensure IPv6 outbound and established connections are configured
+    iptables:
+      chain: INPUT
+      protocol: icmp
+      match: state
+      ctstate: ESTABLISHED
+      jump: ACCEPT
+      ip_version: ipv6
+    tags:
+      - level-1
+      - section-3
+      - "3.5.2.3"
+      - not-scored
+
+# 3.5.2.4 Ensure IPv6 firewall rules exist for all open ports
+
+  - name: 3.5.2.4 - Ensure IPv6 firewall rules exist for accepting SSH connections
+    iptables:
+      chain: INPUT
+      protocol: tcp
+      destination_port: "22"
+      ctstate: NEW
+      syn: match
+      jump: ACCEPT
+      comment: Accept new SSH connections.
+      ip_version: ipv6
+    tags:
+      - level-1
+      - section-3
+      - "3.5.2.4"
+      - not-scored
+
+# 3.5.3 Ensure iptables is installed
+
+  - name: 3.5.3 - Ensure iptables is installed
+    yum:
+      name: "iptables"
+      state: latest
+    tags:
+      - level-1
+      - section-3
+      - "3.5.3"
+      - scored
+
+  - name: "3.5.2.11 Check nftables file exist"
+    stat:
+      path: /etc/sysconfig/nftables.conf
+    register: nftables_data
+  
+  - name: "Check nftables.conf exist"
+    debug:
+      msg: "the file exists"
+    when: nftables_data.stat.exists
+  
+  - name: "Check nftables.conf not exist"
+    debug:
+      msg: "the file does not exists"
+    when: not nftables_data.stat.exists
+  
+  - name: "Edit the nftable config if the file exist"
+    lineinfile: 
+      path: /etc/sysconfig/nftables.conf
+      line: include '/etc/nftables/nftables.rules'
+      state: present
+    when: nftables_data.stat.exists
+  
+  - name: "Create nftable.conf and edit configuration"
+    copy:
+      dest: /etc/sysconfig/nftables.conf
+      content: include '/etc/nftables/nftables.rules'
+    when: not nftables_data.stat.exists
+
+# 4.1.1.1 Ensure Audit Log Storage Size is configured
+
+  - name: 4.1.1.1 Ensure audit log storage size is configured (Not Scored)
+    command: grep max_log_file "{{ cis_audit_auditd_filename }}" # /etc/audit/auditd.conf
+    register: audit_log_max_size
+    tags:
+      - level-1
+      - section-4
+      - "4.1.1.1"
+      - not-scored
+
+  - name: Display the configured audit log size
+    debug:
+      var: audit_log_max_size
+
+# 4.1.1.2 Ensure system is disabled when audit logs are full (Scored)
+
+  - name: 4.1.1.2- Check if CIS audit.d configuration file exists
+    stat:
+      path: "{{ cis_audit_auditd_filename }}"
+    register: auditd_4_1_1_2
+    tags:
+      - level-1
+      - section-1
+      - "4.1.1.2"
+      - scored
+
+  - name: 4.1.1.2 Ensure system is disabled when audit logs are full (Scored)
+    lineinfile:
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+      dest: "{{ cis_audit_auditd_filename }}"
+      state: present
+    with_items:
+      - { regexp: "space_left_action = SYSLOG", line: "space_left_action = email" }
+      - { regexp: "admin_space_left_action = SUSPEND", line: "admin_space_left_action = halt" }
+    when: auditd_4_1_1_2.stat.exists
+    tags:
+      - level-2
+      - section-4
+      - "4.1.1.2"
+      - scored
+
+# 4.1.1.3 Ensure audit logs are not automatically deleted (Scored)
+
+  - name: 4.1.1.3 Check if CIS audit.d configuration file exists
+    stat:
+      path: "{{ cis_audit_auditd_filename }}"
+    register: auditd_4_1_1_3
+    tags:
+      - level-1
+      - section-1
+      - "4.1.1.3"
+      - scored
+
+  - name: 4.1.1.3 Ensure audit logs are not automatically deleted (Scored)
+    lineinfile:
+      regexp: "max_log_file_action = ROTATE"
+      line: "max_log_file_action = keep_logs"
+      dest: "{{ cis_audit_auditd_filename }}"
+      state: present
+    when: auditd_4_1_1_3.stat.exists
+    tags:
+      - level-2
+      - section-4
+      - "4.1.1.3"
+      - scored
+
+# 4.1.1.3 Ensure audit logs are not automatically deleted (Scored)
+
+  - name: 4.1.1.3 Check if CIS audit.d configuration file exists
+    stat:
+      path: "{{ cis_audit_auditd_filename }}"
+    register: auditd_4_1_1_3
+    tags:
+      - level-1
+      - section-1
+      - "4.1.1.3"  
+  
+  - name: 4.1.1.3 Auditing for processes that start prior to auditd" (GRUB_CMDLINE_LINUX)
+    lineinfile:
+      path: /etc/default/grub
+      line: '{{item}}'
+      state: present
+    with_items:
+      - GRUB_CMDLINE_LINUX="audit=1"
+      - GRUB_CMDLINE_LINUX='audit_backlog_limit=8192'
+      - scored
+
+  - name: 4.1.1.3 Ensure audit logs are not automatically deleted (Scored)
+    lineinfile:
+      regexp: "max_log_file_action = ROTATE"
+      line: "max_log_file_action = keep_logs"
+      dest: "{{ cis_audit_auditd_filename }}"
+      state: present
+    when: auditd_4_1_1_3.stat.exists
+    tags:
+      - level-2
+      - section-4
+      - "4.1.1.3"
+      - scored
+
+
+      
+# 4.1.2 Ensure auditd service is enabled (Scored)
+  - name: 4.1.2 Ensure auditd service is enabled (Scored)
+    command: yum -q list audit
+    ignore_errors: true
+    register: auditd_4_1_2
+    tags:
+      - level-2
+      - section-4
+      - "4.2.1.1"
+      - scored
+
+  - name: 4.1.2 Ensure auditd service is enabled (Scored)
+    service:
+      name: "auditd"
+      enabled: true
+      state: started
+    when:
+      - auditd_4_1_2.rc is not defined or auditd_4_1_2.rc == 0
+    ignore_errors: false
+    tags:
+      - level-2
+      - section-4
+      - "4.2.1.1"
+      - scored
+
+# 4.1.3 Ensure auditing for processes that start prior to auditd is enabled (Scored)
+
+  - name: 4.1.3 Ensure auditing for processes that start prior to auditd is enabled (Scored)
+    replace:
+      dest: "{{ cis_grub_configuration_filename }}"
+      regexp: '^(GRUB_CMDLINE_LINUX_DEFAULT=.*)\"$'
+      replace: '\1 audit=1"'
+    tags:
+      - level-2
+      - section-4
+      - "4.1.3"
+      - scored
+
+  - name: 4.1.4  runtime audit rules using auditctl
+    lineinfile:
+      path: /etc/localtime
+      line: auditctl -w /etc/localtime -p wa -k time-change
+      state: present
+
+# 4.1.4 Ensure events that modify data and time information are collected
+
+  - name: 4.1.4 Ensure events that modify date and time information are collected (Scored)
+    shell: "grep time-change {{ cis_audit_rules_filename }}"
+    register: time-change
+    changed_when: False
+    ignore_errors: true
+    tags:
+      - "4.1.4"
+      - level-2
+      - section-4
+      - scored
+
+
+  - name: 4.1.4 Ensure events that modify date and time information are collected (Scored)(Verify registered output matches)
+    lineinfile:
+      dest: "{{ cis_audit_rules_filename }}"
+      line: "{{ item }}"
+    with_items:
+      - '# 4.1.4 Ensure events that modify date and time information are collected'
+      - '-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time-change'
+      - '-a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k time-change'
+      - '-a always,exit -F arch=b64 -S clock_settime -k time-change'
+      - '-a always,exit -F arch=b32 -S clock_settime -k time-change'
+      - '-w /etc/localtime -p wa -k time-change'
+    when:
+      ("'-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time-change' not in time-change.stdout") or
+      ("'-a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k time-change' not in time-change.stdout") or
+      ("'-a always,exit -F arch=b64 -S clock_settime -k time-change' not in time-change.stdout") or
+      ("'-a always,exit -F arch=b32 -S clock_settime -k time-change' not in time-change.stdout") or
+      ("'-w /etc/localtime -p wa -k time-change' not in time-change.stdout")
+    tags:
+      - "4.1.4"
+      - level-2
+      - section-4
+      - scored
+
+ 
+
+# 4.1.5 Ensure events that modify user/group information are collected(Scored)
+
+  - name: 4.1.5 Ensure events that modify user/group information are collected(Scored)
+    shell: "grep identity {{ cis_audit_rules_filename }}"
+    register: identity
+    changed_when: False
+    ignore_errors: true
+    tags:
+      - "4.1.5"
+      - level-2
+      - section-4
+      - scored
+
+
+  - name: 4.1.5 Ensure events that modify user/group information are collected(Scored)(Verify registered output matches)
+    lineinfile:
+      dest: "{{ cis_audit_rules_filename }}"
+      line: "{{ item }}"
+    with_items:
+      - '# 4.1.5 Ensure events that modify date and time information are collected'
+      - '-w /etc/group -p wa -k identity'
+      - '-w /etc/passwd -p wa -k identity'
+      - '-w /etc/gshadow -p wa -k identity'
+      - '-w /etc/shadow -p wa -k identity'
+      - '-w /etc/security/opasswd -p wa -k identity'
+    when:
+      ("'-w /etc/group -p wa -k identity' not in identity.stdout") or
+      ("'-w /etc/passwd -p wa -k identity' not in identity.stdout") or
+      ("'-w /etc/gshadow -p wa -k identity' not in identity.stdout") or
+      ("'-w /etc/shadow -p wa -k identity' not in identity.stdout") or
+      ("'-w /etc/security/opasswd -p wa -k identity' not in identity.stdout")
+    tags:
+      - "4.1.5"
+      - level-2
+      - section-4
+      - scored
+
+# 4.1.6 Ensure events that modify the system's network environment are collected(Scored)
+
+  - name: 4.1.6 Ensure events that modify the system's network environment are collected(Scored)
+    shell: "grep system-locale {{ cis_audit_rules_filename }}"
+    register: system-locale
+    changed_when: False
+    ignore_errors: true
+    tags:
+      - "4.1.6"
+      - level-2
+      - section-4
+      - scored
+
+
+  - name: 4.1.6 Ensure events that modify the system's network environment are collected(Scored)(Verify registered output matches)
+    lineinfile:
+      dest: "{{ cis_audit_rules_filename }}"
+      line: "{{ item }}"
+    with_items:
+      - '# 4.1.6 Ensure events that modify date and time information are collected'
+      - '-a always,exit -F arch=b64 -S sethostname -S setdomainname -k system-locale'
+      - '-a always,exit -F arch=b32 -S sethostname -S setdomainname -k system-locale'
+      - '-w /etc/issue -p wa -k system-locale'
+      - '-w /etc/issue.net -p wa -k system-locale'
+      - '-w /etc/hosts -p wa -k system-locale'
+      - '-w /etc/sysconfig/network -p wa -k system-locale'
+      - '-w /etc/sysconfig/network-scripts/ -p wa -k system-locale'
+    when:
+      ("'-a always,exit -F arch=b64 -S sethostname -S setdomainname -k system-locale' not in system-locale.stdout") or
+      ("'-a always,exit -F arch=b32 -S sethostname -S setdomainname -k system-locale' not in system-locale.stdout") or
+      ("'-w /etc/issue -p wa -k system-locale' not in system-locale.stdout") or
+      ("'-w /etc/issue.net -p wa -k system-locale' not in system-locale.stdout") or
+      ("'-w /etc/hosts -p wa -k system-locale' not in system-locale.stdout") or
+      ("'-w /etc/sysconfig/network -p wa -k system-locale' not in system-locale.stdout") or
+      ("'-w /etc/sysconfig/network-scripts/ -p wa -k system-locale' not in system-locale.stdout")
+    tags:
+      - "4.1.6"
+      - level-2
+      - section-4
+      - scored
+
+# 4.1.7 Ensure events that modify the system's Mandatory Access Controls are collected(Scored)
+
+  - name: 4.1.7 Ensure events that modify the system's Mandatory Access Controls are collected(Scored)
+    shell: "grep MAC-policy {{ cis_audit_rules_filename }}"
+    register: MAC-policy
+    changed_when: False
+    ignore_errors: true
+    tags:
+      - "4.1.7"
+      - level-2
+      - section-4
+      - scored
+
+
+  - name: 4.1.7 Ensure events that modify the system's Mandatory Access Controls are collected(Scored)(Verify registered output matches)
+    lineinfile:
+      dest: "{{ cis_audit_rules_filename }}"
+      line: "{{ item }}"
+    with_items:
+      - '# 4.1.7 Ensure events that modify the system Mandatory Access Controls are collected'
+      - '-w /etc/selinux/ -p wa -k MAC-policy'
+      - '-w /usr/share/selinux/ -p wa -k MAC-policy'
+    when:
+      ("'-w /etc/selinux/ -p wa -k MAC-policy' not in MAC-policy.stdout") or
+      ("'-w /usr/share/selinux/ -p wa -k MAC-policy' not in MAC-policy.stdout")
+    tags:
+      - "4.1.7"
+      - level-2
+      - section-4
+      - scored
+
+  - name: 4.1.7 /var/log/tallylog' file, as defined by the '/etc/audit/rules.d/*.rules' files
+    lineinfile:
+       path: '/etc/audit/rules.d/audit.rules'
+       line: -w /var/log/tallylog -p wa -k logins
+       state: present
+
+#4.1.8 Ensure login and logout events are collected(Scored)
+
+  - name: 4.1.8 Ensure login and logout events are collected(Scored)
+    shell: "grep logins {{ cis_audit_rules_filename }}"
+    register: logins
+    changed_when: False
+    ignore_errors: true
+    tags:
+      - "4.1.8"
+      - level-2
+      - section-4
+      - scored
+
+
+  - name: 4.1.8 Ensure login and logout events are collected (Verify registered output matches)
+    lineinfile:
+      dest: "{{ cis_audit_rules_filename }}"
+      line: "{{ item }}"
+    with_items:
+      - '# 4.1.8 Ensure login and logout events are collected'
+      - '-w /var/log/lastlog -p wa -k logins'
+      - '-w /var/run/faillock/ -p wa -k logins'
+    when:
+     ("'-w /var/run/faillock/ -p wa -k logins' not in logins.stdout") or
+     ("'-w /var/log/lastlog -p wa -k logins' not in logins.stdout")
+    tags:
+      - "4.1.8"
+      - level-2
+      - section-4
+      - scored
+
+#4.1.9 Ensure session initiation information is collected (Scored)
+
+  - name: 4.1.9 Ensure session initiation information is collected (Scored)
+    shell: "grep session {{ cis_audit_rules_filename }}"
+    register: session
+    changed_when: False
+    ignore_errors: true
+    tags:
+      - "4.1.9"
+      - level-2
+      - section-4
+      - scored
+
+
+  - name: 4.1.9 Ensure session initiation information is collected(Verify registered output matches)
+    lineinfile:
+      dest: "{{ cis_audit_rules_filename }}"
+      line: "{{ item }}"
+    with_items:
+      - '# 4.1.9 Ensure login and logout events are collected'
+      - '-w /var/run/utmp -p wa -k session'
+      - '-w /var/log/wtmp -p wa -k logins'
+      - '-w /var/log/btmp -p wa -k logins'
+    when:
+      ("'-w /var/run/utmp -p wa -k session' not in session.stdout") or
+      ("'-w /var/log/wtmp -p wa -k logins' not in session.stdout") or
+      ("'-w /var/log/btmp -p wa -k logins' not in session.stdout")
+    tags:
+      - "4.1.9"
+      - level-2
+      - section-4
+      - scored
+
+# 4.1.10 Ensure discretionary access control permission modification events are collected (Scored)
+
+  - name: 4.1.10 Ensure discretionary access control permission modification events are collected (Scored)
+    shell: "grep perm_mod {{ cis_audit_rules_filename }}"
+    register: perm_mod
+    changed_when: False
+    ignore_errors: true
+    tags:
+      - "4.1.10"
+      - level-2
+      - section-4
+      - scored
+
+
+  - name: 4.1.10 Ensure discretionary access control permission modification events are collected (Scored)(Verify registered output matches)
+    lineinfile:
+      dest: "{{ cis_audit_rules_filename }}"
+      line: "{{ item }}"
+    with_items:
+      - '# 4.1.10 Ensure discretionary access control permission modification events are collected'
+      - '-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod'
+      - '-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod'
+      - '-a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod'
+      - '-a always,exit -F arch=b32 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod'
+      - '-a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod'
+      - '-a always,exit -F arch=b32 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod'
+    when:
+      ("'-a always,exit -F arch=b64 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod' not in perm_mod.stdout") or
+      ("'-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod' not in perm_mod.stdout") or
+      ("'-a always,exit -F arch=b64 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod' not in perm_mod.stdout") or
+      ("'-a always,exit -F arch=b32 -S chown -S fchown -S fchownat -S lchown -F auid>=1000 -F auid!=4294967295 -k perm_mod' not in perm_mod.stdout") or
+      ("'-a always,exit -F arch=b64 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod' not in perm_mod.stdout") or
+      ("'-a always,exit -F arch=b32 -S setxattr -S lsetxattr -S fsetxattr -S removexattr -S lremovexattr -S fremovexattr -F auid>=1000 -F auid!=4294967295 -k perm_mod' not in perm_mod.stdout")
+    tags:
+      - "4.1.10"
+      - level-2
+      - section-4
+      - scored
+
+# 4.1.11 Ensure unsuccessful unauthorized file access attempts are collected (Scored)
+
+  - name: 4.1.11 Ensure unsuccessful unauthorized file access attempts are collected (Scored)
+    shell: "grep access {{ cis_audit_rules_filename }}"
+    register: access
+    changed_when: False
+    ignore_errors: true
+    tags:
+      - "4.1.11"
+      - level-2
+      - section-4
+      - scored
+
+
+  - name: 4.1.11 Ensure unsuccessful unauthorized file access attempts are collected(Verify registered output matches)
+    lineinfile:
+      dest: "{{ cis_audit_rules_filename }}"
+      line: "{{ item }}"
+    with_items:
+      - '# 4.1.11 Ensure unsuccessful unauthorized file access attempts are collected'
+      - '-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access'
+      - '-a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access'
+      - '-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access'
+      - '-a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access'
+    tags:
+      - "4.1.11"
+      - level-2
+      - section-4
+      - scored
+
+# 4.1.12 Ensure use of privileged commands is collected (Scored)
+
+  - name: 4.1.12 Populate a list of privileged binaries
+    command: find / -xdev \( -perm -4000 -o -perm -2000 \) -type f
+    register: privileged_binaries
+
+  - name: 4.1.12 Ensure use of privileged commands is collected (Scored)
+    lineinfile:
+      dest: "{{ cis_audit_rules_filename }}"
+      insertafter: EOF
+      line: "-a always,exit -F path={{ item }} -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged"
+    with_items: "{{ privileged_binaries.stdout_lines }}"
+    tags:
+      - level-1
+      - section-4
+      - "4.1.12"
+      - scored
+
+# 4.1.13 Ensure successful file system mounts are collected (Scored)
+
+  - name: 4.1.13 Ensure successful file system mounts are collected (Scored)
+    shell: "grep mounts {{ cis_audit_rules_filename }}"
+    register: mounts
+    changed_when: False
+    ignore_errors: true
+    tags:
+      - "4.1.13"
+      - level-1
+      - section-4
+      - scored
+
+
+  - name: 4.1.13 Ensure successful file system mounts are collected (Scored)(Verify registered output matches)
+    lineinfile:
+      dest: "{{ cis_audit_rules_filename }}"
+      line: "{{ item }}"
+    with_items:
+      - '# 4.1.13 Ensure successful file system mounts are collected (Scored)'
+      - '-a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts'
+      - '-a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts'
+    when:
+      ("'-a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts' not in mounts.stdout") or
+      ("'-a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts' not in mounts.stdout")
+    tags:
+      - "4.1.13"
+      - level-1
+      - section-4
+      - scored
+
+# 4.1.14 Ensure file deletion events by users are collected (Scored)
+
+  - name: 4.1.14 Ensure file deletion events by users are collected (Scored)
+    shell: "grep delete {{ cis_audit_rules_filename }}"
+    register: delete
+    changed_when: False
+    ignore_errors: true
+    tags:
+      - "4.1.14"
+      - level-1
+      - section-4
+      - scored
+
+
+  - name: 4.1.14 Ensure file deletion events by users are collected(Verify registered output matches)
+    lineinfile:
+      dest: "{{ cis_audit_rules_filename }}"
+      line: "{{ item }}"
+    with_items:
+      - '# 4.1.14 Ensure file deletion events by users are collected'
+      - '-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete'
+      - '-a always,exit -F arch=b32 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete'
+    when:
+      ("'-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete' not in delete.stdout") or
+      ("'-a always,exit -F arch=b32 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete' not in delete.stdout")
+    tags:
+      - "4.1.14"
+      - level-1
+      - section-4
+      - scored
+
+# 4.1.15 Ensure changes to system administration scope (sudoers) is collected (Scored)
+
+  - name: 4.1.15 Ensure changes to system administration scope (sudoers) is collected (Scored)
+    shell: "grep scope {{ cis_audit_rules_filename }}"
+    register: scope
+    changed_when: False
+    ignore_errors: true
+    tags:
+      - "4.1.15"
+      - level-2
+      - section-4
+      - scored
+
+
+  - name: 4.1.15 Ensure changes to system administration scope (sudoers) is collected(Verify registered output matches)
+    lineinfile:
+      dest: "{{ cis_audit_rules_filename }}"
+      line: "{{ item }}"
+    with_items:
+      - '# 4.1.15 Ensure changes to system administration scope (sudoers) is collected'
+      - '-w /etc/sudoers -p wa -k scope'
+      - '-w /etc/sudoers.d -p wa -k scope'
+    when:
+      ("'-w /etc/sudoers -p wa -k scope' not in scope.stdout") or
+      ("'-w /etc/sudoers.d -p wa -k scope' not in scope.stdout")
+    tags:
+      - "4.1.15"
+      - level-2
+      - section-4
+      - scored
+
+  - name: "4.1.15 execve' syscall parameter defined in the '/etc/audit/rules.d/*.rules' files"
+    lineinfile:
+     path: '/etc/audit/rules.d/audit.rules'
+     line: "{{item}}"
+     state: present
+    with_items:
+      - -a always,exit -F arch=b32 -S execve -C uid!=euid -F euid=0 -k setuid
+      - -a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k setuid
+      - -a always,exit -F arch=b32 -S execve -C gid!=egid -F egid=0 -k setgid
+      - -a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k setgid
+
+# 4.1.16 Ensure system administrator actions (sudolog) are collected (Scored)
+
+  - name: 4.1.16 Ensure system administrator actions (sudolog) are collected (Scored)
+    shell: "grep scope {{ cis_audit_rules_filename }}"
+    register: scope
+    changed_when: False
+    ignore_errors: true
+    tags:
+      - "4.1.16"
+      - level-2
+      - section-4
+      - scored
+
+
+  - name: 4.1.16 Ensure system administrator actions (sudolog) are collected(Verify registered output matches)
+    lineinfile:
+      dest: "{{ cis_audit_rules_filename }}"
+      line: "{{ item }}"
+    with_items:
+      - '# 4.1.16 Ensure system administrator actions (sudolog) are collected'
+      - '-w /var/log/sudo.log -p wa -k actions'
+    when:
+      ("'-w /var/log/sudo.log -p wa -k actions' not in scope.stdout")
+    tags:
+      - "4.1.16"
+      - level-2
+      - section-4
+      - scored
+
+# 4.1.17 Ensure kernel module loading and unloading is collected (Scored)
+
+  - name: 4.1.17 Ensure kernel module loading and unloading is collected (Scored)
+    shell: "grep modules {{ cis_audit_rules_filename }}"
+    register: modules
+    changed_when: False
+    ignore_errors: true
+    tags:
+      - "4.1.17"
+      - level-2
+      - section-4
+      - scored
+
+
+  - name: 4.1.17 Ensure kernel module loading and unloading is collected(Verify registered output matches)
+    lineinfile:
+      dest: "{{ cis_audit_rules_filename }}"
+      line: "{{ item }}"
+    with_items:
+      - '# 4.1.17 Ensure kernel module loading and unloading is collected'
+      - '-w /sbin/insmod -p x -k modules'
+      - '-w /sbin/rmmod -p x -k modules'
+      - '-w /sbin/modprobe -p x -k modules'
+      - '-a always,exit -F arch=b64 -S init_module -S delete_module -k modules'
+    when:
+      ("'-w /sbin/insmod -p x -k modules' not in modules.stdout") or
+      ("'-w /sbin/rmmod -p x -k modules' not in modules.stdout") or
+      ("'-w /sbin/modprobe -p x -k modules' not in modules.stdout") or
+      ("'-a always,exit -F arch=b64 -S init_module -S delete_module -k modules' not in modules.stdout")
+    tags:
+      - "4.1.17"
+      - level-2
+      - section-4
+      - scored
+  
+  - name: 4.1.17- 'immutable mode' setting in running audit configuration
+    lineinfile:
+      path: /etc/audit/audit.rules
+      line: -e 2
+      state: present
+  - name: 4.1.17- immutable mode settting in running audit configuration
+    lineinfile:
+      path: /etc/audit/rules.d/audit.rules
+      line: -e 2
+      state: present
+
+# 4.1.18 Ensure the audit configuration is immutable (Scored)
+
+  - name: 4.1.18 Ensure the audit configuration is immutable (Scored)
+    shell: grep "^\s*[^#]" {{ cis_audit_rules_filename }} | tail -1
+    register: immutable
+    changed_when: False
+    ignore_errors: true
+    tags:
+      - "4.1.18"
+      - level-2
+      - section-4
+      - scored
+
+
+  - name: 4.1.18 Ensure the audit configuration is immutable(Verify registered output matches)
+    lineinfile:
+      dest: "{{ cis_audit_rules_filename }}"
+      line: "{{ item }}"
+    with_items:
+      - '# 4.1.18 Ensure the audit configuration is immutable'
+      - '-e 2'
+    when:
+      ("'-e 2' not in immutable.stdout")
+    tags:
+      - "4.1.18"
+      - level-2
+      - section-4
+      - scored
+
+# 4.2.1.1 Ensure rsyslog Service is enabled
+
+  # - name: 4.2.1.1 - Check if rsyslog is installed
+  #   command: yum -q list rsyslog
+  #   ignore_errors: true
+  #   register: rsyslog_4_2_1_1
+  #   tags:
+  #     - level-1
+  #     - section-4
+  #     - "4.2.1.1"
+  #     - scored
+
+  # - name: 4.2.1.1 - Ensure rsyslog Service is enabled
+  #   service:
+  #     name: "rsyslog"
+  #     enabled: true
+  #     state: started
+  #   when:
+  #     - rsyslog_4_2_1_1.rc is not defined or rsyslog_4_2_1_1.rc == 0
+  #   ignore_errors: false
+  #   tags:
+  #     - level-1
+  #     - section-4
+  #     - "4.2.1.1"
+  #     - scored
+
+# 4.2.1.2 Ensure logging is configured (Not Scored)
+
+  - name: 4.2.1.2 - Ensure logging is configured (Not Scored)
+    command: /bin/true
+    changed_when: no
+    tags:
+        - level1
+        - patch
+        - rule_4.2.1.2
+
+# 4.2.1.3 Ensure rsyslog default file permissions configured
+
+  - name: 4.2.1.3 - Ensure rsyslog default file permissions configured
+    lineinfile:
+      regexp: "^\\$FileCreateMode\\s+"
+      line: "$FileCreateMode 0640"
+      insertbefore: BOF
+      dest: "/etc/rsyslog.conf"
+    #notify: systemctl restart rsyslog
+    tags:
+      - level-1
+      - section-4
+      - "4.2.1.3"
+      - scored
+
+# 4.2.1.4 Ensure rsyslog is configured to send logs to a remote log host (Exception: havenot configure remote host, if u have host, declar its ip with var on the above of this file)
+
+  - name: 4.2.1.4 - Ensure rsyslog is configured to send logs to a remote log host
+    lineinfile:
+      regexp: "^#?\\*\\.\\*\\s+"
+      line: "*.* @@127.0.0.1" 
+      dest: "/etc/rsyslog.conf"
+ 
+    tags:
+      - level-1
+      - section-4
+      - "4.2.1.4"
+      - scored
+
+# 4.2.1.5 Ensure remote rsyslog messages are only accepted on designated log hosts
+
+  - name: 4.2.1.5 - Ensure remote rsyslog messages are only accepted on designated log hosts
+    lineinfile:
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+      dest: "/etc/rsyslog.conf"
+      state: present
+    with_items:
+      - { regexp: "^#?\\$ModLoad\\s+imtcp", line: "$ModLoad imtcp" }
+      - { regexp: "^#?\\$InputTCPServerRun\\s+", line: "$InputTCPServerRun 514" }
+    #notify: systemctl restart rsyslog
+    ignore_errors: true
+    tags:
+      - level-1
+      - section-4
+      - "4.2.1.5"
+      - scored
+
+  - name: 4.2.1.5 - Ensure remote rsyslog messages are not accepted on non-designated log hosts
+    lineinfile:
+      regexp: "{{ item }}"
+      dest: "/etc/rsyslog.conf"
+      state: absent
+    with_items:
+      - "^#?\\$ModLoad\\s+imtcp"
+      - "^#?\\$InputTCPServerRun\\s+514"
+    #notify: systemctl restart rsyslog
+    ignore_errors: true
+    tags:
+      - level-1
+      - section-4
+      - "4.2.1.5"
+      - scored
+  
+
+
+
+  - name: "4.1.11 Perm Audit Parameter in /etc/audit/audit.rules file"
+    lineinfile:
+      path: /etc/audit/audit.rules
+      line: "-a always,exit -F perm=x -F path=/usr/bin/dnf-3 -F key=software-installer"
+      state: present
+
+  - name: "4.1.11 Perm Audit Parameter in /etc/audit/audit.rules file"
+    lineinfile:
+      path: /etc/audit/audit.rules
+      line: "-a always,exit -F perm=x -F path=/usr/bin/yum -F"
+      state: present  
+
+  - name: "4.1.11 Perm Audit Parameter in /etc/audit/audit.rules file"
+    lineinfile:
+      path: /etc/audit/audit.rules
+      line: "-a always,exit -F path=/bin/ping6 -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged"
+      state: present
+
+  - name: "4.1.11 Perm Audit Parameter in /etc/audit/audit.rules file"
+    lineinfile:
+      path: /etc/audit/audit.rules
+      line: "-a always,exit -F path=/bin/fusermount -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged"
+      state: present  
+
+  - name: "4.1.11 Perm Audit Parameter in /etc/audit/audit.rules file"
+    lineinfile:
+      path: /etc/audit/audit.rules
+      line: "-a always,exit -F path=/bin/mount -F perm=x -F auid>=1000 -F auid!=4294967295 -k privileged"
+      state: present  
+
+# 4.2.2.1 Ensure syslog-ng service is enabled
+
+  - name: 4.2.2.1 - Check if syslog-ng is installed
+    command: yum -q list syslog-ng
+    ignore_errors: true
+    register: syslog_ng_4_2_2_1
+    tags:
+      - level-1
+      - section-4
+      - "4.2.2.1"
+      - scored
+
+  - name: 4.2.2.1 - Ensure syslog-ng service is enabled
+    service:
+      name: "syslog-ng"
+      enabled: true
+      state: started
+    ignore_errors: true
+    tags:
+      - level-1
+      - section-4
+      - "4.2.2.1"
+      - scored
+  
+# 4.2.2.2 Ensure logging is configured
+
+  - name: 4.2.2.2 - Ensure logging is configured
+    command: /bin/true
+    changed_when: no
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - centos7cis_rsyslog is defined and centos7cis_log_server is defined
+      -  centos7cis_rsyslog
+      - centos7cis_log_server
+    tags:
+      - level1
+      - patch
+      - rule_4.2.1.2
+
+# 4.2.2.3 Ensure syslog-ng default file permissions configured
+
+  - name: 4.2.2.3 - Ensure syslog-ng default file permissions configured
+    lineinfile:
+      dest: '/etc/syslog-ng/syslog-ng.conf'
+      regexp: '^perm(0640);'
+      line: '^perm(0640);'
+      create: yes
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - centos7cis_syslog_ng is defined and centos7cis_log_server is defined
+      - centos7cis_syslog_ng
+      - centos7cis_log_server
+      - syslog_ng_installed is defined and syslog_ng_installed
+    tags:
+      - level1
+      - patch
+      - rule_4.2.2.3
+
+  - name: "4.2.2.3 Storage setting in /etc/systemd/journald.conf file"
+    lineinfile:
+      path: /etc/systemd/journald.conf
+      regexp: "#Storage"
+      line: "Storage=persistent"
+      state: present
+  
+  - name: "4.2.2.3 Compress setting in /etc/systemd/journald.conf file"
+    lineinfile:
+      path: /etc/systemd/journald.conf
+      regexp: "#Compress"
+      line: "Compress=yes"
+      state: present
+  
+  - name: "4.2.2.3 Forward syslog setting in /etc/systemd/journald.conf file"
+    lineinfile:
+      path: /etc/systemd/journald.conf
+      regexp: "#ForwardToSyslog"
+      line: "ForwardToSyslog=yes"
+      state: present
+
+# 4.2.2.4 Ensure syslog-ng is configured to send logs to a remote log host
+
+  - name: 4.2.2.4 - Ensure syslog-ng is configured to send logs to a remote log host
+    command: /bin/true
+    changed_when: no
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - centos7cis_syslog_ng is defined and centos7cis_log_server is defined
+      - centos7cis_syslog_ng
+      - centos7cis_log_server
+      - syslog_ng_installed is defined and syslog_ng_installed
+    tags:
+        - level1
+        - patch
+        - rule_4.2.2.4
+
+# 4.2.2.5  Ensure remote syslog-ng messages are only accepted on designated log hosts
+
+  - name: 4.2.2.5 - Ensure remote syslog-ng messages are only accepted on designated log hosts
+    lineinfile:
+      dest: /etc/rsyslog.conf
+      regexp: '^\$InputTCPServerRun 514'
+      line: '$InputTCPServerRun 514'
+      create: yes
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - centos7cis_rsyslog is defined and centos7cis_log_server is defined
+      - centos7cis_rsyslog
+      - centos7cis_log_server
+      - rsyslog_installed is defined and rsyslog_installed
+    tags:
+      - level1
+      - patch
+      - rule_4.2.1.5
+
+# 4.2.3 Ensure rsyslog or syslog-ng is installed
+
+  - name: 4.2.3 - Ensure rsyslog is installed
+    yum:
+      name: "{{ item.name }}"
+      state: "{{ item.state }}"
+    with_items:
+      - { name: "rsyslog", state: "present" }
+    tags:
+      - level-1
+      - section-4
+      - "4.2.3"
+      - scored
+
+  - name: 4.2.3 - Ensure syslog-ng is installed
+    yum:
+      name: "{{ item.name }}"
+      state: "{{ item.state }}"
+      enablerepo: epel
+    with_items:
+      - { name: "syslog-ng", state: "present" }
+    tags:
+      - level-1
+      - section-4
+      - "4.2.3"
+      - scored
+
+# 4.2.4 Ensure permissions on all logfiles are configured
+
+  - name: 4.2.4 - Ensure permissions on all logfiles are configured
+    shell: "find /var/log -type f -exec chmod g-wx,o-rwx {} +"
+    tags:
+      - level-1
+      - section-4
+      - "4.2.4"
+      - scored
+
+# 4.3 Ensure logrotate is configured
+
+  - name: 4.3 - Ensure logrotate is configured
+    lineinfile:
+      dest: /etc/logrotate.conf
+      regexp: "^#daily"
+      line: daily
+      create: yes
+
+
+# 5.1.1 Ensure cron daemon is enabled
+
+  - name: 5.1.1 - Ensure cron is installed
+    yum:
+      name: cronie
+      state: present
+    tags:
+      - level-1
+      - section-5
+      - "5.1.1"
+      - scored
+
+  - name: 5.1.1 - Ensure cron daemon is enabled
+    service:
+      name: "crond"
+      enabled: true
+      state: started
+    ignore_errors: false
+    tags:
+      - level-1
+      - section-5
+      - "5.1.1"
+      - scored
+
+# 5.1.2 Ensure permissions on /etc/crontab are configured
+
+  - name: 5.1.2 - Ensure permissions on /etc/crontab are configured
+    file:
+      path: "/etc/crontab"
+      owner: root
+      group: root
+      mode: 0600
+    tags:
+      - level-1
+      - section-5
+      - "5.1.2"
+      - scored
+
+# 5.1.3 Ensure permissions on /etc/cron.hourly are configured
+
+  - name: 5.1.3 - Ensure permissions on /etc/cron.hourly are configured
+    file:
+      path: "/etc/cron.hourly"
+      owner: root
+      group: root
+      mode: 0700
+    tags:
+      - level-1
+      - section-5
+      - "5.1.3"
+      - scored
+
+# 5.1.4 Ensure permissions on /etc/cron.daily are configured
+
+  - name: 5.1.4 - Ensure permissions on /etc/cron.daily are configured
+    file:
+      path: "/etc/cron.daily"
+      owner: root
+      group: root
+      mode: 0700
+    tags:
+      - level-1
+      - section-5
+      - "5.1.4"
+      - scored
+
+# 5.1.5 Ensure permissions on /etc/cron.weekly are configured
+
+  - name: 5.1.5 - Ensure permissions on /etc/cron.weekly are configured
+    file:
+      path: "/etc/cron.weekly"
+      owner: root
+      group: root
+      mode: 0700
+    tags:
+      - level-1
+      - section-5
+      - "5.1.5"
+      - scored
+
+# 5.1.6 Ensure permissions on /etc/cron.monthly are configured
+
+  - name: 5.1.6 - Ensure permissions on /etc/cron.monthly are configured
+    file:
+      path: "/etc/cron.monthly"
+      owner: root
+      group: root
+      mode: 0700
+    tags:
+      - level-1
+      - section-6
+      - "5.1.6"
+      - scored
+
+# 5.1.7 Ensure permissions on /etc/cron.d are configured
+
+  - name: 5.1.7 - Ensure permissions on /etc/cron.d are configured
+    file:
+      path: "/etc/cron.d"
+      owner: root
+      group: root
+      mode: 0700
+      state: directory
+    tags:
+      - level-1
+      - section-5
+      - "5.1.7"
+      - scored
+
+# 5.1.8 Ensure at/cron is restricted to authorized users
+
+  - name: 5.1.8 - Ensure /etc/cron.deny and /etc/at.deny do not exist
+    file:
+      path: "{{ item }}"
+      state: absent
+    with_items:
+      - "/etc/at.deny"
+      - "/etc/cron.deny"
+    tags:
+      - level-1
+      - section-5
+      - "5.1.8"
+      - scored
+
+  - name: 5.1.8 -  Ensure at/cron is restricted to authorized users
+    file:
+      path: "{{ item }}"
+      state: touch
+      owner: root
+      group: root
+      mode: 0600
+    with_items:
+      - "/etc/cron.allow"
+      - "/etc/at.allow"
+    tags:
+      - level-1
+      - section-5
+      - "5.1.8"
+      - scored
+
+# 5.2.1 Ensure permissions on /etc/ssh/sshd_config are configured
+
+  - name: 5.2.1 - Ensure permissions on /etc/ssh/sshd_config are configured
+    file:
+      path: "{{ cis_sshd_config_filename }}"
+      owner: root
+      group: root
+      mode: 0600
+    tags:
+      - level-1
+      - section-5
+      - "5.2.1"
+      - scored
+
+# 5.2.2 Ensure permissions on SSH private host key files are configured
+
+  - name: 5.2.2 Ensure permissions on SSH private host key files are configured
+    command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chown root:ssh_keys {} \;
+    tags:
+      - level-1
+      - section-5
+      - "5.2.2"
+      - scored
+
+  - name: 5.2.2 Ensure permissions on SSH private host key files are configured
+    command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key' -exec chmod 600 {} \;
+    tags:
+      - level-1
+      - section-5
+      - "5.2.2"
+      - scored
+
+  - name: "5.2.2 use pty setting in /etc/sudoers file"
+    lineinfile:
+      path: /etc/sudoers
+      line: "Defaults use_pty"
+      insertafter: Defaults.*
+
+# 5.2.3 Ensure permissions on SSH public host key files are configured
+
+  - name: 5.2.3 Ensure permissions on SSH private host key files are configured
+    command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key.pub' -exec chmod 644 {} \;
+    tags:
+      - level-1
+      - section-5
+      - "5.2.3"
+      - scored
+
+  - name: 5.2.3 Ensure permissions on SSH private host key files are configured
+    command: find /etc/ssh -xdev -type f -name 'ssh_host_*_key.pub' -exec chown root:root {} \;
+    tags:
+      - level-1
+      - section-5
+      - "5.2.3"
+      - scored
+
+  - name: '5.2.3 Status of the sudo log file on the host'
+    lineinfile:
+      path: "{{item}}"
+      line: "Defaults logfile= '/var/log/sudo.log'"
+      state: present
+    with_items:
+      - /etc/sudoers
+      - /etc/sudoers.d/90-cloud-init-users
+    ignore_errors: true
+
+# 5.2.4 - Ensure SSH Protocol is set to 2 (exception: can't restart ssh at the moment)
+
+  - name: 5.2.4 - Ensure SSH Protocol is set to 2
+    lineinfile:
+      regexp: "^Protocol\\s+"
+      line: "Protocol 2"
+      dest: "{{ cis_sshd_config_filename }}"
+    ###notify: restart sshd
+    tags:
+      - level-1
+      - section-5
+      - "5.2.4"
+      - scored
+
+# 5.2.5 - Ensure SSH LogLevel is appropriate
+
+  - name: 5.2.5 - Ensure SSH LogLevel is set to INFO
+    lineinfile:
+      regexp: "^LogLevel\\s+"
+      line: "LogLevel INFO"
+      dest: "{{ cis_sshd_config_filename }}"
+    tags:
+      - level-1
+      - section-5
+      - "5.2.5"
+      - scored
+
+# 5.2.6 - Ensure SSH X11 forwarding is disabled
+
+  - name: 5.2.6 - Ensure SSH X11 forwarding is disabled
+    lineinfile:
+      regexp: "^X11Forwarding\\s+"
+      line: "X11Forwarding no"
+      dest: "{{ cis_sshd_config_filename }}"
+    tags:
+      - level-1
+      - section-5
+      - "5.2.6"
+      - scored
+
+# 5.2.7 -  Ensure SSH MaxAuthTries is set to 4 or less
+
+  - name: 5.2.7 - Ensure SSH MaxAuthTries is set to 4 or less
+    lineinfile:
+      regexp: "^MaxAuthTries\\s+"
+      line: "MaxAuthTries 4"
+      dest: "{{ cis_sshd_config_filename }}"
+    ##notify: restart sshd
+    tags:
+      - level-1
+      - section-5
+      - "5.2.7"
+      - scored
+
+# # 5.2.8 Ensure SSH IgnoreRhosts is enabled //not ok to test for me but if you have defined this setting, can uncomment and define 
+
+#   - name: 5.2.8 - Ensure SSH IgnoreRhosts is enabled
+#     lineinfile:
+#       regexp: "^IgnoreRhosts\\s+"
+#       line: "IgnoreRhosts yes"
+#       dest: "{{ cis_sshd_config_filename }}"
+#     ##notify: restart sshd
+#     tags:
+#       - level-1
+#       - section-5
+#       - "5.2.8"
+#       - scored
+
+# # 5.2.9 Ensure SSH HostbasedAuthentication is disabled //not ok to test for me but if you have defined this setting, can uncomment and define 
+
+#   - name: 5.2.9 - Ensure SSH HostbasedAuthentication is disabled
+#     lineinfile:
+#       regexp: "^HostbasedAuthentication\\s+"
+#       line: "HostbasedAuthentication no"
+#       dest: "{{ cis_sshd_config_filename }}"
+#     ##notify: restart sshd
+#     tags:
+#       - level-1
+#       - section-5
+#       - "5.2.9"
+#       - scored
+
+# 5.2.10 Ensure SSH root login is disabled
+
+  - name: 5.2.10 - Ensure SSH root login is disabled
+    lineinfile:
+      regexp: "^PermitRootLogin\\s+"
+      line: "PermitRootLogin no"
+      dest: "{{ cis_sshd_config_filename }}"
+    ##notify: restart sshd
+    tags:
+      - level-1
+      - section-5
+      - "5.2.10"
+      - scored
+
+# 5.2.11 - Ensure SSH PermitEmptyPasswords is disabled
+
+  - name: 5.2.11 - Ensure SSH PermitEmptyPasswords is disabled
+    lineinfile:
+      regexp: "^PermitEmptyPasswords\\s+"
+      line: "PermitEmptyPasswords no"
+      dest: "{{ cis_sshd_config_filename }}"
+    ##notify: restart sshd
+    tags:
+      - level-1
+      - section-5
+      - "5.2.11"
+      - scored
+
+# 5.2.12 - Ensure SSH PermitUserEnvironment is disabled
+
+  - name: 5.2.12 - Ensure SSH PermitUserEnvironment is disabled
+    lineinfile:
+      regexp: "^PermitUserEnvironment\\s+"
+      line: "PermitUserEnvironment no"
+      dest: "{{ cis_sshd_config_filename }}"
+    ##notify: restart sshd
+    tags:
+      - level-1
+      - section-5
+      - "5.2.12"
+      - scored
+
+#5.2.13 - Ensure only strong ciphers are used (Error)
+
+  - name: 5.2.13 - Ensure only strong ciphers are used
+    lineinfile:
+      regexp: "^Ciphers\\s+"
+      line: "Ciphers aes128-ctr,aes192-ctr,aes256-ctr"
+      dest: "{{ cis_sshd_config_filename }}"
+    ##notify: restart sshd
+    tags:
+      - level-1
+      - section-5
+      - "5.2.13"
+      - scored
+
+# 5.2.14 - Ensure only approved MAC algorithms are used (Error)
+
+  - name: 5.2.14 - Ensure only strong MAC algorithms are used
+    lineinfile:
+      regexp: "^MACs\\s+"
+      line: "MACs {{ cis_sshd_macs }}"
+      dest: "{{ cis_sshd_config_filename }}"
+    ##notify: restart sshd
+    tags:
+      - level-1
+      - section-5
+      - "5.2.14"
+      - scored
+
+# 5.2.15 - Ensure only strong key exhcnage algorithms are used
+
+  - name: 5.2.15 - Ensure only strong key exchange algorithms are used
+    lineinfile:
+      regexp: "^KexAlgorithms\\s+"
+      line: "KexAlgorithms {{ cis_sshd_kex_algorithms }}"
+      dest: "{{ cis_sshd_config_filename }}"
+    ##notify: restart sshd
+    tags:
+      - level-1
+      - section-5
+      - "5.2.15"
+      - scored
+
+# 5.2.16 - Ensure SSH Idle Timeout Interval is configured
+
+  - name: 5.2.16 - Ensure SSH Client Alive Interval is configured
+    lineinfile:
+      regexp: "^ClientAliveInterval\\s+"
+      line: "ClientAliveInterval {{ cis_sshd_client_alive_interval }}"
+      dest: "{{ cis_sshd_config_filename }}"
+    ##notify: restart sshd
+    tags:
+      - level-1
+      - section-5
+      - "5.2.16"
+      - scored
+
+  - name: 5.2.16 - Ensure SSH Client Alive Count Max is configured
+    lineinfile:
+      regexp: "^ClientAliveCountMax\\s+"
+      line: "ClientAliveCountMax {{ cis_sshd_client_alive_count_max }}"
+      dest: "{{ cis_sshd_config_filename }}"
+    ##notify: restart sshd
+    tags:
+      - level-1
+      - section-5
+      - "5.2.16"
+      - scored
+
+# 5.2.17 - Ensure SSH LoginGraceTime is set to one minute or less
+
+  - name: 5.2.17 - Ensure SSH LoginGraceTime is set to one minute or less
+    lineinfile:
+      regexp: "^LoginGraceTime\\s+"
+      line: "LoginGraceTime {{ cis_sshd_login_grace_time }}"
+      dest: "{{ cis_sshd_config_filename }}"
+    ##notify: restart sshd
+    tags:
+      - level-1
+      - section-5
+      - "5.2.17"
+      - scored
+
+# 5.2.18 Ensure SSH access is limited (need to define)
+
+  # - name: 5.2.18 - Configure SSH AllowUsers
+  #   lineinfile:
+  #     regexp: "^#?AllowUsers\\s+"
+  #     line: "AllowUsers {{ cis_sshd_allow_users }}"
+  #     dest: "{{ cis_sshd_config_filename }}"
+  #   ##notify: restart sshd
+  #   tags:
+  #     - level-1
+  #     - section-5
+  #     - "5.2.18"
+  #     - scored
+
+  # - name: 5.2.18 - Configure SSH AllowGroups #define allow group
+  #   lineinfile:
+  #     regexp: "^#?AllowGroups\\s+"
+  #     line: "AllowGroups {{ cis_sshd_allow_groups }}"
+  #     dest: "{{ cis_sshd_config_filename }}"
+  #   ##notify: restart sshd
+  #   tags:
+  #     - level-1
+  #     - section-5
+  #     - "5.2.18"
+  #     - scored
+
+  # - name: 5.2.18 - Configure SSH DenyUsers 
+  #   lineinfile:
+  #     regexp: "^#?DenyUsers\\s+"
+  #     line: "DenyUsers {{ cis_sshd_deny_users }}"
+  #     dest: "{{ cis_sshd_config_filename }}"
+  #   ##notify: restart sshd
+  #   tags:
+  #     - level-1
+  #     - section-5
+  #     - "5.2.18"
+  #     - scored
+
+  # - name: 5.2.18 - Configure SSH DenyGroups
+  #   lineinfile:
+  #     regexp: "^#?DenyGroups\\s+"
+  #     line: "DenyGroups {{ cis_sshd_deny_groups }}"
+  #     dest: "{{ cis_sshd_config_filename }}"
+  #   ##notify: restart sshd
+  #   tags:
+  #     - level-1
+  #     - section-5
+  #     - "5.2.18"
+  #     - scored
+
+# 5.2.19 - Ensure SSH warning banner is configured
+
+  - name: 5.2.19 - Ensure SSH warning banner is configured
+    lineinfile:
+      regexp: "^Banner\\s+"
+      line: "Banner {{ cis_sshd_banner }}"
+      dest: "{{ cis_sshd_config_filename }}"
+    ##notify: restart sshd
+    tags:
+      - level-1
+      - section-5
+      - "5.2.19"
+      - scored
+
+  - name: "5.3.21 'MaxStartups' setting in the '/etc/ssh/sshd_config' file"
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: "#MaxStartups"
+      line: "MaxStartups 10:30:60"
+      state: present
+
+# 5.3.1 Ensure password creation requirements are configured
+
+  - name: 5.3.1 - Ensure password creation requirements are honoured by PAM
+    pamd:
+      name: "{{ item }}"
+      type: password
+      control: requisite
+      module_path: pam_pwquality.so
+      module_arguments:
+        - try_first_pass
+        - retry=3
+      state: updated
+    with_items:
+      - password-auth
+    tags:
+      - level-1
+      - section-5
+      - "5.3.1"
+      - scored
+
+  - name: 5.3.1 - Ensure password creation requirements are configured
+    lineinfile:
+      dest: "/etc/security/pwquality.conf"
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+      state: present
+      create: yes
+    with_items:
+      - { regexp: "^#?minlen=", line: "minlen = {{ cis_pwquality_minlen }}" }
+      - { regexp: "^#?dcredit=", line: "dcredit = {{ cis_pwquality_dcredit }}" }
+      - { regexp: "^#?ucredit=", line: "ucredit = {{ cis_pwquality_ucredit }}" }
+      - { regexp: "^#?ocredit=", line: "ocredit = {{ cis_pwquality_ocredit }}" }
+      - { regexp: "^#?lcredit=", line: "lcredit = {{ cis_pwquality_lcredit }}" }
+    tags:
+      - level-1
+      - section-5
+      - "5.3.1"
+      - scored
+
+  - name: "SCORED | 5.3.2 | Ensure lockout for failed password attempts is configured"
+    pamd:
+      name: '{{ item }}'
+      type: auth
+      control: required
+      module_path: pam_faillock.so
+      module_arguments: preauth audit silent deny=5 unlock_time=900
+      state: args_present
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - centos7cis_ad_ldap_joined_machine is defined and not centos7cis_ad_ldap_joined_machine
+    tags:
+      - level1
+      - patch
+      - rule_5.3.2
+      - low
+
+  - name: "SCORED | 5.3.2 | Ensure lockout for failed password attempts is configured - Removal"
+    pamd:
+      name: '{{ item }}'
+      type: auth
+      control: required
+      module_path: pam_faillock.so
+      module_arguments: preauth audit silent deny=5 unlock_time=900
+      state: absent
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - centos7cis_ad_ldap_joined_machine is defined and centos7cis_ad_ldap_joined_machine
+    tags:
+      - level1
+      - patch
+      - rule_5.3.2
+      - low
+
+
+  - name: 'SCORED | 5.3.2 | Ensure lockout for failed password attempts is configured - pam_unix.so'
+    pamd:
+      name: '{{ item }}'
+      type: auth
+      control: sufficient
+      module_path: 'pam_unix.so'
+      new_control: '[success=1 default=bad]'
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+    tags:
+      - level1
+      - patch
+      - rule_5.3.2
+      - low
+
+  - name: 'SCORED | 5.3.2 | Ensure lockout for failed password attempts is configured - pam_unix.so'
+    pamd:
+      name: '{{ item }}'
+      type: auth
+      control: sufficient
+      module_path: 'pam_unix.so'
+      new_type: auth
+      new_control: '[success=1 default=bad]'
+      new_module_path: pam_unix.so
+      module_arguments: 'nullok try_first_pass'
+      state: before
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+    tags:
+      - level1
+      - patch
+      - rule_5.3.2
+      - low
+
+  - name: 'SCORED | 5.3.2 | Ensure lockout for failed password attempts is configured - pam_unix.so'
+    pamd:
+      name: '{{ item }}'
+      type: auth
+      control: '[success=1 default=bad]'
+      module_path: pam_unix.so
+      module_arguments: 'nullok try_first_pass'
+      state: updated
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+    tags:
+      - level1
+      - patch
+      - rule_5.3.2
+      - low
+
+  - name: 'SCORED | 5.3.2 | Ensure lockout for failed password attempts is configured - pam_unix.so'
+    pamd:
+      name: '{{ item }}'
+      type: auth
+      control: '[success=1 default=bad]'
+      module_path: pam_unix.so
+      module_arguments: 'nullok try_first_pass'
+      state: args_present
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+    tags:
+      - level1
+      - patch
+      - rule_5.3.2
+      - low
+
+  - name: 'SCORED | 5.3.2 | Ensure lockout for failed password attempts is configured - pam_unix.so'
+    pamd:
+      name: '{{ item }}'
+      type: auth
+      control: sufficient
+      module_path: 'pam_unix.so'
+      new_control: '[success=1 default=bad]'
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+    tags:
+      - level1
+      - patch
+      - rule_5.3.2
+      - low
+
+  - name: 'SCORED | 5.3.2 | Ensure lockout for failed password attempts is configured - pam_unix.so'
+    pamd:
+      name: '{{ item }}'
+      type: auth
+      control: sufficient
+      module_path: 'pam_unix.so'
+      new_type: auth
+      new_control: '[success=1 default=bad]'
+      new_module_path: pam_unix.so
+      module_arguments: 'nullok try_first_pass'
+      state: before
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+    tags:
+      - level1
+      - patch
+      - rule_5.3.2
+      - low
+
+  - name: 'SCORED | 5.3.2 | Ensure lockout for failed password attempts is configured - pam_unix.so'
+    pamd:
+      name: '{{ item }}'
+      type: auth
+      control: '[success=1 default=bad]'
+      module_path: pam_unix.so
+      module_arguments: 'nullok try_first_pass'
+      state: updated
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+    tags:
+      - level1
+      - patch
+      - rule_5.3.2
+      - low
+
+  - name: 'SCORED | 5.3.2 | Ensure lockout for failed password attempts is configured - pam_unix.so'
+    pamd:
+      name: '{{ item }}'
+      type: auth
+      control: '[success=1 default=bad]'
+      module_path: pam_unix.so
+      module_arguments: 'nullok try_first_pass'
+      state: args_present
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+    tags:
+      - level1
+      - patch
+      - rule_5.3.2
+      - low
+
+  - name: "SCORED | 5.3.2 | Ensure lockout for failed password attempts is configured"
+    pamd:
+      name: '{{ item }}'
+      type: auth
+      control: '[success=1 default=bad]'
+      module_path: pam_unix.so
+      new_type: auth
+      new_control: '[default=die]'
+      new_module_path: pam_faillock.so
+      module_arguments: authfail audit deny=5 unlock_time=900
+      state: after
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - centos7cis_ad_ldap_joined_machine is defined and not centos7cis_ad_ldap_joined_machine
+    tags:
+      - level1
+      - patch
+      - rule_5.3.2
+      - low
+
+  - name: "SCORED | 5.3.2 | Ensure lockout for failed password attempts is configured"
+    pamd:
+      name: '{{ item }}'
+      type: auth
+      control: sufficient
+      module_path: pam_unix.so
+      new_type: auth
+      new_control: '[default=die]'
+      new_module_path: pam_faillock.so
+      module_arguments: authfail audit deny=5 unlock_time=900
+      state: after
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - centos7cis_ad_ldap_joined_machine is defined and not centos7cis_ad_ldap_joined_machine
+    tags:
+      - level1
+      - patch
+      - rule_5.3.2
+      - low
+
+  - name: "SCORED | 5.3.2 | Ensure lockout for failed password attempts is configured"
+    pamd:
+      name: '{{ item }}'
+      type: auth
+      control: '[default=die]'
+      module_path: pam_faillock.so
+      module_arguments: authfail audit deny=5 unlock_time=900
+      state: args_present
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - centos7cis_ad_ldap_joined_machine is defined and not centos7cis_ad_ldap_joined_machine
+    tags:
+      - level1
+      - patch
+      - rule_5.3.2
+      - low
+
+  - name: "SCORED | 5.3.2 | Ensure lockout for failed password attempts is configured - Removal"
+    pamd:
+      name: '{{ item }}'
+      type: auth
+      control: '[default=die]'
+      module_path: pam_faillock.so
+      module_arguments: authfail audit deny=5 unlock_time=900
+      state: absent
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - centos7cis_ad_ldap_joined_machine is defined and centos7cis_ad_ldap_joined_machine
+    tags:
+      - level1
+      - patch
+      - rule_5.3.2
+      - low
+
+  - name: "SCORED | 5.3.2 | Ensure lockout for failed password attempts is configured"
+    pamd:
+      name: '{{ item }}'
+      type: auth
+      control: '[default=die]'
+      module_path: pam_faillock.so
+      new_type: auth
+      new_control: sufficient
+      new_module_path: pam_faillock.so
+      module_arguments: authsucc audit deny=5 unlock_time=900
+      state: after
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - centos7cis_ad_ldap_joined_machine is defined and not centos7cis_ad_ldap_joined_machine
+    tags:
+      - level1
+      - patch
+      - rule_5.3.2
+      - low
+
+  - name: "SCORED | 5.3.2 | Ensure lockout for failed password attempts is configured"
+    pamd:
+      name: '{{ item }}'
+      type: auth
+      control: sufficient
+      module_path: pam_faillock.so
+      module_arguments: authsucc audit deny=5 unlock_time=900
+      state: args_present
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - centos7cis_ad_ldap_joined_machine is defined and not centos7cis_ad_ldap_joined_machine
+    tags:
+      - level1
+      - patch
+      - rule_5.3.2
+      - low
+
+  - name: "SCORED | 5.3.2 | Ensure lockout for failed password attempts is configured - Removal"
+    pamd:
+      name: '{{ item }}'
+      type: auth
+      control: sufficient
+      module_path: pam_faillock.so
+      module_arguments: authsucc audit deny=5 unlock_time=900
+      state: absent
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - centos7cis_ad_ldap_joined_machine is defined and centos7cis_ad_ldap_joined_machine
+    tags:
+      - level1
+      - patch
+      - rule_5.3.2
+      - low
+
+  - name: 'SCORED | 5.3.3 | Ensure password reuse is limited'
+    pamd:
+      name: '{{ item }}'
+      type: password
+      control: sufficient
+      module_path: 'pam_unix.so'
+      module_arguments: 'remember=5'
+      state: args_present
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - system_auth_password_check_pam_unix.rc is defined and system_auth_password_check_pam_unix.rc == 0
+    tags:
+       - level1
+       - patch
+       - rule_5.3.3
+       - low
+
+  - name: 'SCORED | 5.3.3 | Ensure password reuse is limited'
+    pamd:
+      name: '{{ item }}'
+      type: password
+      control: required
+      module_path: 'pam_pwhistory.so'
+      module_arguments: 'remember=5'
+      state: args_present
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - system_auth_password_check_pam_pwhistory.rc is defined and system_auth_password_check_pam_pwhistory.rc == 0
+    tags:
+       - level1
+       - patch
+       - rule_5.3.3
+       - low
+
+
+
+  - name: 'SCORED | 5.3.4 | PATCH | Ensure password hashing algorithm is SHA-512'
+    pamd:
+      name: '{{ item }}'
+      type: password
+      control: sufficient
+      module_path: 'pam_unix.so'
+      module_arguments: 'sha512'
+      state: args_present
+    ignore_errors: yes
+    loop:
+      - system-auth
+      - password-auth
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+    tags:
+       - level1
+       - patch
+       - rule_5.3.4
+  
+  - name: '5.3.20: Allow TCP Forwarding'
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: "#AllowTcpForwarding"
+      line: "AllowTcpForwarding no"
+      state: present
+    #notify: restart sshd
+
+  - name: "SCORED | 5.4.1.1 | PATCH | Ensure password expiration is 365 days or less"
+    lineinfile:
+        state: present
+        dest: /etc/login.defs
+        regexp: '^PASS_MAX_DAYS'
+        line: 'PASS_MAX_DAYS 90'
+    when:
+        - centos7cis_level1 is defined and centos7cis_level1
+        - centos7cis_password_expiration is defined and centos7cis_password_expiration
+    tags:
+        - level1
+        - patch
+        - rule_5.4.1.1
+
+  - name: "SCORED | 5.4.1.2 | PATCH | Ensure minimum days between password changes is 7 or more"
+    lineinfile:
+        state: present
+        dest: /etc/login.defs
+        regexp: '^PASS_MIN_DAYS'
+        line: 'PASS_MIN_DAYS 7'
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - centos7cis_password_minimum_days_password_change is defined and centos7cis_password_minimum_days_password_change
+    tags:
+      - level1
+      - patch
+      - rule_5.4.1.2
+
+  - name: "SCORED | 5.4.1.3 | PATCH | Ensure password expiration warning days is 7 or more"
+    lineinfile:
+      state: present
+      dest: /etc/login.defs
+      regexp: '^PASS_WARN_AGE'
+      line: 'PASS_WARN_AGE 7'
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+    tags:
+      - level1
+      - patch
+      - rule_5.4.1.3
+
+  - name: "SCORED | 5.4.1.4 | PATCH | Ensure inactive password lock is 30 days or less"
+    command: useradd -D -f 30
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+    tags:
+      - level1
+      - patch
+      - rule_5.4.1.4
+      - low
+
+  - name: "SCORED | 5.4.1.5 | Ensure all users last password change date is in the past (Scored)"
+    debug:
+      msg: 'Confirm all password change dates are in the past.'
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+    tags:
+      - level1
+      - patch
+      - rule_5.4.1.5
+      - low
+
+  - name: "5.4.1a minimum character classes configured on the system for a password"
+    lineinfile:
+      path: "/etc/security/pwquality.conf"
+      regexp: "# minclass"
+      line: "minclass =4"
+
+  - name: "SCORED | 5.4.2 | PATCH | Ensure system accounts are non-login"
+    copy:
+      src: scripts/five_four_two.sh
+      dest: /opt/five_four_two.sh
+      owner: root
+      group: root
+      mode: 0700
+    changed_when: no
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - centos7cis_ensure_system_accounts_are_non_login is defined and centos7cis_ensure_system_accounts_are_non_login
+    tags:
+      - level1
+      - patch
+      - rule_5.4.2
+      - low
+
+  - name: "SCORED | 5.4.2 | PATCH | Ensure system accounts are non-login"
+    shell: /opt/five_four_two.sh
+    args:
+      executable: /bin/bash
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - centos7cis_ensure_system_accounts_are_non_login is defined and centos7cis_ensure_system_accounts_are_non_login
+    tags:
+      - level1
+      - patch
+      - rule_5.4.2
+      - low
+
+  - name: "SCORED | 5.4.2 | PATCH | Ensure system accounts are non-login"
+    file:
+      path: /opt/five_four_two.sh
+      owner: root
+      group: root
+      state: absent
+    changed_when: no
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+      - centos7cis_ensure_system_accounts_are_non_login is defined and centos7cis_ensure_system_accounts_are_non_login
+    tags:
+      - level1
+      - patch
+      - rule_5.4.2
+      - low
+
+  - name: "5.4.2a pam_faillock.so module in /etc/pam.d/system-auth file"
+    lineinfile:
+      path: /etc/pam.d/system-auth
+      line: "auth required pam_faillock.so"
+      state: present
+       
+  - name: "5.4.2b 'pam_faillock.so' module in /etc/pam.d/password-auth file"
+    lineinfile:
+     path: /etc/pam.d/password-auth
+     line: "auth required pam_faillock.so"
+     state: present
+ 
+
+  - name: "SCORED | 5.4.3 | PATCH | Ensure default group for the root account is GID 0"
+    command: usermod -g 0 root
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+    tags:
+      - level1
+      - patch
+      - rule_5.4.3
+
+  - name: "SCORED | 5.4.4 | PATCH | Ensure default user umask is 027 or more restrictive"
+    lineinfile:
+      state: present
+      path: /etc/bashrc
+      regexp: 'umask'
+      line: '       umask 027'
+
+
+  - name: "SCORED | 5.4.4 | PATCH | Ensure default user umask is 022 or more restrictive"
+    lineinfile:
+      state: present
+      path: /etc/profile
+      regexp: 'umask'
+      line: '       umask 027'
+
+  - name: "SCORED | 5.4.4 | PATCH | Ensure default user umask is 022 or more restrictive"
+    find:
+      paths: /etc/profile.d/
+      recurse: yes
+      patterns: "*.sh"
+    register: profiled_dir
+
+  - name: "SCORED | 5.4.4 | PATCH | Ensure default user umask is 022 or more restrictive"
+    lineinfile:
+      state: present
+      path: "{{ item.path }}"
+      regexp: 'umask'
+      line: 'umask 027'
+      backup: yes
+    with_items: "{{ profiled_dir.files }}"
+    ignore_errors: yes
+
+  - name: " 5.4.4.a remember setting for pam_unix.so or pam_pwhistory.so module in /etc/pam.d/system-auth file'"
+    lineinfile:
+      path: /etc/pam.d/system-auth
+      line: "password   required <pam_unix.so|pam_pwhistory.so> use_authtok sha512 shadow remember=5"
+      insertafter: "password *"
+      state: present
+
+  - name: " 5.4.4.b remember setting for pam_unix.so or pam_pwhistory.so module in /etc/pam.d/system-auth file'"
+    lineinfile:
+      path: /etc/pam.d/system-auth
+      line: "password   password <pam_unix.so|pam_pwhistory.so> use_authtok sha512 shadow remember=5"
+      insertafter: "password *"
+      state: present
+
+  - name: "SCORED | 5.4.5 | PATCH | Ensure default user shell timeout is 900 seconds or less"
+    lineinfile:
+      state: present
+      path: /etc/bashrc
+      line: 'TMOUT=600'
+
+  - name: "SCORED | 5.4.5 | PATCH | Ensure default user shell timeout is 900 seconds or less"
+    lineinfile:
+      state: present
+      path: /etc/profile
+      line: 'TMOUT=600'
+
+  - name: '5.5.1 Edit Password maximum age'
+    lineinfile:
+      path: /etc/login.defs
+      regexp: "PASS_MAX_DAYS"
+      line: "PASS_MAX_DAYS   60"
+      state: present
+  
+  - name: '5.5.1 Edit Password minimum age'
+    lineinfile:
+      path: /etc/login.defs
+      regexp: "PASS_MIN_DAYS"
+      line: "PASS_MIN_DAYS   7"
+      state: present
+  
+  - name: 5.5.1.1 User Password Length
+    command: "chage -M 7 centos" #instead of centos, you can run your own username with your specific password length
+
+  - name: '5.5.1.4: Maximum days of inactivity allows'
+    lineinfile:
+      path: /etc/default/useradd
+      regexp: "INACTIVE"
+      line: "INACTIVE=30"
+      state: present
+  
+  - name: 5.5.1.4b Maximum days of inactivity user
+    command: "chage --inactive 30 centos" #instead of centos, you can run your own username with your specific password length
+
+  - name: "SCORED | 5.6 | PATCH | Ensure access to the su command is restricted"
+    lineinfile:
+      state: present
+      dest: /etc/group
+      regexp: '^wheel:x:10:(.*)$'
+      line: 'wheel:x:10:\1,root'
+      backrefs: yes
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+    tags:
+      - level1
+      - patch
+      - rule_5.6
+      - low
+
+  - name: "SCORED | 5.6 | PATCH | Ensure access to the su command is restricted"
+    lineinfile:
+      state: present
+      dest: /etc/pam.d/su
+      regexp: '^#auth\s+required\s+pam_wheel\.so'
+      line: 'auth           required        pam_wheel.so use_uid'
+    when:
+      - centos7cis_level1 is defined and centos7cis_level1
+    tags:
+      - level1
+      - patch
+      - rule_5.6
+
+  - name: " 5.7 pam module 'pam_wheel.so' setting in PAM configuration file '/etc/pam.d/su'"
+    lineinfile:
+      path: /etc/pam.d/su
+      line: "auth required pam_wheel.so use_uid"
+      state: present
+
+# 6.1.2 Ensure permissions on /etc/passwd are configured
+
+  - name: 6.1.2 - Ensure permissions on /etc/passwd are configured
+    file:
+      path: /etc/passwd
+      owner: root
+      group: root
+      mode: 0644
+    tags:
+      - level-1
+      - section-6
+      - "6.1.2"
+      - scored
+
+# 6.1.3 Ensure permissions on /etc/shadow are configured
+
+  - name: 6.1.3 - Ensure permissions on /etc/shadow are configured
+    file:
+      path: /etc/shadow
+      owner: root
+      group: root
+      mode: 0000
+    tags:
+      - level-1
+      - section-6
+      - "6.1.3"
+      - scored
+
+# 6.1.4 Ensure permissions on /etc/group are configured
+
+  - name: 6.1.4 - Ensure permissions on /etc/group are configured
+    file:
+      path: /etc/group
+      owner: root
+      group: root
+      mode: 0644
+    tags:
+      - level-1
+      - section-6
+      - "6.1.4"
+      - scored
+
+# 6.1.5 Ensure permissions on /etc/gshadow are configured
+
+  - name: 6.1.5 - Ensure permissions on /etc/gshadow are configured
+    file:
+      path: /etc/gshadow
+      owner: root
+      group: root
+      mode: 0000
+    tags:
+      - level-1
+      - section-6
+      - "6.1.5"
+      - scored
+
+# 6.1.6 Ensure permissions on /etc/passwd- are configured
+
+  - name: 6.1.6 - Ensure permissions on /etc/passwd- are configured
+    file:
+      path: /etc/passwd-
+      owner: root
+      group: root
+      mode: 0600
+    tags:
+      - level-1
+      - section-6
+      - "6.1.6"
+      - scored
+
+# 6.1.7 Ensure permissions on /etc/shadow- are configured
+
+  - name: 6.1.7 - Ensure permissions on /etc/shadow- are configured
+    file:
+      path: /etc/shadow-
+      owner: root
+      group: root
+      mode: 0000
+    tags:
+      - level-1
+      - section-6
+      - "6.1.7"
+      - scored
+
+# 6.1.8 Ensure permissions on /etc/group- are configured
+
+  - name: 6.1.8 - Ensure permissions on /etc/group- are configured
+    file:
+      path: /etc/group-
+      owner: root
+      group: root
+      mode: 0644
+    tags:
+      - level-1
+      - section-6
+      - "6.1.8"
+      - scored
+
+# 6.1.9 Ensure permissions on /etc/gshadow- are configured
+
+  - name: 6.1.9 - Ensure permissions on /etc/gshadow- are configured
+    file:
+      path: /etc/gshadow-
+      owner: root
+      group: root
+      mode: 0000
+    tags:
+      - level-1
+      - section-6
+      - "6.1.9"
+      - scored
+
+# 6.2.1 Ensure password fields are not empty
+
+  - name: 6.2.1 - Identify any accounts without passwords
+    shell: "cat /etc/shadow | awk -F: '($2 == \"\" ) { print $1 }'"
+    register: accounts_6_2_1
+    check_mode: no
+    changed_when: False
+    tags:
+      - level-1
+      - section-6
+      - "6.2.1"
+      - scored
+
+  - name: 6.2.1 - Lock any accounts without passwords
+    command: "passwd -l {{ item }}"
+    with_items: "{{ accounts_6_2_1.stdout_lines }}"
+    when: accounts_6_2_1.stdout_lines is defined
+    ignore_errors: true
+    tags:
+      - level-1
+      - section-6
+      - "6.2.1"
+      - scored
+  
+# 6.2.2 Ensure no legacy "+" entries exist in /etc/passwd
+
+  - name: 6.2.2 - Ensure no legacy "+" entries exist in /etc/passwd
+    replace:
+      dest: "/etc/passwd"
+      regexp: "^\\+:.*\n"
+    tags:
+      - level-1
+      - section-6
+      - "6.2.2"
+      - scored
+
+# 6.2.3 Ensure no legacy "+" entries exist in /etc/shadow
+
+  - name: 6.2.3 - Ensure no legacy "+" entries exist in /etc/shadow
+    replace:
+      dest: "/etc/shadow"
+      regexp: "^\\+:.*\n"
+    tags:
+      - level-1
+      - section-6
+      - "6.2.3"
+      - scored
+
+# 6.2.4 Ensure no legacy "+" entries exist in /etc/group
+
+  - name: 6.2.4 - Ensure no legacy "+" entries exist in /etc/group
+    replace:
+      dest: "/etc/group"
+      regexp: "^\\+:.*\n"
+    tags:
+      - level-1
+      - section-6
+      - "6.2.4"
+      - scored
+
+# 6.2.5 Ensure root is the only UID 0 account
+
+  - name: 6.2.5 - Ensure root is the only UID 0 account
+    shell: "cat /etc/passwd | awk -F: '($3 == 0) { print $1 }'"
+    check_mode: no
+    changed_when: False
+    register: cat_6_2_5
+    tags:
+      - level-1
+      - section-6
+      - "6.2.5"
+      - scored
+
+  - name: 6.2.5 - Fail if root is not the only UID 0 account
+    fail:
+      msg: "root is not the only UID 0 account."
+    when:
+      - cat_6_2_5.stdout_lines is defined and (cat_6_2_5.stdout_lines|length > 1 or (cat_6_2_5.stdout_lines|length == 1 and 'root' not in cat_6_2_5.stdout_lines))
+      - fail_on_manual_remediation_actions
+    tags:
+      - level-1
+      - section-6
+      - "6.2.5"
+      - scored
+
+  - name: 6.2.5 - Warn if root is not the only UID 0 account
+    debug:
+      msg: "*** ACTION REQUIRED *** root is not the only UID 0 account"
+    when:
+      - cat_6_2_5.stdout_lines is defined and (cat_6_2_5.stdout_lines|length > 1 or (cat_6_2_5.stdout_lines|length == 1 and 'root' not in cat_6_2_5.stdout_lines))
+      - not fail_on_manual_remediation_actions
+    tags:
+      - level-1
+      - section-6
+      - "6.2.5"
+      - scored
+  
+  - name: "SCORED | 6.2.6 | PATCH | Ensure root PATH Integrity"
+    copy:
+      src: scripts/6.2.6.sh
+      dest: /opt/6.2.6.sh
+      owner: root
+      group: root
+      mode: 0700
+    tags:
+      - rule_6.2.6
+      - low
+      - level1
+      - low
+
+  - name: "SCORED | 6.2.6 | PATCH | Ensure root PATH Integrity"
+    copy:
+      src: scripts/6.2.6.sh
+      dest: /opt/6.2.6.sh
+      owner: root
+      group: root
+      mode: 0700
+    tags:
+      - rule_6.2.6
+      - low
+      - level1
+      - low
+
+  - name: "SCORED | 6.2.6 | PATCH | Ensure root PATH Integrity"
+    shell: /opt/6.2.6.sh
+    args:
+      executable: /bin/bash
+    register: root_path_integrity
+    tags:
+      - rule_6.2.6
+      - low
+      - level1
+      - low
+
+  - name: "SCORED | 6.2.6 | PATCH | Ensure root PATH Integrity"
+    debug:
+      msg: "PASS | 6.2.6 | root PATH integrity"
+    tags:
+      - rule_6.2.6
+      - low
+      - level1
+      - low
+
+  - name: "SCORED | 6.2.6 | PATCH | Ensure root PATH Integrity"
+    file:
+      path: /opt/6.2.6.sh
+      owner: root
+      group: root
+      state: absent
+    tags:
+      - rule_6.2.6
+      - low
+      - level1
+      - low
+
+  - name: "SCORED | 6.2.7 | PATCH | Ensure all users' home directories exist"
+    copy:
+      src: scripts/6.2.7.sh
+      dest: /opt/6.2.7.sh
+      owner: root
+      group: root
+      mode: 0700
+    tags:
+      - rule_6.2.7
+      - low
+      - level1
+      - low
+
+  - name: "SCORED | 6.2.7 | PATCH | Ensure all users' home directories exist"
+    shell: /opt/6.2.7.sh
+    args:
+      executable: /bin/bash
+    register: home_directories_exist
+    tags:
+      - rule_6.2.7
+      - low
+      - level1
+      - low
+
+  - name: "SCORED | 6.2.7 | PATCH | Ensure all users' home directories exist"
+    debug:
+      var: home_directories_exist.stdout_lines
+    when:
+      - home_directories_exist is defined
+      - home_directories_exist.stdout != ""
+    tags:
+      - rule_6.2.7
+      - low
+      - level1
+      - low
+
+  - name: "SCORED | 6.2.7 | PATCH | Ensure all users' home directories exist"
+    debug:
+      msg: "PASS | 6.2.7 | All users' home directories exist."
+    when:
+      - home_directories_exist is defined
+      - home_directories_exist.stdout == ""
+    tags:
+      - rule_6.2.7
+      - low
+      - level1
+      - low
+
+  - name: "SCORED | 6.2.7 | PATCH | Ensure all users' home directories exist"
+    file:
+      path: /opt/6.2.7.sh
+      owner: root
+      group: root
+      state: absent
+    tags:
+      - rule_6.2.7
+      - low
+      - level1
+      - low
+
+  - name: "SCORED | 6.2.8 | PATCH | Ensure users' home directories permissions are 750 or more restrictive"
+    copy:
+      src: scripts/6.2.8.sh
+      dest: /opt/6.2.8.sh
+      owner: root
+      group: root
+      mode: 0700
+    tags:
+      - rule_6.2.8
+      - level1
+      - patch
+      - low
+
+  - name: "SCORED | 6.2.8 | PATCH | Ensure users' home directories permissions are 750 or more restrictive"
+    shell: /opt/6.2.8.sh
+    args:
+      executable: /bin/bash
+    register: home_directories_permissions
+    tags:
+      - rule_6.2.8
+      - level1
+      - patch
+      - low
+
+  - name: "SCORED | 6.2.8 | PATCH | Ensure users' home directories permissions are 750 or more restrictive"
+    debug:
+      var: home_directories_permissions.stdout_lines
+    when:
+      home_directories_permissions is defined
+    tags:
+      - rule_6.2.8
+      - level1
+      - patch
+      - low
+
+  - name: "SCORED | 6.2.8 | PATCH | Ensure users' home directories permissions are 750 or more restrictive"
+    debug:
+      msg: "PASS | 6.2.8 | Users' home directories permissions are 750 or more restrictive."
+    when:
+      - home_directories_permissions is defined and home_directories_permissions.stdout == ""
+    tags:
+      - rule_6.2.8
+      - level1
+      - patch
+      - low
+
+  - name: 6.2.10 permissions set for directories
+    command: chmod 644 /usr/local/sbin
+  
