@@ -299,13 +299,6 @@
       - section-1
       - "1.1.1.8"
       - scored
-
-  - name: ensure tmp is configure
-    lineinfile:
-      path: /etc/fstab
-      line: tmpfs /tmp tmpfs defaults,rw,nosuid,nodev,noexec,relatime 0 0
-      state: present
-    command: mount -o remount,noexec,nodev,nosuid /tmp
  
   - name: '1.1.2,1.1.3,1.1.4,1.1.5 Ensure tmp is configure'
     block:
